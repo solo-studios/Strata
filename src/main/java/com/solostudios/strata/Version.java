@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Version.java is part of Strata
- * Last modified on 17-07-2021 03:43 a.m.
+ * Last modified on 17-07-2021 04:01 a.m.
  *
  * MIT License
  *
@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 
-public class Version implements Comparable<Version> {
+public class Version implements Comparable<Version>, Formattable {
     private final int major;
     
     private final int minor;
@@ -61,13 +61,19 @@ public class Version implements Comparable<Version> {
             return 1;
         else if (major < o.major)
             return -1;
-        
+    
         if (minor > o.minor)
             return 1;
         else if (minor < o.minor)
             return -1;
-        
+    
         return preRelease.compareTo(o.preRelease);
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("Version{major=%d, minor=%d, patch=%d, preRelease=%s, buildMetadata=%s}",
+                             major, minor, patch, preRelease, buildMetadata);
     }
     
     public int getMajor() {
@@ -90,6 +96,11 @@ public class Version implements Comparable<Version> {
     @NotNull
     public BuildMetadata getBuildMetadata() {
         return buildMetadata;
+    }
+    
+    @Override
+    public String getFormatted() {
+        return String.format("%s.%s.%s%s%s", major, major, patch, preRelease, buildMetadata);
     }
     
     @Override
