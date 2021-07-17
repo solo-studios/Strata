@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file PreRelease.java is part of Strata
- * Last modified on 17-07-2021 04:02 a.m.
+ * Last modified on 17-07-2021 05:04 p.m.
  *
  * MIT License
  *
@@ -26,7 +26,7 @@
  * SOFTWARE.
  */
 
-package com.solostudios.strata;
+package com.solostudios.strata.version;
 
 
 import org.apache.commons.collections4.CollectionUtils;

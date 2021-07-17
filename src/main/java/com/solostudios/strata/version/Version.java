@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Version.java is part of Strata
- * Last modified on 17-07-2021 04:27 a.m.
+ * Last modified on 17-07-2021 05:45 p.m.
  *
  * MIT License
  *
@@ -26,7 +26,7 @@
  * SOFTWARE.
  */
 
-package com.solostudios.strata;
+package com.solostudios.strata.version;
 
 
 import org.jetbrains.annotations.Contract;
@@ -55,8 +55,27 @@ public class Version implements Comparable<Version>, Formattable {
         this.buildMetadata = buildMetadata;
     }
     
+    @Contract(pure = true)
+    public Version(int major, int minor, int patch, @NotNull PreRelease preRelease) {
+        this(major, minor, patch, preRelease, BuildMetadata.NULL_BUILD_METADATA);
+    }
+    
+    @Contract(pure = true)
+    public Version(int major, int minor, int patch, @NotNull BuildMetadata buildMetadata) {
+        this(major, minor, patch, PreRelease.NULL_PRE_RELEASE, buildMetadata);
+    }
+    
+    @Contract(pure = true)
+    public Version(int major, int minor, int patch) {
+        this(major, minor, patch, PreRelease.NULL_PRE_RELEASE, BuildMetadata.NULL_BUILD_METADATA);
+    }
+    
     public static Builder builder() {
         return new Builder();
+    }
+    
+    public static Builder builder(String version) {
+        return new Builder(version);
     }
     
     @Override
@@ -134,52 +153,57 @@ public class Version implements Comparable<Version>, Formattable {
     
     
     public static final class Builder {
-        private int major = 0;
+        @NotNull
+        private String version = "";
         
-        private int minor = 0;
+        @NotNull
+        private String preRelease = "";
         
-        private int patch = 0;
-        
-        private PreRelease preRelease = PreRelease.NULL_PRE_RELEASE;
-        
-        private BuildMetadata buildMetadata = BuildMetadata.NULL_BUILD_METADATA;
+        @NotNull
+        private String buildMetadata = "";
         
         @Contract(pure = true)
         private Builder() {
         }
         
-        @Contract(value = " -> new", pure = true)
-        public @NotNull Version build() {
-            return new Version(major, minor, patch, preRelease, buildMetadata);
+        @Contract(pure = true)
+        private Builder(@NotNull String version) {
+            this.version = version;
+        }
+        
+        @NotNull
+        @Contract(pure = true)
+        public String getVersion() {
+            return version;
         }
         
         @Contract(value = "_ -> this", mutates = "this")
-        public Builder withBuildMetadata(BuildMetadata buildMetadata) {
-            this.buildMetadata = buildMetadata;
+        public Builder setVersion(@NotNull String version) {
+            this.version = version;
             return this;
         }
         
-        @Contract(value = "_ -> this", mutates = "this")
-        public Builder withMajor(int major) {
-            this.major = major;
-            return this;
+        @NotNull
+        @Contract(pure = true)
+        public String getPreRelease() {
+            return preRelease;
         }
         
         @Contract(value = "_ -> this", mutates = "this")
-        public Builder withMinor(int minor) {
-            this.minor = minor;
-            return this;
-        }
-        
-        @Contract(value = "_ -> this", mutates = "this")
-        public Builder withPatch(int patch) {
-            this.patch = patch;
-            return this;
-        }
-        
-        @Contract(value = "_ -> this", mutates = "this")
-        public Builder withPreRelease(PreRelease preRelease) {
+        public Builder setPreRelease(@NotNull String preRelease) {
             this.preRelease = preRelease;
+            return this;
+        }
+        
+        @NotNull
+        @Contract(pure = true)
+        public String getBuildMetadata() {
+            return buildMetadata;
+        }
+        
+        @Contract(value = "_ -> this", mutates = "this")
+        public Builder setBuildMetadata(@NotNull String buildMetadata) {
+            this.buildMetadata = buildMetadata;
             return this;
         }
     }

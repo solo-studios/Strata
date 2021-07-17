@@ -2,8 +2,8 @@
  * Strata - A library for parsing and comparing version strings
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file BuildMetadata.java is part of Strata
- * Last modified on 17-07-2021 03:35 a.m.
+ * The file PreReleaseIdentifier.java is part of Strata
+ * Last modified on 17-07-2021 05:04 p.m.
  *
  * MIT License
  *
@@ -26,39 +26,9 @@
  * SOFTWARE.
  */
 
-package com.solostudios.strata;
+package com.solostudios.strata.version;
 
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
-
-public class BuildMetadata implements Formattable {
-    public static final BuildMetadata NULL_BUILD_METADATA = new BuildMetadata("");
-    
-    @NotNull
-    private final String buildMetadata;
-    
-    @Contract(pure = true)
-    public BuildMetadata(@NotNull String buildMetadata) {
-        this.buildMetadata = buildMetadata;
-    }
-    
-    @Override
-    public String toString() {
-        return String.format("BuildMetadata{buildMetadata='%s'}", buildMetadata);
-    }
-    
-    @NotNull
-    public String getBuildMetadata() {
-        return buildMetadata;
-    }
-    
-    @Override
-    public String getFormatted() {
-        if (buildMetadata.isEmpty())
-            return String.format("+%s", buildMetadata);
-        else
-            return "";
-    }
+interface PreReleaseIdentifier extends Comparable<PreReleaseIdentifier>, Formattable {
+    boolean isNumeric();
 }

@@ -2,8 +2,8 @@
  * Strata - A library for parsing and comparing version strings
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file PreReleaseIdentifier.java is part of Strata
- * Last modified on 17-07-2021 03:24 a.m.
+ * The file Formattable.java is part of Strata
+ * Last modified on 17-07-2021 05:04 p.m.
  *
  * MIT License
  *
@@ -26,9 +26,9 @@
  * SOFTWARE.
  */
 
-package com.solostudios.strata;
+package com.solostudios.strata.version;
 
 
-interface PreReleaseIdentifier extends Comparable<PreReleaseIdentifier>, Formattable {
-    boolean isNumeric();
+public interface Formattable {
+    String getFormatted();
 }
