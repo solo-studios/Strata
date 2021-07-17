@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 17-07-2021 04:34 a.m.
+ * Last modified on 17-07-2021 07:29 p.m.
  *
  * MIT License
  *
@@ -27,6 +27,7 @@
  */
 
 import org.ajoberstar.grgit.Grgit
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
     java
@@ -46,6 +47,7 @@ repositories {
 
 dependencies {
     api("com.google.guava:guava:30.0-jre")
+    api("org.apache.commons:commons-text:1.9")
     api("org.apache.commons:commons-collections4:4.4")
     api("org.jetbrains:annotations:20.1.0")
     
@@ -56,6 +58,17 @@ dependencies {
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
+    
+    maxHeapSize = "2G"
+    ignoreFailures = false
+    failFast = false
+    maxParallelForks = (Runtime.getRuntime().availableProcessors() - 1).coerceAtLeast(1)
+    
+    reports.html.isEnabled = false
+    reports.junitXml.isEnabled = false
+    testLogging {
+        exceptionFormat = TestExceptionFormat.FULL
+    }
 }
 
 
