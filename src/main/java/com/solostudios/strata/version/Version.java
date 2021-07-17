@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Version.java is part of Strata
- * Last modified on 17-07-2021 05:45 p.m.
+ * Last modified on 17-07-2021 07:44 p.m.
  *
  * MIT License
  *
@@ -34,11 +34,8 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class Version implements Comparable<Version>, Formattable {
-    private final int major;
-    
-    private final int minor;
-    
-    private final int patch;
+    @NotNull
+    private final NormalVersion normalVersion;
     
     @NotNull
     private final PreRelease preRelease;
@@ -47,27 +44,10 @@ public class Version implements Comparable<Version>, Formattable {
     private final BuildMetadata buildMetadata;
     
     @Contract(pure = true)
-    public Version(int major, int minor, int patch, @NotNull PreRelease preRelease, @NotNull BuildMetadata buildMetadata) {
-        this.major = major;
-        this.minor = minor;
-        this.patch = patch;
+    public Version(NormalVersion normalVersion, @NotNull PreRelease preRelease, @NotNull BuildMetadata buildMetadata) {
+        this.normalVersion = normalVersion;
         this.preRelease = preRelease;
         this.buildMetadata = buildMetadata;
-    }
-    
-    @Contract(pure = true)
-    public Version(int major, int minor, int patch, @NotNull PreRelease preRelease) {
-        this(major, minor, patch, preRelease, BuildMetadata.NULL_BUILD_METADATA);
-    }
-    
-    @Contract(pure = true)
-    public Version(int major, int minor, int patch, @NotNull BuildMetadata buildMetadata) {
-        this(major, minor, patch, PreRelease.NULL_PRE_RELEASE, buildMetadata);
-    }
-    
-    @Contract(pure = true)
-    public Version(int major, int minor, int patch) {
-        this(major, minor, patch, PreRelease.NULL_PRE_RELEASE, BuildMetadata.NULL_BUILD_METADATA);
     }
     
     public static Builder builder() {
@@ -80,35 +60,25 @@ public class Version implements Comparable<Version>, Formattable {
     
     @Override
     public int compareTo(@NotNull Version o) {
-        if (major > o.major)
-            return 1;
-        else if (major < o.major)
-            return -1;
-        
-        if (minor > o.minor)
-            return 1;
-        else if (minor < o.minor)
-            return -1;
-        
-        return preRelease.compareTo(o.preRelease);
+        int normalVersionComparison = normalVersion.compareTo(o.normalVersion);
+        return normalVersionComparison != 0 ? normalVersionComparison : preRelease.compareTo(o.preRelease);
     }
     
     @Override
     public String toString() {
-        return String.format("Version{major=%d, minor=%d, patch=%d, preRelease=%s, buildMetadata=%s}",
-                             major, minor, patch, preRelease, buildMetadata);
+        return String.format("Version{normalVersion=%s, preRelease=%s, buildMetadata=%s}", normalVersion, preRelease, buildMetadata);
     }
     
     public int getMajor() {
-        return major;
+        return normalVersion.getMajor();
     }
     
     public int getMinor() {
-        return minor;
+        return normalVersion.getMinor();
     }
     
     public int getPatch() {
-        return patch;
+        return normalVersion.getPatch();
     }
     
     @NotNull
@@ -122,30 +92,32 @@ public class Version implements Comparable<Version>, Formattable {
     }
     
     @Override
+    @SuppressWarnings("StringConcatenation")
     public String getFormatted() {
-        return String.format("%s.%s.%s%s%s", major, major, patch, preRelease, buildMetadata);
+        return normalVersion.getFormatted() + preRelease.getFormatted() + buildMetadata.getBuildMetadata();
     }
     
     @Override
     @Contract(value = "null -> false", pure = true)
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+    
         Version version = (Version) o;
-        
-        if (major != version.major) return false;
-        if (minor != version.minor) return false;
-        if (patch != version.patch) return false;
-        if (!preRelease.equals(version.preRelease)) return false;
+    
+    
+        if (!normalVersion.equals(version.normalVersion))
+            return false;
+        if (!preRelease.equals(version.preRelease))
+            return false;
         return buildMetadata.equals(version.buildMetadata);
     }
     
     @Override
     public int hashCode() {
-        int result = major;
-        result = 31 * result + minor;
-        result = 31 * result + patch;
+        int result = normalVersion.hashCode();
         result = 31 * result + preRelease.hashCode();
         result = 31 * result + buildMetadata.hashCode();
         return result;
