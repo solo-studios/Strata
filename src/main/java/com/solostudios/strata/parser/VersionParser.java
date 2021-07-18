@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionParser.java is part of Strata
- * Last modified on 17-07-2021 09:41 p.m.
+ * Last modified on 17-07-2021 10:40 p.m.
  *
  * MIT License
  *
@@ -35,9 +35,12 @@ import com.solostudios.strata.parser.tokenizer.ParseException;
 import com.solostudios.strata.version.BuildMetadata;
 import com.solostudios.strata.version.CoreVersion;
 import com.solostudios.strata.version.PreRelease;
+import com.solostudios.strata.version.PreReleaseIdentifier;
 import com.solostudios.strata.version.Version;
 
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public final class VersionParser {
@@ -62,10 +65,10 @@ public final class VersionParser {
         BuildMetadata buildMetadata = BuildMetadata.NULL;
         
         Char next = input.consume();
-        
-        if (next.is(DOT)) {
+    
+        if (next.is(DASH)) {
             preRelease = parsePreRelease();
-            
+        
             next = input.consume();
         }
         
@@ -91,22 +94,47 @@ public final class VersionParser {
     }
     
     private PreRelease parsePreRelease() throws ParseException {
-        return null;
+        List<PreReleaseIdentifier> identifiers = new ArrayList<>();
+        
+        identifiers.add(parsePreReleaseIdentifier());
+        
+        while (input.current().is('.')) {
+            input.consume();
+            
+            identifiers.add(parsePreReleaseIdentifier());
+        }
+        
+        return new PreRelease(identifiers);
+    }
+    
+    private PreReleaseIdentifier parsePreReleaseIdentifier() throws ParseException {
+        if (lookaheadAlphaNumeric())
+            return new PreReleaseIdentifier.AlphaNumericalPreReleaseIdentifier(consumeAlphaNumeric());
+        else
+            return new PreReleaseIdentifier.NumericalPreReleaseIdentifier(Integer.parseInt(consumeNumber()));
+    }
+    
+    private PreReleaseIdentifier.AlphaNumericalPreReleaseIdentifier parseAlphaNumericPreReleaseIdentifier() throws ParseException {
+        return new PreReleaseIdentifier.AlphaNumericalPreReleaseIdentifier(consumeAlphaNumeric());
     }
     
     private BuildMetadata parseBuildMetadata() throws ParseException {
         StringBuilder sb = new StringBuilder();
         if (!(input.current().isAlphaNumeric()))
             throw new ParseException("Alpha-Numeric identifier expected.", versionString, input.current());
-    
+        
         do {
             Char consumed = input.consume();
-            if (consumed.is(DOT) && input.current().is(DOT))
-                throw new ParseException("Alpha-Numeric identifier expected, but found period.", versionString, input.current());
-        
+            if (consumed.is(DOT)) {
+                if (input.current().is(DOT))
+                    throw new ParseException("Alpha-Numeric identifier expected, but found period.", versionString, input.current());
+                if (input.current().isEndOfInput())
+                    throw new ParseException("Alpha-Numeric identifier expected, but found end of input.", versionString, input.current());
+            }
+            
             sb.append(consumed.getValue());
         } while (input.current().isAlphaNumeric() || input.current().is(DOT));
-    
+        
         return new BuildMetadata(sb.toString());
     }
     
@@ -126,16 +154,16 @@ public final class VersionParser {
     }
     
     private boolean lookaheadAlphaNumeric() throws ParseException {
-        boolean foundNonDigit = input.current().isLetter() || input.current().is(DASH);
-        
-        for (int i = 1; foundNonDigit; i++) {
+        boolean foundNonDigit = false;
+    
+        for (int i = 0; !foundNonDigit; i++) {
             foundNonDigit = input.next(i).isLetter() || input.next(i).is(DASH);
-            
+        
             if (!input.next(i).isAlphaNumeric())
                 return foundNonDigit;
         }
-        
-        return false;
+    
+        return true;
     }
     
     private String consumeAlphaNumeric() throws ParseException {

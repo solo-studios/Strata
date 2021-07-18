@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file PreReleaseIdentifier.java is part of Strata
- * Last modified on 17-07-2021 05:04 p.m.
+ * Last modified on 17-07-2021 10:08 p.m.
  *
  * MIT License
  *
@@ -29,6 +29,111 @@
 package com.solostudios.strata.version;
 
 
-interface PreReleaseIdentifier extends Comparable<PreReleaseIdentifier>, Formattable {
-    boolean isNumeric();
+import org.jetbrains.annotations.NotNull;
+
+
+public abstract class PreReleaseIdentifier implements Comparable<PreReleaseIdentifier>, Formattable {
+    
+    @Override
+    public int compareTo(@NotNull PreReleaseIdentifier o) {
+        if (isNumeric())
+            if (o.isNumeric())
+                return Integer.compare(asInt(), o.asInt());
+            else
+                return -1;
+        else if (o.isNumeric())
+            return 1;
+        else
+            return asString().compareTo(o.asString());
+    }
+    
+    protected int asInt() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Numerical values are not supported by this implementation");
+    }
+    
+    @NotNull
+    protected abstract String asString();
+    
+    @NotNull
+    @Override
+    public String getFormatted() {
+        return asString();
+    }
+    
+    protected abstract boolean isNumeric();
+    
+    public static class NumericalPreReleaseIdentifier extends PreReleaseIdentifier {
+        private final int value;
+        
+        public NumericalPreReleaseIdentifier(int value) {
+            this.value = value;
+        }
+        
+        @NotNull
+        @Override
+        protected String asString() {
+            return Integer.toString(value);
+        }
+        
+        @Override
+        protected int asInt() {
+            return value;
+        }
+        
+        @Override
+        protected boolean isNumeric() {
+            return true;
+        }
+        
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            
+            NumericalPreReleaseIdentifier that = (NumericalPreReleaseIdentifier) o;
+            
+            return value == that.value;
+        }
+        
+        @Override
+        public int hashCode() {
+            return value;
+        }
+    }
+    
+    
+    public static class AlphaNumericalPreReleaseIdentifier extends PreReleaseIdentifier {
+        @NotNull
+        private final String value;
+        
+        public AlphaNumericalPreReleaseIdentifier(@NotNull String value) {
+            this.value = value;
+        }
+        
+        @NotNull
+        @Override
+        protected String asString() {
+            return value;
+        }
+        
+        @Override
+        protected boolean isNumeric() {
+            return false;
+        }
+        
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            
+            AlphaNumericalPreReleaseIdentifier that = (AlphaNumericalPreReleaseIdentifier) o;
+            
+            return value.equals(that.value);
+        }
+        
+        @Override
+        public int hashCode() {
+            return value.hashCode();
+        }
+    }
 }

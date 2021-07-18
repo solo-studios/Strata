@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file PreRelease.java is part of Strata
- * Last modified on 17-07-2021 08:18 p.m.
+ * Last modified on 17-07-2021 10:40 p.m.
  *
  * MIT License
  *
@@ -77,6 +77,7 @@ public class PreRelease implements Comparable<PreRelease>, Formattable {
         return Collections.unmodifiableList(identifiers);
     }
     
+    @NotNull
     @Override
     public String getFormatted() {
         if (identifiers.isEmpty()) {

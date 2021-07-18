@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Formattable.java is part of Strata
- * Last modified on 17-07-2021 05:04 p.m.
+ * Last modified on 17-07-2021 09:59 p.m.
  *
  * MIT License
  *
@@ -29,6 +29,10 @@
 package com.solostudios.strata.version;
 
 
+import org.jetbrains.annotations.NotNull;
+
+
 public interface Formattable {
+    @NotNull
     String getFormatted();
 }
