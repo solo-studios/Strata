@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Version.java is part of Strata
- * Last modified on 17-07-2021 10:40 p.m.
+ * Last modified on 17-07-2021 10:58 p.m.
  *
  * MIT License
  *
@@ -31,6 +31,8 @@ package com.solostudios.strata.version;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import java.math.BigInteger;
 
 
 public class Version implements Comparable<Version>, Formattable {
@@ -69,15 +71,15 @@ public class Version implements Comparable<Version>, Formattable {
         return String.format("Version{normalVersion=%s, preRelease=%s, buildMetadata=%s}", coreVersion, preRelease, buildMetadata);
     }
     
-    public int getMajor() {
+    public BigInteger getMajor() {
         return coreVersion.getMajor();
     }
     
-    public int getMinor() {
+    public BigInteger getMinor() {
         return coreVersion.getMinor();
     }
     
-    public int getPatch() {
+    public BigInteger getPatch() {
         return coreVersion.getPatch();
     }
     

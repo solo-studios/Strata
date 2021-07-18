@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file CoreVersion.java is part of Strata
- * Last modified on 17-07-2021 10:40 p.m.
+ * Last modified on 17-07-2021 10:58 p.m.
  *
  * MIT License
  *
@@ -31,15 +31,20 @@ package com.solostudios.strata.version;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigInteger;
+
 
 public class CoreVersion implements Comparable<CoreVersion>, Formattable {
-    private final int major;
+    @NotNull
+    private final BigInteger major;
     
-    private final int minor;
+    @NotNull
+    private final BigInteger minor;
     
-    private final int patch;
+    @NotNull
+    private final BigInteger patch;
     
-    public CoreVersion(int major, int minor, int patch) {
+    public CoreVersion(@NotNull BigInteger major, @NotNull BigInteger minor, @NotNull BigInteger patch) {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
@@ -47,9 +52,9 @@ public class CoreVersion implements Comparable<CoreVersion>, Formattable {
     
     @Override
     public int compareTo(@NotNull CoreVersion o) {
-        int majorComparison = Integer.compare(major, o.major);
-        int minorComparison = Integer.compare(minor, o.minor);
-        return (majorComparison != 0) ? majorComparison : ((minorComparison != 0) ? minorComparison : Integer.compare(patch, o.patch));
+        int majorComparison = major.compareTo(o.major);
+        int minorComparison = minor.compareTo(o.minor);
+        return (majorComparison != 0) ? majorComparison : ((minorComparison != 0) ? minorComparison : patch.compareTo(o.patch));
     }
     
     @Override
@@ -57,15 +62,18 @@ public class CoreVersion implements Comparable<CoreVersion>, Formattable {
         return String.format("NormalVersion{major=%d, minor=%d, patch=%d}", major, minor, patch);
     }
     
-    public int getMajor() {
+    @NotNull
+    public BigInteger getMajor() {
         return major;
     }
     
-    public int getMinor() {
+    @NotNull
+    public BigInteger getMinor() {
         return minor;
     }
     
-    public int getPatch() {
+    @NotNull
+    public BigInteger getPatch() {
         return patch;
     }
     
@@ -77,21 +85,25 @@ public class CoreVersion implements Comparable<CoreVersion>, Formattable {
     
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-    
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        
         CoreVersion that = (CoreVersion) o;
         
-        if (major != that.major) return false;
-        if (minor != that.minor) return false;
-        return patch == that.patch;
+        if (major.compareTo(that.major) != 0)
+            return false;
+        if (minor.compareTo(that.minor) != 0)
+            return false;
+        return patch.compareTo(that.patch) == 0;
     }
     
     @Override
     public int hashCode() {
-        int result = major;
-        result = 31 * result + minor;
-        result = 31 * result + patch;
+        int result = major.hashCode();
+        result = 31 * result + minor.hashCode();
+        result = 31 * result + patch.hashCode();
         return result;
     }
 }

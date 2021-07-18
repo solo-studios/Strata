@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionParser.java is part of Strata
- * Last modified on 17-07-2021 10:40 p.m.
+ * Last modified on 17-07-2021 10:58 p.m.
  *
  * MIT License
  *
@@ -39,6 +39,7 @@ import com.solostudios.strata.version.PreReleaseIdentifier;
 import com.solostudios.strata.version.Version;
 
 import java.io.StringReader;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,11 +86,11 @@ public final class VersionParser {
     }
     
     private CoreVersion parseCoreVersion() throws ParseException {
-        int major = Integer.parseInt(consumeNumber());
+        BigInteger major = new BigInteger(consumeNumber());
         consumeCharacter(DOT);
-        int minor = Integer.parseInt(consumeNumber());
+        BigInteger minor = new BigInteger(consumeNumber());
         consumeCharacter(DOT);
-        int patch = Integer.parseInt(consumeNumber());
+        BigInteger patch = new BigInteger(consumeNumber());
         return new CoreVersion(major, minor, patch);
     }
     
