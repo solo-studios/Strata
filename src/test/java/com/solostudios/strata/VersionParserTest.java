@@ -2,8 +2,8 @@
  * Strata - A library for parsing and comparing version strings
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file BuildMetadata.java is part of Strata
- * Last modified on 17-07-2021 08:18 p.m.
+ * The file VersionParserTest.java is part of Strata
+ * Last modified on 17-07-2021 09:29 p.m.
  *
  * MIT License
  *
@@ -26,39 +26,31 @@
  * SOFTWARE.
  */
 
-package com.solostudios.strata.version;
+package com.solostudios.strata;
 
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import com.solostudios.strata.parser.VersionParser;
+import com.solostudios.strata.version.Version;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
-public class BuildMetadata implements Formattable {
-    public static final BuildMetadata NULL = new BuildMetadata("");
-    
-    @NotNull
-    private final String buildMetadata;
-    
-    @Contract(pure = true)
-    public BuildMetadata(@NotNull String buildMetadata) {
-        this.buildMetadata = buildMetadata;
-    }
-    
-    @Override
-    public String toString() {
-        return String.format("BuildMetadata{buildMetadata='%s'}", buildMetadata);
-    }
-    
-    @NotNull
-    public String getBuildMetadata() {
-        return buildMetadata;
-    }
-    
-    @Override
-    public String getFormatted() {
-        if (buildMetadata.isEmpty())
-            return String.format("+%s", buildMetadata);
-        else
-            return "";
+class VersionParserTest {
+    @Test
+    void testCoreParsing() {
+        String[] validVersions = {
+                "0.0.4",
+                "1.2.3",
+                "10.20.30",
+                "1.0.0",
+                "2.0.0",
+                "1.1.7"
+        };
+        for (String version : validVersions)
+            assertDoesNotThrow(() -> {
+                Version ver = new VersionParser(version).parse();
+                assertEquals(version, ver.getFormatted(), "Failed to parse the version '%s' properly.");
+            }, String.format("Failed during parsing of version '%s'.", version));
     }
 }

@@ -71,12 +71,21 @@ public class Char implements Position {
     }
     
     /**
+     * Determines if the value is an alphanumeric identifier (0..9, a..z, A..Z, -)
+     *
+     * @return <tt>true</tt> if the internal value is a letter, <tt>false</tt> otherwise
+     */
+    public boolean isAlphaNumeric() {
+        return isLetter() || isDigit() || is('-');
+    }
+    
+    /**
      * Determines if the value is a digit (0..9)
      *
      * @return <tt>true</tt> if the internal value is a digit, <tt>false</tt> otherwise
      */
     public boolean isDigit() {
-        return Character.isDigit(value);
+        return value >= '0' && value <= '9';
     }
     
     /**
@@ -85,16 +94,7 @@ public class Char implements Position {
      * @return <tt>true</tt> if the internal value is a letter, <tt>false</tt> otherwise
      */
     public boolean isLetter() {
-        return Character.isLetter(value);
-    }
-    
-    /**
-     * Determines if the value is a whitespace character like a blank, tab or line break
-     *
-     * @return <tt>true</tt> if the internal value is a whitespace character, <tt>false</tt> otherwise
-     */
-    public boolean isWhitespace() {
-        return Character.isWhitespace(value) && !isEndOfInput();
+        return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z');
     }
     
     /**
@@ -105,15 +105,6 @@ public class Char implements Position {
      */
     public boolean isEndOfInput() {
         return value == '\0';
-    }
-    
-    /**
-     * Determines if the value is a line break
-     *
-     * @return <tt>true</tt> if the internal value is a line break, <tt>false</tt> otherwise
-     */
-    public boolean isNewLine() {
-        return value == '\n';
     }
     
     /**

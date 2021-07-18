@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Versions.java is part of Strata
- * Last modified on 17-07-2021 05:39 p.m.
+ * Last modified on 17-07-2021 09:32 p.m.
  *
  * MIT License
  *
@@ -37,18 +37,18 @@ import org.jetbrains.annotations.NotNull;
 public final class Versions {
     private Versions() {
     }
-    
-    public static Version getVersion(int major) {
-        return new Version(major, 0, 0);
-    }
-    
-    public static Version getVersion(int major, int minor) {
-        return new Version(major, minor, 0);
-    }
-    
-    public static Version getVersion(int major, int minor, int patch) {
-        return new Version(major, minor, patch);
-    }
+
+//    public static Version getVersion(int major) {
+//        return new Version(major, 0, 0);
+//    }
+//
+//    public static Version getVersion(int major, int minor) {
+//        return new Version(major, minor, 0);
+//    }
+//
+//    public static Version getVersion(int major, int minor, int patch) {
+//        return new Version(major, minor, patch);
+//    }
     
     @NotNull
     @Contract(pure = true)
