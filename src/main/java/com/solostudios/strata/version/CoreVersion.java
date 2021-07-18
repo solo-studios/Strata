@@ -2,8 +2,8 @@
  * Strata - A library for parsing and comparing version strings
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file NormalVersion.java is part of Strata
- * Last modified on 17-07-2021 07:44 p.m.
+ * The file CoreVersion.java is part of Strata
+ * Last modified on 17-07-2021 08:08 p.m.
  *
  * MIT License
  *
@@ -32,21 +32,21 @@ package com.solostudios.strata.version;
 import org.jetbrains.annotations.NotNull;
 
 
-public class NormalVersion implements Comparable<NormalVersion>, Formattable {
+public class CoreVersion implements Comparable<CoreVersion>, Formattable {
     private final int major;
     
     private final int minor;
     
     private final int patch;
     
-    public NormalVersion(int major, int minor, int patch) {
+    public CoreVersion(int major, int minor, int patch) {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
     }
     
     @Override
-    public int compareTo(@NotNull NormalVersion o) {
+    public int compareTo(@NotNull CoreVersion o) {
         int majorComparison = Integer.compare(major, o.major);
         int minorComparison = Integer.compare(minor, o.minor);
         return (majorComparison != 0) ? majorComparison : ((minorComparison != 0) ? minorComparison : Integer.compare(patch, o.patch));
@@ -78,8 +78,8 @@ public class NormalVersion implements Comparable<NormalVersion>, Formattable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        
-        NormalVersion that = (NormalVersion) o;
+    
+        CoreVersion that = (CoreVersion) o;
         
         if (major != that.major) return false;
         if (minor != that.minor) return false;

@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Version.java is part of Strata
- * Last modified on 17-07-2021 07:44 p.m.
+ * Last modified on 17-07-2021 07:48 p.m.
  *
  * MIT License
  *
@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Version implements Comparable<Version>, Formattable {
     @NotNull
-    private final NormalVersion normalVersion;
+    private final CoreVersion coreVersion;
     
     @NotNull
     private final PreRelease preRelease;
@@ -44,8 +44,8 @@ public class Version implements Comparable<Version>, Formattable {
     private final BuildMetadata buildMetadata;
     
     @Contract(pure = true)
-    public Version(NormalVersion normalVersion, @NotNull PreRelease preRelease, @NotNull BuildMetadata buildMetadata) {
-        this.normalVersion = normalVersion;
+    public Version(CoreVersion coreVersion, @NotNull PreRelease preRelease, @NotNull BuildMetadata buildMetadata) {
+        this.coreVersion = coreVersion;
         this.preRelease = preRelease;
         this.buildMetadata = buildMetadata;
     }
@@ -60,25 +60,25 @@ public class Version implements Comparable<Version>, Formattable {
     
     @Override
     public int compareTo(@NotNull Version o) {
-        int normalVersionComparison = normalVersion.compareTo(o.normalVersion);
+        int normalVersionComparison = coreVersion.compareTo(o.coreVersion);
         return normalVersionComparison != 0 ? normalVersionComparison : preRelease.compareTo(o.preRelease);
     }
     
     @Override
     public String toString() {
-        return String.format("Version{normalVersion=%s, preRelease=%s, buildMetadata=%s}", normalVersion, preRelease, buildMetadata);
+        return String.format("Version{normalVersion=%s, preRelease=%s, buildMetadata=%s}", coreVersion, preRelease, buildMetadata);
     }
     
     public int getMajor() {
-        return normalVersion.getMajor();
+        return coreVersion.getMajor();
     }
     
     public int getMinor() {
-        return normalVersion.getMinor();
+        return coreVersion.getMinor();
     }
     
     public int getPatch() {
-        return normalVersion.getPatch();
+        return coreVersion.getPatch();
     }
     
     @NotNull
@@ -94,7 +94,7 @@ public class Version implements Comparable<Version>, Formattable {
     @Override
     @SuppressWarnings("StringConcatenation")
     public String getFormatted() {
-        return normalVersion.getFormatted() + preRelease.getFormatted() + buildMetadata.getBuildMetadata();
+        return coreVersion.getFormatted() + preRelease.getFormatted() + buildMetadata.getBuildMetadata();
     }
     
     @Override
@@ -108,7 +108,7 @@ public class Version implements Comparable<Version>, Formattable {
         Version version = (Version) o;
     
     
-        if (!normalVersion.equals(version.normalVersion))
+        if (!coreVersion.equals(version.coreVersion))
             return false;
         if (!preRelease.equals(version.preRelease))
             return false;
@@ -117,7 +117,7 @@ public class Version implements Comparable<Version>, Formattable {
     
     @Override
     public int hashCode() {
-        int result = normalVersion.hashCode();
+        int result = coreVersion.hashCode();
         result = 31 * result + preRelease.hashCode();
         result = 31 * result + buildMetadata.hashCode();
         return result;
