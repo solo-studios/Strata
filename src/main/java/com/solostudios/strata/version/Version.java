@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Version.java is part of Strata
- * Last modified on 17-07-2021 07:48 p.m.
+ * Last modified on 17-07-2021 09:39 p.m.
  *
  * MIT License
  *
@@ -94,7 +94,7 @@ public class Version implements Comparable<Version>, Formattable {
     @Override
     @SuppressWarnings("StringConcatenation")
     public String getFormatted() {
-        return coreVersion.getFormatted() + preRelease.getFormatted() + buildMetadata.getBuildMetadata();
+        return coreVersion.getFormatted() + preRelease.getFormatted() + buildMetadata.getFormatted();
     }
     
     @Override

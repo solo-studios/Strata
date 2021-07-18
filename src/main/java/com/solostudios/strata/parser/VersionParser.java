@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionParser.java is part of Strata
- * Last modified on 17-07-2021 09:30 p.m.
+ * Last modified on 17-07-2021 09:41 p.m.
  *
  * MIT License
  *
@@ -95,7 +95,19 @@ public final class VersionParser {
     }
     
     private BuildMetadata parseBuildMetadata() throws ParseException {
-        return null;
+        StringBuilder sb = new StringBuilder();
+        if (!(input.current().isAlphaNumeric()))
+            throw new ParseException("Alpha-Numeric identifier expected.", versionString, input.current());
+    
+        do {
+            Char consumed = input.consume();
+            if (consumed.is(DOT) && input.current().is(DOT))
+                throw new ParseException("Alpha-Numeric identifier expected, but found period.", versionString, input.current());
+        
+            sb.append(consumed.getValue());
+        } while (input.current().isAlphaNumeric() || input.current().is(DOT));
+    
+        return new BuildMetadata(sb.toString());
     }
     
     private String consumeNumber() throws ParseException {
@@ -134,8 +146,6 @@ public final class VersionParser {
         do {
             sb.append(input.consume().getValue());
         } while (input.current().isAlphaNumeric());
-
-//        if (foundNonDigit)
         
         return sb.toString();
     }

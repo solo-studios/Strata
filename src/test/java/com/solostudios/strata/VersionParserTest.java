@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionParserTest.java is part of Strata
- * Last modified on 17-07-2021 09:29 p.m.
+ * Last modified on 17-07-2021 09:41 p.m.
  *
  * MIT License
  *
@@ -50,7 +50,20 @@ class VersionParserTest {
         for (String version : validVersions)
             assertDoesNotThrow(() -> {
                 Version ver = new VersionParser(version).parse();
-                assertEquals(version, ver.getFormatted(), "Failed to parse the version '%s' properly.");
+                assertEquals(version, ver.getFormatted(), "Failed to parse the version properly.");
+            }, String.format("Failed during parsing of version '%s'.", version));
+    }
+    
+    @Test
+    void testBuildMetadataParsing() {
+        String[] validVersions = {
+                "1.1.2+meta",
+                "1.1.2+meta-valid"
+        };
+        for (String version : validVersions)
+            assertDoesNotThrow(() -> {
+                Version ver = new VersionParser(version).parse();
+                assertEquals(version, ver.getFormatted(), "Failed to parse the version properly.");
             }, String.format("Failed during parsing of version '%s'.", version));
     }
 }
