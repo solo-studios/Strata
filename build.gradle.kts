@@ -96,6 +96,11 @@ val gitHash
     get() = grgit.head().id.substring(0..7)
 
 
+val sourcesJar by tasks.registering(Jar::class) {
+    classifier = "sources"
+    from(sourceSets.main.get().allSource)
+}
+
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
