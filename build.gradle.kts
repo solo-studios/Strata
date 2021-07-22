@@ -33,6 +33,7 @@ plugins {
     java
     idea
     `java-library`
+    `maven-publish`
     id("org.ajoberstar.grgit") version "4.1.0"
 }
 
