@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Version.java is part of Strata
- * Last modified on 17-07-2021 10:58 p.m.
+ * Last modified on 23-07-2021 11:00 p.m.
  *
  * MIT License
  *
@@ -50,14 +50,6 @@ public class Version implements Comparable<Version>, Formattable {
         this.coreVersion = coreVersion;
         this.preRelease = preRelease;
         this.buildMetadata = buildMetadata;
-    }
-    
-    public static Builder builder() {
-        return new Builder();
-    }
-    
-    public static Builder builder(String version) {
-        return new Builder(version);
     }
     
     @Override
@@ -124,62 +116,5 @@ public class Version implements Comparable<Version>, Formattable {
         result = 31 * result + preRelease.hashCode();
         result = 31 * result + buildMetadata.hashCode();
         return result;
-    }
-    
-    
-    public static final class Builder {
-        @NotNull
-        private String version = "";
-        
-        @NotNull
-        private String preRelease = "";
-        
-        @NotNull
-        private String buildMetadata = "";
-        
-        @Contract(pure = true)
-        private Builder() {
-        }
-        
-        @Contract(pure = true)
-        private Builder(@NotNull String version) {
-            this.version = version;
-        }
-        
-        @NotNull
-        @Contract(pure = true)
-        public String getVersion() {
-            return version;
-        }
-        
-        @Contract(value = "_ -> this", mutates = "this")
-        public Builder setVersion(@NotNull String version) {
-            this.version = version;
-            return this;
-        }
-        
-        @NotNull
-        @Contract(pure = true)
-        public String getPreRelease() {
-            return preRelease;
-        }
-        
-        @Contract(value = "_ -> this", mutates = "this")
-        public Builder setPreRelease(@NotNull String preRelease) {
-            this.preRelease = preRelease;
-            return this;
-        }
-        
-        @NotNull
-        @Contract(pure = true)
-        public String getBuildMetadata() {
-            return buildMetadata;
-        }
-        
-        @Contract(value = "_ -> this", mutates = "this")
-        public Builder setBuildMetadata(@NotNull String buildMetadata) {
-            this.buildMetadata = buildMetadata;
-            return this;
-        }
     }
 }
