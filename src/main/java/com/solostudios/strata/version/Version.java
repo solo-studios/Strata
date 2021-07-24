@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Version.java is part of Strata
- * Last modified on 23-07-2021 11:00 p.m.
+ * Last modified on 23-07-2021 11:09 p.m.
  *
  * MIT License
  *
@@ -46,7 +46,7 @@ public class Version implements Comparable<Version>, Formattable {
     private final BuildMetadata buildMetadata;
     
     @Contract(pure = true)
-    public Version(CoreVersion coreVersion, @NotNull PreRelease preRelease, @NotNull BuildMetadata buildMetadata) {
+    public Version(@NotNull CoreVersion coreVersion, @NotNull PreRelease preRelease, @NotNull BuildMetadata buildMetadata) {
         this.coreVersion = coreVersion;
         this.preRelease = preRelease;
         this.buildMetadata = buildMetadata;
