@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Versions.java is part of Strata
- * Last modified on 17-07-2021 09:32 p.m.
+ * Last modified on 23-07-2021 11:21 p.m.
  *
  * MIT License
  *
@@ -29,30 +29,62 @@
 package com.solostudios.strata;
 
 
+import com.solostudios.strata.parser.VersionParser;
+import com.solostudios.strata.parser.tokenizer.ParseException;
+import com.solostudios.strata.version.BuildMetadata;
+import com.solostudios.strata.version.CoreVersion;
+import com.solostudios.strata.version.PreRelease;
 import com.solostudios.strata.version.Version;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import java.math.BigInteger;
 
 
 public final class Versions {
     private Versions() {
     }
-
-//    public static Version getVersion(int major) {
-//        return new Version(major, 0, 0);
-//    }
-//
-//    public static Version getVersion(int major, int minor) {
-//        return new Version(major, minor, 0);
-//    }
-//
-//    public static Version getVersion(int major, int minor, int patch) {
-//        return new Version(major, minor, patch);
-//    }
+    
+    public static Version getVersion(int major, int minor, int patch) {
+        return new Version(new CoreVersion(BigInteger.valueOf(major),
+                                           BigInteger.valueOf(minor),
+                                           BigInteger.valueOf(patch)),
+                           PreRelease.NULL,
+                           BuildMetadata.NULL);
+    }
+    
+    public static Version getVersion(BigInteger major, BigInteger minor, BigInteger patch, PreRelease preRelease) {
+        return new Version(new CoreVersion(major, minor, patch), preRelease, BuildMetadata.NULL);
+    }
+    
+    public static Version getVersion(BigInteger major, BigInteger minor, BigInteger patch, BuildMetadata buildMetadata) {
+        return new Version(new CoreVersion(major, minor, patch), PreRelease.NULL, buildMetadata);
+    }
+    
+    public static Version getVersion(BigInteger major, BigInteger minor, BigInteger patch, PreRelease preRelease,
+                                     BuildMetadata buildMetadata) {
+        return new Version(new CoreVersion(major, minor, patch), preRelease, buildMetadata);
+    }
     
     @NotNull
     @Contract(pure = true)
-    public static Version parseVersion(String versionString) {
-        return null;
+    public static Version parseVersion(String versionString) throws ParseException {
+        return new VersionParser(versionString).parse();
+    }
+    
+    @NotNull
+    @Contract(pure = true)
+    public static Version parseVersion(String coreVersion, String preReleaseVersion, String buildMetadataVersion) throws ParseException {
+        StringBuilder builder = new StringBuilder();
+        builder.append(coreVersion);
+        
+        if (preReleaseVersion != null)
+            builder.append('-')
+                   .append(preReleaseVersion);
+        if (buildMetadataVersion != null)
+            builder.append('+')
+                   .append(buildMetadataVersion);
+        
+        return new VersionParser(builder.toString()).parse();
     }
 }
