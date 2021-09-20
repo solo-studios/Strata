@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Version.java is part of Strata
- * Last modified on 23-07-2021 11:09 p.m.
+ * Last modified on 20-09-2021 05:19 p.m.
  *
  * MIT License
  *
@@ -29,13 +29,22 @@
 package com.solostudios.strata.version;
 
 
+import com.solostudios.strata.Versions;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigInteger;
 
 
-public class Version implements Comparable<Version>, Formattable {
+/**
+ * Class representing a version in semver.
+ * <p>
+ * Instantiate using {@link Versions#getVersion}
+ *
+ * @author solonovamax
+ */
+public final class Version implements Comparable<Version>, Formattable {
     @NotNull
     private final CoreVersion coreVersion;
     
@@ -59,34 +68,44 @@ public class Version implements Comparable<Version>, Formattable {
     }
     
     @Override
+    @Contract(pure = true)
     public String toString() {
         return String.format("Version{normalVersion=%s, preRelease=%s, buildMetadata=%s}", coreVersion, preRelease, buildMetadata);
     }
     
+    @NotNull
+    @Contract(pure = true)
     public BigInteger getMajor() {
         return coreVersion.getMajor();
     }
     
+    @NotNull
+    @Contract(pure = true)
     public BigInteger getMinor() {
         return coreVersion.getMinor();
     }
     
+    @NotNull
+    @Contract(pure = true)
     public BigInteger getPatch() {
         return coreVersion.getPatch();
     }
     
     @NotNull
+    @Contract(pure = true)
     public PreRelease getPreRelease() {
         return preRelease;
     }
     
     @NotNull
+    @Contract(pure = true)
     public BuildMetadata getBuildMetadata() {
         return buildMetadata;
     }
     
     @NotNull
     @Override
+    @Contract(pure = true)
     @SuppressWarnings("StringConcatenation")
     public String getFormatted() {
         return coreVersion.getFormatted() + preRelease.getFormatted() + buildMetadata.getFormatted();
@@ -94,15 +113,15 @@ public class Version implements Comparable<Version>, Formattable {
     
     @Override
     @Contract(value = "null -> false", pure = true)
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o)
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-    
+        
         Version version = (Version) o;
-    
-    
+        
+        
         if (!coreVersion.equals(version.coreVersion))
             return false;
         if (!preRelease.equals(version.preRelease))

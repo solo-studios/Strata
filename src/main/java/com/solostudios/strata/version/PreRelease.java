@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file PreRelease.java is part of Strata
- * Last modified on 23-07-2021 11:09 p.m.
+ * Last modified on 20-09-2021 05:52 p.m.
  *
  * MIT License
  *
@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class PreRelease implements Comparable<PreRelease>, Formattable {
+public final class PreRelease implements Comparable<PreRelease>, Formattable {
     public static final PreRelease NULL = new PreRelease(Collections.emptyList());
     
     @NotNull
@@ -68,11 +68,6 @@ public class PreRelease implements Comparable<PreRelease>, Formattable {
         return comparison;
     }
     
-    @Override
-    public String toString() {
-        return String.format("PreRelease{identifiers=%s}", identifiers);
-    }
-    
     public List<PreReleaseIdentifier> getIdentifiers() {
         return Collections.unmodifiableList(identifiers);
     }
@@ -89,13 +84,18 @@ public class PreRelease implements Comparable<PreRelease>, Formattable {
             if (iterator.hasNext()) {
                 builder.append('-').append(iterator.next().getFormatted());
             }
-            
+    
             while (iterator.hasNext()) {
                 builder.append('.').append(iterator.next().getFormatted());
             }
-            
+    
             return builder.toString();
         }
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("PreRelease{identifiers=%s}", identifiers);
     }
     
     @Override

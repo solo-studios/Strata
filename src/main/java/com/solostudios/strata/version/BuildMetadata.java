@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file BuildMetadata.java is part of Strata
- * Last modified on 17-07-2021 10:02 p.m.
+ * Last modified on 20-09-2021 05:51 p.m.
  *
  * MIT License
  *
@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 
-public class BuildMetadata implements Formattable {
+public final class BuildMetadata implements Formattable {
     public static final BuildMetadata NULL = new BuildMetadata("");
     
     @NotNull

@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file CoreVersion.java is part of Strata
- * Last modified on 17-07-2021 10:58 p.m.
+ * Last modified on 20-09-2021 05:52 p.m.
  *
  * MIT License
  *
@@ -29,12 +29,13 @@
 package com.solostudios.strata.version;
 
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 
 
-public class CoreVersion implements Comparable<CoreVersion>, Formattable {
+public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
     @NotNull
     private final BigInteger major;
     
@@ -63,18 +64,15 @@ public class CoreVersion implements Comparable<CoreVersion>, Formattable {
     }
     
     @NotNull
+    @Contract(pure = true)
     public BigInteger getMajor() {
         return major;
     }
     
     @NotNull
+    @Contract(pure = true)
     public BigInteger getMinor() {
         return minor;
-    }
-    
-    @NotNull
-    public BigInteger getPatch() {
-        return patch;
     }
     
     @NotNull
@@ -83,20 +81,27 @@ public class CoreVersion implements Comparable<CoreVersion>, Formattable {
         return String.format("%s.%s.%s", major, minor, patch);
     }
     
+    @NotNull
+    @Contract(pure = true)
+    public BigInteger getPatch() {
+        return patch;
+    }
+    
     @Override
+    @Contract(value = "null -> false", pure = true)
     public boolean equals(Object o) {
         if (this == o)
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
         
-        CoreVersion that = (CoreVersion) o;
+        CoreVersion coreVersion = (CoreVersion) o;
         
-        if (major.compareTo(that.major) != 0)
+        if (major.compareTo(coreVersion.major) != 0)
             return false;
-        if (minor.compareTo(that.minor) != 0)
+        if (minor.compareTo(coreVersion.minor) != 0)
             return false;
-        return patch.compareTo(that.patch) == 0;
+        return patch.compareTo(coreVersion.patch) == 0;
     }
     
     @Override
