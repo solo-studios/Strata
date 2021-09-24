@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionRange.java is part of Strata
- * Last modified on 20-09-2021 06:25 p.m.
+ * Last modified on 24-09-2021 02:21 p.m.
  *
  * MIT License
  *
@@ -26,11 +26,11 @@
  * SOFTWARE.
  */
 
-package com.solostudios.strata.version;
+package ca.solostudios.strata.version;
 
 
-import com.solostudios.strata.Versions;
-import com.solostudios.strata.parser.tokenizer.ParseException;
+import ca.solostudios.strata.Versions;
+import ca.solostudios.strata.parser.tokenizer.ParseException;
 import org.jetbrains.annotations.Nullable;
 
 

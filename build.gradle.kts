@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 20-09-2021 05:50 p.m.
+ * Last modified on 24-09-2021 02:32 p.m.
  *
  * MIT License
  *
@@ -39,7 +39,7 @@ plugins {
 
 val grgit: Grgit = Grgit.open(mapOf("currentDir" to project.rootDir))
 
-group = "com.solostudios"
+group = "ca.solostudios"
 version = Version("0", "1", "0", true)
 
 repositories {

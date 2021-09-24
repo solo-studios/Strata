@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Versions.java is part of Strata
- * Last modified on 06-09-2021 08:07 p.m.
+ * Last modified on 24-09-2021 02:21 p.m.
  *
  * MIT License
  *
@@ -26,15 +26,15 @@
  * SOFTWARE.
  */
 
-package com.solostudios.strata;
+package ca.solostudios.strata;
 
 
-import com.solostudios.strata.parser.VersionParser;
-import com.solostudios.strata.parser.tokenizer.ParseException;
-import com.solostudios.strata.version.BuildMetadata;
-import com.solostudios.strata.version.CoreVersion;
-import com.solostudios.strata.version.PreRelease;
-import com.solostudios.strata.version.Version;
+import ca.solostudios.strata.parser.VersionParser;
+import ca.solostudios.strata.parser.tokenizer.ParseException;
+import ca.solostudios.strata.version.BuildMetadata;
+import ca.solostudios.strata.version.CoreVersion;
+import ca.solostudios.strata.version.PreRelease;
+import ca.solostudios.strata.version.Version;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

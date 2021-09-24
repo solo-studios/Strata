@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionParserTest.java is part of Strata
- * Last modified on 17-07-2021 10:59 p.m.
+ * Last modified on 24-09-2021 02:21 p.m.
  *
  * MIT License
  *
@@ -26,12 +26,12 @@
  * SOFTWARE.
  */
 
-package com.solostudios.strata;
+package ca.solostudios.strata;
 
 
-import com.solostudios.strata.parser.VersionParser;
-import com.solostudios.strata.parser.tokenizer.ParseException;
-import com.solostudios.strata.version.Version;
+import ca.solostudios.strata.parser.VersionParser;
+import ca.solostudios.strata.parser.tokenizer.ParseException;
+import ca.solostudios.strata.version.Version;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

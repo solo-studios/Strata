@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionParser.java is part of Strata
- * Last modified on 23-07-2021 11:09 p.m.
+ * Last modified on 24-09-2021 02:32 p.m.
  *
  * MIT License
  *
@@ -26,17 +26,17 @@
  * SOFTWARE.
  */
 
-package com.solostudios.strata.parser;
+package ca.solostudios.strata.parser;
 
 
-import com.solostudios.strata.parser.tokenizer.Char;
-import com.solostudios.strata.parser.tokenizer.LookaheadReader;
-import com.solostudios.strata.parser.tokenizer.ParseException;
-import com.solostudios.strata.version.BuildMetadata;
-import com.solostudios.strata.version.CoreVersion;
-import com.solostudios.strata.version.PreRelease;
-import com.solostudios.strata.version.PreReleaseIdentifier;
-import com.solostudios.strata.version.Version;
+import ca.solostudios.strata.parser.tokenizer.Char;
+import ca.solostudios.strata.parser.tokenizer.LookaheadReader;
+import ca.solostudios.strata.parser.tokenizer.ParseException;
+import ca.solostudios.strata.version.BuildMetadata;
+import ca.solostudios.strata.version.CoreVersion;
+import ca.solostudios.strata.version.PreRelease;
+import ca.solostudios.strata.version.PreReleaseIdentifier;
+import ca.solostudios.strata.version.Version;
 
 import java.io.StringReader;
 import java.math.BigInteger;

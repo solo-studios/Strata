@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file CoreVersion.java is part of Strata
- * Last modified on 20-09-2021 05:52 p.m.
+ * Last modified on 24-09-2021 02:21 p.m.
  *
  * MIT License
  *
@@ -26,7 +26,7 @@
  * SOFTWARE.
  */
 
-package com.solostudios.strata.version;
+package ca.solostudios.strata.version;
 
 
 import org.jetbrains.annotations.Contract;

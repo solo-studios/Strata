@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file SortingTest.java is part of Strata
- * Last modified on 17-07-2021 09:32 p.m.
+ * Last modified on 24-09-2021 02:21 p.m.
  *
  * MIT License
  *
@@ -26,10 +26,10 @@
  * SOFTWARE.
  */
 
-package com.solostudios.strata;
+package ca.solostudios.strata;
 
 
-import com.solostudios.strata.version.Version;
+import ca.solostudios.strata.version.Version;
 
 import java.util.Comparator;
 

@@ -2,8 +2,8 @@
  * Strata - A library for parsing and comparing version strings
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file BuildMetadata.java is part of Strata
- * Last modified on 20-09-2021 05:51 p.m.
+ * The file Formattable.java is part of Strata
+ * Last modified on 24-09-2021 02:21 p.m.
  *
  * MIT License
  *
@@ -26,40 +26,13 @@
  * SOFTWARE.
  */
 
-package com.solostudios.strata.version;
+package ca.solostudios.strata.version;
 
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 
-public final class BuildMetadata implements Formattable {
-    public static final BuildMetadata NULL = new BuildMetadata("");
-    
+public interface Formattable {
     @NotNull
-    private final String buildMetadata;
-    
-    @Contract(pure = true)
-    public BuildMetadata(@NotNull String buildMetadata) {
-        this.buildMetadata = buildMetadata;
-    }
-    
-    @Override
-    public String toString() {
-        return String.format("BuildMetadata{buildMetadata='%s'}", buildMetadata);
-    }
-    
-    @NotNull
-    public String getBuildMetadata() {
-        return buildMetadata;
-    }
-    
-    @NotNull
-    @Override
-    public String getFormatted() {
-        if (!buildMetadata.isEmpty())
-            return String.format("+%s", buildMetadata);
-        else
-            return "";
-    }
+    String getFormatted();
 }
