@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file PreRelease.java is part of Strata
- * Last modified on 24-09-2021 02:21 p.m.
+ * Last modified on 24-09-2021 07:29 p.m.
  *
  * MIT License
  *
@@ -29,7 +29,6 @@
 package ca.solostudios.strata.version;
 
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,6 +67,11 @@ public final class PreRelease implements Comparable<PreRelease>, Formattable {
         return comparison;
     }
     
+    @Override
+    public String toString() {
+        return String.format("PreRelease{identifiers=%s}", identifiers);
+    }
+    
     public List<PreReleaseIdentifier> getIdentifiers() {
         return Collections.unmodifiableList(identifiers);
     }
@@ -84,18 +88,13 @@ public final class PreRelease implements Comparable<PreRelease>, Formattable {
             if (iterator.hasNext()) {
                 builder.append('-').append(iterator.next().getFormatted());
             }
-    
+            
             while (iterator.hasNext()) {
                 builder.append('.').append(iterator.next().getFormatted());
             }
-    
+            
             return builder.toString();
         }
-    }
-    
-    @Override
-    public String toString() {
-        return String.format("PreRelease{identifiers=%s}", identifiers);
     }
     
     @Override
@@ -105,8 +104,8 @@ public final class PreRelease implements Comparable<PreRelease>, Formattable {
         if (o == null || getClass() != o.getClass()) return false;
         
         PreRelease that = (PreRelease) o;
-        
-        return CollectionUtils.isEqualCollection(identifiers, that.identifiers);
+    
+        return identifiers.equals(that.identifiers);
     }
     
     @Override
