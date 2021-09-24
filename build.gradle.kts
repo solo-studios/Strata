@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 24-09-2021 02:42 p.m.
+ * Last modified on 24-09-2021 02:49 p.m.
  *
  * MIT License
  *
@@ -91,6 +91,8 @@ fun getGitHash(): String = grgit.head().abbreviatedId
 
 println("getGitHash(): ${getGitHash()}")
 
+val jar by tasks.named<Jar>("jar")
+
 val javadoc by tasks.getting(Javadoc::class)
 
 val javadocJar by tasks.registering(Jar::class) {
@@ -110,24 +112,70 @@ tasks.build {
 
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
-            artifact(tasks["sourcesJar"])
-            artifact(tasks["jar"])
-        }
-    }
-    
-    repositories {
-        val mavenUrl = "https://repo.codemc.io/repository/maven-releases/"
+        create<MavenPublication>("maven") {
+            artifact(sourcesJar)
+            artifact(javadocJar)
+            artifact(jar)
         
-        maven(mavenUrl) {
-            val mavenUsername: String? by project
-            val mavenPassword: String? by project
-            if (mavenUsername != null && mavenPassword != null) {
-                credentials {
-                    username = mavenUsername
-                    password = mavenPassword
+            version = version.toString()
+            groupId = group.toString()
+            artifactId = "strata"
+        
+            pom {
+                name.set("Strata")
+                description.set("A library for parsing and comparing version strings")
+                url.set("https://github.com/PolyhedralDev/Strata")
+            
+                inceptionYear.set("2021")
+            
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://mit-license.org/")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("solonovamax")
+                        name.set("solonovamax")
+                        email.set("solonovamax@12oclockpoint.com")
+                        url.set("https://github.com/solonovamax")
+                    }
+                    developer {
+                        id.set("dfsek")
+                        name.set("dfsek")
+                        email.set("dfsek@protonmail.com")
+                        url.set("https://github.com/dfsek")
+                    }
+                }
+                issueManagement {
+                    system.set("GitHub")
+                    url.set("https://github.com/PolyhedralDev/Strata/issues")
+                }
+                scm {
+                    connection.set("scm:git:https://github.com/PolyhedralDev/Strata.git")
+                    developerConnection.set("scm:git:ssh://github.com/PolyhedralDev/Strata.git")
+                    url.set("https://github.com/PolyhedralDev/Strata")
                 }
             }
         }
     }
+    
+    repositories {
+        maven {
+            name = "sonatypeStaging"
+            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2")
+            credentials(org.gradle.api.credentials.PasswordCredentials::class)
+        }
+        maven {
+            name = "sonatypeSnapshot"
+            url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            credentials(PasswordCredentials::class)
+        }
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign(publishing.publications["maven"])
 }
