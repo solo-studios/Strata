@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file PreReleaseIdentifier.java is part of Strata
- * Last modified on 24-09-2021 07:29 p.m.
+ * Last modified on 24-09-2021 07:49 p.m.
  *
  * MIT License
  *
@@ -69,12 +69,17 @@ public abstract class PreReleaseIdentifier implements Comparable<PreReleaseIdent
             this.value = value;
         }
     
+        @Override
+        public String toString() {
+            return String.format("NumericalPreReleaseIdentifier{value=%d}", value);
+        }
+    
         @NotNull
         @Override
         protected String asString() {
             return Integer.toString(value);
         }
-        
+    
         @Override
         protected int asInt() {
             return value;
@@ -108,6 +113,11 @@ public abstract class PreReleaseIdentifier implements Comparable<PreReleaseIdent
         
         public AlphaNumericalPreReleaseIdentifier(@NotNull String value) {
             this.value = value;
+        }
+        
+        @Override
+        public String toString() {
+            return String.format("AlphaNumericalPreReleaseIdentifier{value='%s'}", value);
         }
         
         @NotNull
