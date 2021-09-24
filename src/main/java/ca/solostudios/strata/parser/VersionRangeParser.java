@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionRangeParser.java is part of Strata
- * Last modified on 24-09-2021 06:47 p.m.
+ * Last modified on 24-09-2021 07:21 p.m.
  *
  * MIT License
  *
@@ -175,10 +175,6 @@ public class VersionRangeParser {
                 }
             }
         }
-        
-        System.out.printf("Highest: %s, Lowest: %s%n", highestVersion == null ? null : highestVersion.getFormatted(),
-                          lowestVersion.getFormatted());
-        // return new CoreVersion(major, minor, patch);
         
         return new VersionRange(lowestVersion, true, highestVersion, false);
     }

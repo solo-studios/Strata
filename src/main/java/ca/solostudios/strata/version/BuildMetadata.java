@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file BuildMetadata.java is part of Strata
- * Last modified on 24-09-2021 02:21 p.m.
+ * Last modified on 24-09-2021 07:20 p.m.
  *
  * MIT License
  *
@@ -61,5 +61,20 @@ public final class BuildMetadata implements Formattable {
             return String.format("+%s", buildMetadata);
         else
             return "";
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        
+        BuildMetadata that = (BuildMetadata) o;
+        
+        return buildMetadata.equals(that.buildMetadata);
+    }
+    
+    @Override
+    public int hashCode() {
+        return buildMetadata.hashCode();
     }
 }
