@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionParser.java is part of Strata
- * Last modified on 24-09-2021 02:32 p.m.
+ * Last modified on 24-09-2021 03:47 p.m.
  *
  * MIT License
  *
@@ -139,6 +139,7 @@ public final class VersionParser {
         return new BuildMetadata(sb.toString());
     }
     
+    @SuppressWarnings("DuplicatedCode")
     private String consumeNumber() throws ParseException {
         StringBuilder sb = new StringBuilder();
         if (!input.current().isDigit())

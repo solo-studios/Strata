@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Versions.java is part of Strata
- * Last modified on 24-09-2021 02:21 p.m.
+ * Last modified on 24-09-2021 07:19 p.m.
  *
  * MIT License
  *
@@ -30,11 +30,13 @@ package ca.solostudios.strata;
 
 
 import ca.solostudios.strata.parser.VersionParser;
+import ca.solostudios.strata.parser.VersionRangeParser;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.BuildMetadata;
 import ca.solostudios.strata.version.CoreVersion;
 import ca.solostudios.strata.version.PreRelease;
 import ca.solostudios.strata.version.Version;
+import ca.solostudios.strata.version.VersionRange;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,6 +56,12 @@ public final class Versions {
                                            BigInteger.valueOf(patch)),
                            PreRelease.NULL,
                            BuildMetadata.NULL);
+    }
+    
+    @NotNull
+    @Contract(value = "_, _, _ -> new", pure = true)
+    public static Version getVersion(@NotNull BigInteger major, @NotNull BigInteger minor, @NotNull BigInteger patch) {
+        return new Version(new CoreVersion(major, minor, patch), PreRelease.NULL, BuildMetadata.NULL);
     }
     
     @NotNull
@@ -89,14 +97,27 @@ public final class Versions {
                                        @Nullable String buildMetadataVersion) throws ParseException {
         StringBuilder builder = new StringBuilder();
         builder.append(coreVersion);
-        
+    
         if (preReleaseVersion != null)
             builder.append('-')
                    .append(preReleaseVersion);
         if (buildMetadataVersion != null)
             builder.append('+')
                    .append(buildMetadataVersion);
-        
+    
         return new VersionParser(builder.toString()).parse();
+    }
+    
+    @NotNull
+    @Contract(value = "_ -> new", pure = true)
+    public static VersionRange parseVersionRange(@NotNull String versionString) throws ParseException {
+        return new VersionRangeParser(versionString).parse();
+    }
+    
+    @NotNull
+    @Contract(value = "_, _, _, _ -> new", pure = true)
+    public static VersionRange getVersionRange(@Nullable Version startVersion, boolean startInclusive,
+                                               @Nullable Version endVersion, boolean endInclusive) {
+        return new VersionRange(startVersion, startInclusive, endVersion, endInclusive);
     }
 }
