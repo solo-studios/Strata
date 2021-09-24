@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionComparisonTest.java is part of Strata
- * Last modified on 24-09-2021 02:32 p.m.
+ * Last modified on 24-09-2021 07:49 p.m.
  *
  * MIT License
  *
@@ -36,72 +36,75 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import static ca.solostudios.strata.Versions.getVersionRange;
+import static ca.solostudios.strata.Versions.parseVersion;
+
 
 public class VersionComparisonTest {
     @Test
     void testSimpleInside() throws ParseException {
-        
-        Version ver1 = Versions.parseVersion("1.0.0");
-        Version ver2 = Versions.parseVersion("2.0.0");
-        Version ver3 = Versions.parseVersion("1.5.0");
-        
-        VersionRange range = new VersionRange(ver1, false, ver2, false);
-        
+    
+        Version ver1 = parseVersion("1.0.0");
+        Version ver2 = parseVersion("2.0.0");
+        Version ver3 = parseVersion("1.5.0");
+    
+        VersionRange range = getVersionRange(ver1, false, ver2, false);
+    
         assertTrue(range.isSatisfiedBy(ver3));
     }
     
     @Test
     void testSimpleOutside() throws ParseException {
-        Version ver1 = Versions.parseVersion("1.0.0");
-        Version ver2 = Versions.parseVersion("2.0.0");
-        Version ver3 = Versions.parseVersion("3.0.0");
-        
-        VersionRange range = new VersionRange(ver1, false, ver2, false);
-        
+        Version ver1 = parseVersion("1.0.0");
+        Version ver2 = parseVersion("2.0.0");
+        Version ver3 = parseVersion("3.0.0");
+    
+        VersionRange range = getVersionRange(ver1, false, ver2, false);
+    
         assertFalse(range.isSatisfiedBy(ver3));
     }
     
     @Test
     void testInclusiveStart() throws ParseException {
-        Version ver1 = Versions.parseVersion("1.0.0");
-        Version ver2 = Versions.parseVersion("2.0.0");
-        Version ver3 = Versions.parseVersion("1.0.0");
-        
-        VersionRange range = new VersionRange(ver1, true, ver2, false);
-        
+        Version ver1 = parseVersion("1.0.0");
+        Version ver2 = parseVersion("2.0.0");
+        Version ver3 = parseVersion("1.0.0");
+    
+        VersionRange range = getVersionRange(ver1, true, ver2, false);
+    
         assertTrue(range.isSatisfiedBy(ver3));
     }
     
     @Test
     void testExclusiveStart() throws ParseException {
-        Version ver1 = Versions.parseVersion("1.0.0");
-        Version ver2 = Versions.parseVersion("2.0.0");
-        Version ver3 = Versions.parseVersion("1.0.0");
-        
-        VersionRange range = new VersionRange(ver1, false, ver2, false);
-        
+        Version ver1 = parseVersion("1.0.0");
+        Version ver2 = parseVersion("2.0.0");
+        Version ver3 = parseVersion("1.0.0");
+    
+        VersionRange range = getVersionRange(ver1, false, ver2, false);
+    
         assertFalse(range.isSatisfiedBy(ver3));
     }
     
     @Test
     void testInclusiveEnd() throws ParseException {
-        Version ver1 = Versions.parseVersion("1.0.0");
-        Version ver2 = Versions.parseVersion("2.0.0");
-        Version ver3 = Versions.parseVersion("2.0.0");
-        
-        VersionRange range = new VersionRange(ver1, false, ver2, true);
-        
+        Version ver1 = parseVersion("1.0.0");
+        Version ver2 = parseVersion("2.0.0");
+        Version ver3 = parseVersion("2.0.0");
+    
+        VersionRange range = getVersionRange(ver1, false, ver2, true);
+    
         assertTrue(range.isSatisfiedBy(ver3));
     }
     
     @Test
     void testExclusiveEnd() throws ParseException {
-        Version ver1 = Versions.parseVersion("1.0.0");
-        Version ver2 = Versions.parseVersion("2.0.0");
-        Version ver3 = Versions.parseVersion("2.0.0");
-        
-        VersionRange range = new VersionRange(ver1, false, ver2, false);
-        
+        Version ver1 = parseVersion("1.0.0");
+        Version ver2 = parseVersion("2.0.0");
+        Version ver3 = parseVersion("2.0.0");
+    
+        VersionRange range = getVersionRange(ver1, false, ver2, false);
+    
         assertFalse(range.isSatisfiedBy(ver3));
     }
 }

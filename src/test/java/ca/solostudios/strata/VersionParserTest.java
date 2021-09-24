@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionParserTest.java is part of Strata
- * Last modified on 24-09-2021 02:21 p.m.
+ * Last modified on 24-09-2021 07:49 p.m.
  *
  * MIT License
  *
@@ -29,12 +29,13 @@
 package ca.solostudios.strata;
 
 
-import ca.solostudios.strata.parser.VersionParser;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import static ca.solostudios.strata.Versions.parseVersion;
 
 
 class VersionParserTest {
@@ -52,8 +53,8 @@ class VersionParserTest {
     
         for (String version : validVersions)
             assertDoesNotThrow(() -> {
-                Version ver = new VersionParser(version).parse();
-                assertEquals(version, ver.getFormatted(), "Failed to parse the version properly.");
+                Version ver = parseVersion(version);
+                assertEquals(version, ver.getFormatted());
             }, String.format("Failed during parsing of version '%s'.", version));
     }
     
@@ -77,8 +78,8 @@ class VersionParserTest {
         
         for (String version : validVersions)
             assertDoesNotThrow(() -> {
-                Version ver = new VersionParser(version).parse();
-                assertEquals(version, ver.getFormatted(), "Failed to parse the version properly.");
+                Version ver = parseVersion(version);
+                assertEquals(version, ver.getFormatted());
             }, String.format("Failed during parsing of version '%s'.", version));
     }
     
@@ -93,8 +94,8 @@ class VersionParserTest {
         
         for (String version : validVersions)
             assertDoesNotThrow(() -> {
-                Version ver = new VersionParser(version).parse();
-                assertEquals(version, ver.getFormatted(), "Failed to parse the version properly.");
+                Version ver = parseVersion(version);
+                assertEquals(version, ver.getFormatted());
             }, String.format("Failed during parsing of version '%s'.", version));
     }
     
@@ -112,8 +113,8 @@ class VersionParserTest {
     
         for (String version : validVersions)
             assertDoesNotThrow(() -> {
-                Version ver = new VersionParser(version).parse();
-                assertEquals(version, ver.getFormatted(), "Failed to parse the version properly.");
+                Version ver = parseVersion(version);
+                assertEquals(version, ver.getFormatted());
             }, String.format("Failed during parsing of version '%s'.", version));
     }
     
@@ -182,8 +183,8 @@ class VersionParserTest {
         
         for (String version : invalidVersions)
             assertThrows(ParseException.class, () -> {
-                Version ver = new VersionParser(version).parse();
-//                assertEquals(version, ver.getFormatted(), "Failed to parse the version properly."); // should fail
+                Version ver = parseVersion(version);
+                assertEquals(version, ver.getFormatted()); // should fail
             }, String.format("Succeeded parsing of invalid version '%s'.", version));
     }
 }
