@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 24-09-2021 02:32 p.m.
+ * Last modified on 24-09-2021 02:42 p.m.
  *
  * MIT License
  *
@@ -26,18 +26,16 @@
  * SOFTWARE.
  */
 
-import org.ajoberstar.grgit.Grgit
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
     java
     idea
+    signing
     `java-library`
     `maven-publish`
     id("org.ajoberstar.grgit") version "4.1.0"
 }
-
-val grgit: Grgit = Grgit.open(mapOf("currentDir" to project.rootDir))
 
 group = "ca.solostudios"
 version = Version("0", "1", "0", true)
@@ -60,13 +58,10 @@ dependencies {
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
     
-    maxHeapSize = "2G"
     ignoreFailures = false
     failFast = false
     maxParallelForks = (Runtime.getRuntime().availableProcessors() - 1).coerceAtLeast(1)
     
-    reports.html.isEnabled = false
-    reports.junitXml.isEnabled = false
     testLogging {
         exceptionFormat = TestExceptionFormat.FULL
     }
@@ -88,16 +83,29 @@ class Version(
         return if (!preRelease)
             "$major.$minor.$revision"
         else //Only use git hash if it's a prerelease.
-            "$major.$minor.$revision-BETA+${gitHash}"
+            "$major.$minor.$revision-BETA+${getGitHash()}"
     }
 }
 
-val gitHash
-    get() = grgit.head().id.substring(0..7)
+fun getGitHash(): String = grgit.head().abbreviatedId
+
+println("getGitHash(): ${getGitHash()}")
+
+val javadoc by tasks.getting(Javadoc::class)
+
+val javadocJar by tasks.registering(Jar::class) {
+    dependsOn(javadoc)
+    archiveClassifier.set("javadoc")
+    from(javadoc.destinationDir)
+}
 
 val sourcesJar by tasks.registering(Jar::class) {
-    classifier = "sources"
+    archiveClassifier.set("sources")
     from(sourceSets.main.get().allSource)
+}
+
+tasks.build {
+    dependsOn(tasks.withType<Jar>())
 }
 
 publishing {
