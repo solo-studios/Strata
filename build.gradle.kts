@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 24-09-2021 11:38 p.m.
+ * Last modified on 25-09-2021 12:07 a.m.
  *
  * MIT License
  *
@@ -38,7 +38,7 @@ plugins {
 }
 
 group = "ca.solostudios"
-version = Version("0", "1", "0", true)
+version = Version("1", "0", "0")
 
 repositories {
     mavenCentral()
