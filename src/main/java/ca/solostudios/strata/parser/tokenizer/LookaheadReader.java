@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file LookaheadReader.java is part of Strata
- * Last modified on 24-09-2021 08:15 p.m.
+ * Last modified on 24-09-2021 11:36 p.m.
  *
  * MIT License
  *
@@ -40,7 +40,7 @@ import java.io.Reader;
 /**
  * An efficient reader of character streams, reading character by character and supporting lookaheads.
  * <p>
- * Helps to read characters from a {@link Reader} one after another. Using <tt>next</tt>, upcoming characters can be inspected without
+ * Helps to read characters from a {@link Reader} one after another. Using {@link #next()}, upcoming characters can be inspected without
  * consuming (removing) the current one.
  */
 public class LookaheadReader extends Lookahead<Char> {

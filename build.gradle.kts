@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 24-09-2021 07:53 p.m.
+ * Last modified on 24-09-2021 11:38 p.m.
  *
  * MIT License
  *
@@ -47,9 +47,26 @@ repositories {
 dependencies {
     api("org.jetbrains:annotations:22.0.0")
     
+    // Could not get jabel to work properly with sealed classes. See: bsideup/jabel#105.
+    // annotationProcessor("com.github.bsideup.jabel:jabel-javac-plugin:0.4.1")
+    
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-params:5.8.0")
+}
+
+java {
+    // sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    
+    // toolchain {
+    //     languageVersion.set(JavaLanguageVersion.of(17))
+    // }
+}
+
+tasks.withType<JavaCompile> {
+    options.release.set(8)
 }
 
 tasks.getByName<Test>("test") {

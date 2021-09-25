@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Lookahead.java is part of Strata
- * Last modified on 24-09-2021 08:15 p.m.
+ * Last modified on 24-09-2021 11:38 p.m.
  *
  * MIT License
  *
@@ -66,7 +66,7 @@ public abstract class Lookahead<T> {
      * <p>
      * This method does not change the internal state. Therefore it can be called several times and will always return the same result.
      *
-     * @return the next item in the stream. This will be the current item, after a call to {@link #consume()}
+     * @return The next item in the stream. This will be the current item, after a call to {@link #consume()}you
      */
     @NotNull
     public T next() throws ParseException {
@@ -89,7 +89,7 @@ public abstract class Lookahead<T> {
      * Returns the next n-th item in the stream.
      * <p>
      * Calling this method with 0 as parameter, will return the current item. Calling it with 1 will return the same item as a call to
-     * <tt>next()</tt>.
+     * {@link #next}.
      * <p>
      * This method does not change the internal state. Therefore it can be called several times and will always return the same result.
      *
@@ -135,7 +135,7 @@ public abstract class Lookahead<T> {
     }
     
     /**
-     * Consumes (removes) <tt>numberOfItems</tt> at once.
+     * Consumes (removes) {@code numberOfItems} at once.
      * <p>
      * Removes the given number of items from the stream.
      *
@@ -173,7 +173,7 @@ public abstract class Lookahead<T> {
     /**
      * Fetches the next item from the stream.
      *
-     * @return the next item in the stream or <tt>null</tt> to indicate that the end was reached
+     * @return the next item in the stream or {@code null} to indicate that the end was reached
      */
     @Nullable
     protected abstract T fetch() throws ParseException;

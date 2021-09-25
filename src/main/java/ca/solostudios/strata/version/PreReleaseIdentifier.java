@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file PreReleaseIdentifier.java is part of Strata
- * Last modified on 24-09-2021 10:34 p.m.
+ * Last modified on 24-09-2021 11:32 p.m.
  *
  * MIT License
  *
@@ -43,7 +43,9 @@ import java.util.Objects;
  *
  * @author solonovamax
  */
-public abstract class PreReleaseIdentifier implements Comparable<PreReleaseIdentifier>, Formattable {
+public abstract /* sealed */ class PreReleaseIdentifier implements Comparable<PreReleaseIdentifier>, Formattable
+        /* permits PreReleaseIdentifier.NumericalPreReleaseIdentifier,
+                PreReleaseIdentifier.AlphaNumericalPreReleaseIdentifier */ {
     
     @Override
     public int compareTo(@NotNull PreReleaseIdentifier o) {

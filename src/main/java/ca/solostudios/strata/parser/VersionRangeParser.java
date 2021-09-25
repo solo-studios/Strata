@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionRangeParser.java is part of Strata
- * Last modified on 24-09-2021 10:32 p.m.
+ * Last modified on 24-09-2021 11:35 p.m.
  *
  * MIT License
  *
@@ -49,14 +49,14 @@ import java.math.BigInteger;
  *
  * <p><br><br>
  * Version ranges must match the following specification:
- * <h1>Version Ranges</h1>
+ * <h2>Version Ranges</h2>
  * Ranges must fit into one of the two categories
  * <ul>
  *     <li>Glob ranges</li>
  *     <li>Version ranges</li>
  * </ul>
  *
- * <h2>Glob Ranges</h2>
+ * <h3>Glob Ranges</h3>
  * Glob ranges are represented as follows:
  * <ol>
  *     <li>{@code +}:<br>This will match <i>any</i> version.</li>
@@ -77,7 +77,7 @@ import java.math.BigInteger;
  *     </li>
  * </ol>
  *
- * <h2>Version Ranges</h2>
+ * <h3>Version Ranges</h3>
  * Version ranges are represented by 2 versions surrounded by either brackets ("{@code []}") or braces ("{@code ()}").
  * <p>
  * They must fit the following format:
@@ -91,7 +91,8 @@ import java.math.BigInteger;
  * <p>
  * Here is a list of example versions and what they match
  *
- * <table summary="">
+ * <table>
+ *     <caption>Table of version examples</caption>
  * <thead>
  *   <tr>
  *     <th>Version</th>

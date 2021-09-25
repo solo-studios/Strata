@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionParser.java is part of Strata
- * Last modified on 24-09-2021 10:32 p.m.
+ * Last modified on 24-09-2021 11:33 p.m.
  *
  * MIT License
  *
@@ -54,7 +54,7 @@ import java.util.List;
  *
  * <p><br><br>
  * The Semantic Versioning spec is provided below:
- * <h1>Semantic Versioning Specification (SemVer)</h1>
+ * <h2>Semantic Versioning Specification (SemVer)</h2>
  * The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this
  * document are to be interpreted as described in RFC 2119.
  *
@@ -96,12 +96,12 @@ import java.util.List;
  *                 Precedence is determined by the first difference when comparing each of these identifiers from left to right as follows:
  *                 Major, minor, and patch versions are always compared numerically.
  *                 <br>
- *                 Example: 1.0.0 < 2.0.0 < 2.1.0 < 2.1.1.
+ *                 Example: 1.0.0 &lt; 2.0.0 &lt; 2.1.0 &lt; 2.1.1.
  *             </li>
  *             <li>
  *                 When major, minor, and patch are equal, a pre-release version has lower precedence than a normal version:
  *                 <br>
- *                 Example: 1.0.0-alpha < 1.0.0.
+ *                 Example: 1.0.0-alpha &lt; 1.0.0.
  *             </li>
  *             <li>
  *                 Precedence for two pre-release versions with the same major, minor, and patch version MUST be determined by comparing
@@ -114,7 +114,7 @@ import java.util.List;
  *                     <li>A larger set of pre-release fields has a higher precedence than a smaller set, if all of the preceding
  *                     identifiers are equal.</li>
  *                 </ol>
- *                 Example: 1.0.0-alpha < 1.0.0-alpha.1 < 1.0.0-alpha.beta < 1.0.0-beta < 1.0.0-beta.2 < 1.0.0-beta.11 < 1.0.0-rc.1 < 1.0.0.
+ *                 Example: 1.0.0-alpha &lt; 1.0.0-alpha.1 &lt; 1.0.0-alpha.beta &lt; 1.0.0-beta &lt; 1.0.0-beta.2 &lt; 1.0.0-beta.11 &lt; 1.0.0-rc.1 &lt; 1.0.0.
  *             </li>
  *         </ol>
  *     </li>

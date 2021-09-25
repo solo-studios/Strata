@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Char.java is part of Strata
- * Last modified on 24-09-2021 08:15 p.m.
+ * Last modified on 24-09-2021 11:37 p.m.
  *
  * MIT License
  *
@@ -70,7 +70,7 @@ public class Char implements Position {
      *
      * @param test the character to check against
      *
-     * @return <tt>true</tt> if the value is equal to the give characters, <tt>false</tt> otherwise
+     * @return {@code true} if the value is equal to the give characters, {@code false} otherwise
      */
     public boolean is(char test) {
         return test == value && test != '\0';
@@ -81,7 +81,7 @@ public class Char implements Position {
      *
      * @param tests the characters to check against
      *
-     * @return <tt>true</tt> if the value equals to one of the give characters, <tt>false</tt> otherwise
+     * @return {@code true} if the value equals to one of the give characters, {@code false} otherwise
      */
     public boolean is(char... tests) {
         for (char test : tests) {
@@ -109,7 +109,7 @@ public class Char implements Position {
     /**
      * Determines if the value is an alphanumeric identifier (0..9, a..z, A..Z, -)
      *
-     * @return <tt>true</tt> if the internal value is a letter, <tt>false</tt> otherwise
+     * @return {@code true} if the internal value is a letter, {@code false} otherwise
      */
     public boolean isAlphaNumeric() {
         return isLetter() || isDigit() || is('-');
@@ -118,7 +118,7 @@ public class Char implements Position {
     /**
      * Determines if the value is a digit (0..9)
      *
-     * @return <tt>true</tt> if the internal value is a digit, <tt>false</tt> otherwise
+     * @return {@code true} if the internal value is a digit, {@code false} otherwise
      */
     public boolean isDigit() {
         return value >= '0' && value <= '9';
@@ -127,7 +127,7 @@ public class Char implements Position {
     /**
      * Determines if the value is a letter (a..z, A..Z)
      *
-     * @return <tt>true</tt> if the internal value is a letter, <tt>false</tt> otherwise
+     * @return {@code true} if the internal value is a letter, {@code false} otherwise
      */
     public boolean isLetter() {
         return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z');
@@ -136,8 +136,8 @@ public class Char implements Position {
     /**
      * Determines if this instance represents the end of input indicator
      *
-     * @return <tt>true</tt> if this instance represents the end of the underlying input,
-     *         <tt>false</tt> otherwise
+     * @return {@code true} if this instance represents the end of the underlying input,
+     *         {@code false} otherwise
      */
     public boolean isEndOfInput() {
         return value == '\0';
