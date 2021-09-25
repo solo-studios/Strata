@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 25-09-2021 12:17 a.m.
+ * Last modified on 25-09-2021 12:37 a.m.
  *
  * MIT License
  *
@@ -37,7 +37,7 @@ plugins {
     id("org.ajoberstar.grgit") version "4.1.0"
 }
 
-group = "ca.solostudios"
+group = "ca.solo-studios"
 version = Version("1", "0", "0")
 
 repositories {
@@ -127,12 +127,12 @@ tasks.build {
 publishing {
     publications {
         create<MavenPublication>("maven") {
+            artifact(jar)
             artifact(sourcesJar)
             artifact(javadocJar)
-            artifact(jar)
     
             version = version.toString()
-            groupId = group.toString()
+            groupId = "ca.solo-studios"
             artifactId = "strata"
     
             pom {
@@ -179,7 +179,7 @@ publishing {
         maven {
             name = "sonatypeStaging"
             url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials(org.gradle.api.credentials.PasswordCredentials::class)
+            credentials(PasswordCredentials::class)
         }
         maven {
             name = "sonatypeSnapshot"
