@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 24-09-2021 11:38 p.m.
+ * Last modified on 25-09-2021 12:17 a.m.
  *
  * MIT License
  *
@@ -38,7 +38,7 @@ plugins {
 }
 
 group = "ca.solostudios"
-version = Version("0", "1", "0", true)
+version = Version("1", "0", "0")
 
 repositories {
     mavenCentral()
@@ -138,7 +138,7 @@ publishing {
             pom {
                 name.set("Strata")
                 description.set("A library for parsing and comparing version strings")
-                url.set("https://github.com/PolyhedralDev/Strata")
+                url.set("https://github.com/solo-studios/Strata")
         
                 inceptionYear.set("2021")
         
@@ -164,12 +164,12 @@ publishing {
                 }
                 issueManagement {
                     system.set("GitHub")
-                    url.set("https://github.com/PolyhedralDev/Strata/issues")
+                    url.set("https://github.com/solo-studios/Strata/issues")
                 }
                 scm {
-                    connection.set("scm:git:https://github.com/PolyhedralDev/Strata.git")
-                    developerConnection.set("scm:git:ssh://github.com/PolyhedralDev/Strata.git")
-                    url.set("https://github.com/PolyhedralDev/Strata")
+                    connection.set("scm:git:https://github.com/solo-studios/Strata.git")
+                    developerConnection.set("scm:git:ssh://github.com/solo-studios/Strata.git")
+                    url.set("https://github.com/solo-studios/Strata")
                 }
             }
         }
@@ -178,7 +178,7 @@ publishing {
     repositories {
         maven {
             name = "sonatypeStaging"
-            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2")
+            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
             credentials(org.gradle.api.credentials.PasswordCredentials::class)
         }
         maven {
