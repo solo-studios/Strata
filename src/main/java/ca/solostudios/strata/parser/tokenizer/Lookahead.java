@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Lookahead.java is part of Strata
- * Last modified on 24-09-2021 02:21 p.m.
+ * Last modified on 24-09-2021 08:15 p.m.
  *
  * MIT License
  *
@@ -28,6 +28,9 @@
 
 package ca.solostudios.strata.parser.tokenizer;
 
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +59,7 @@ public abstract class Lookahead<T> {
      * Once the end of the underlying input was reached, an end of input indicator is created and constantly returned for all calls of
      * current and next.
      */
-    protected T endOfInputIndicator;
+    protected T endOfInputIndicator = null;
     
     /**
      * Returns the next item after the current one in the stream.
@@ -65,6 +68,7 @@ public abstract class Lookahead<T> {
      *
      * @return the next item in the stream. This will be the current item, after a call to {@link #consume()}
      */
+    @NotNull
     public T next() throws ParseException {
         return next(1);
     }
@@ -76,6 +80,7 @@ public abstract class Lookahead<T> {
      *
      * @return the item the stream is currently pointing at.
      */
+    @NotNull
     public T current() throws ParseException {
         return next(0);
     }
@@ -92,6 +97,7 @@ public abstract class Lookahead<T> {
      *
      * @return the n-th item in the stream
      */
+    @NotNull
     public T next(int offset) throws ParseException {
         if (offset < 0) {
             throw new IllegalArgumentException("offset < 0");
@@ -121,6 +127,7 @@ public abstract class Lookahead<T> {
      *
      * @return the item which is being removed from the stream
      */
+    @NotNull
     public T consume() throws ParseException {
         T result = current();
         consume(1);
@@ -160,6 +167,7 @@ public abstract class Lookahead<T> {
      *
      * @return a special item which marks the end of the input
      */
+    @NotNull
     protected abstract T endOfInput();
     
     /**
@@ -167,5 +175,6 @@ public abstract class Lookahead<T> {
      *
      * @return the next item in the stream or <tt>null</tt> to indicate that the end was reached
      */
+    @Nullable
     protected abstract T fetch() throws ParseException;
 }

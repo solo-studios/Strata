@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file ParseException.java is part of Strata
- * Last modified on 24-09-2021 08:02 p.m.
+ * Last modified on 24-09-2021 08:15 p.m.
  *
  * MIT License
  *
@@ -33,7 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 
 /**
- * Represents an error or a warning which occurred when parsing an input.
+ * Represents an error or a warning, which occurred when parsing an input.
  */
 public final class ParseException extends Exception {
     private static final long serialVersionUID = -2935358064424839548L;
@@ -41,6 +41,13 @@ public final class ParseException extends Exception {
     @NotNull
     private final Position position;
     
+    /**
+     * Constructs a new parse exception with the provided message, parse string, and position.
+     *
+     * @param message     The message explaining why the parsing exception occurred.
+     * @param parseString The string that was being parsed.
+     * @param position    The position at which the error occurred.
+     */
     public ParseException(@NotNull String message, @NotNull String parseString, @NotNull Position position) {
         // mmmmm, doubly nested String#format, my *favourite*
         super(String.format(String.format("%%s\n%%s\n%%%ss", position.getPos() == 0 ? "" : position.getPos()), message, parseString, '^'),
@@ -48,21 +55,45 @@ public final class ParseException extends Exception {
         this.position = position;
     }
     
+    /**
+     * Constructs a new parse exception with the provided message and position.
+     *
+     * @param message  The message explaining why the parsing exception occurred.
+     * @param position The position at which the error occurred.
+     */
     public ParseException(@NotNull String message, @NotNull Position position) {
         super(message, null, true, false);
         this.position = position;
     }
     
+    /**
+     * Constructs a new parse exception with the provided exception as a cause, parse string, and position.
+     *
+     * @param exception   The exception, which caused this.
+     * @param parseString The string that was being parsed.
+     * @param position    The position at which the error occurred.
+     */
     public ParseException(@NotNull Exception exception, @NotNull String parseString, @NotNull Position position) {
         this(exception.getMessage(), parseString, position);
         addSuppressed(exception);
     }
     
+    /**
+     * Constructs a new parse exception with the provided exception as a cause and position.
+     *
+     * @param exception The exception, which caused this.
+     * @param position  The position at which the error occurred.
+     */
     public ParseException(@NotNull Exception exception, @NotNull Position position) {
         this(exception.getMessage(), position);
         addSuppressed(exception);
     }
     
+    /**
+     * Formats this parse exception as a string.
+     *
+     * @return The parse exception formatted as a string
+     */
     @Override
     public String toString() {
         return String.format("%s", getMessage());

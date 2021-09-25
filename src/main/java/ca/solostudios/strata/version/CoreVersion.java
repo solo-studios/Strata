@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file CoreVersion.java is part of Strata
- * Last modified on 24-09-2021 02:21 p.m.
+ * Last modified on 24-09-2021 10:32 p.m.
  *
  * MIT License
  *
@@ -35,6 +35,11 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigInteger;
 
 
+/**
+ * A class representing the core {@code major}, {@code minor}, and {@code patch} versions for {@link Version}.
+ *
+ * @author solonovamax
+ */
 public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
     @NotNull
     private final BigInteger major;
@@ -45,6 +50,13 @@ public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
     @NotNull
     private final BigInteger patch;
     
+    /**
+     * Constructs a new core version instance.
+     *
+     * @param major The major version.
+     * @param minor The minor version.
+     * @param patch The patch version.
+     */
     public CoreVersion(@NotNull BigInteger major, @NotNull BigInteger minor, @NotNull BigInteger patch) {
         this.major = major;
         this.minor = minor;
@@ -63,28 +75,43 @@ public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
         return String.format("NormalVersion{major=%d, minor=%d, patch=%d}", major, minor, patch);
     }
     
+    /**
+     * The major version.
+     *
+     * @return The major version.
+     */
     @NotNull
     @Contract(pure = true)
     public BigInteger getMajor() {
         return major;
     }
     
+    /**
+     * The minor version.
+     *
+     * @return The minor version.
+     */
     @NotNull
     @Contract(pure = true)
     public BigInteger getMinor() {
         return minor;
     }
     
-    @NotNull
-    @Override
-    public String getFormatted() {
-        return String.format("%s.%s.%s", major, minor, patch);
-    }
-    
+    /**
+     * The patch version
+     *
+     * @return The patch version
+     */
     @NotNull
     @Contract(pure = true)
     public BigInteger getPatch() {
         return patch;
+    }
+    
+    @NotNull
+    @Override
+    public String getFormatted() {
+        return String.format("%s.%s.%s", major, minor, patch);
     }
     
     @Override

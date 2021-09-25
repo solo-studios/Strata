@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionRangeParser.java is part of Strata
- * Last modified on 24-09-2021 07:21 p.m.
+ * Last modified on 24-09-2021 10:32 p.m.
  *
  * MIT License
  *
@@ -35,11 +35,108 @@ import ca.solostudios.strata.parser.tokenizer.LookaheadReader;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.StringReader;
 import java.math.BigInteger;
 
 
+/**
+ * A parser for strings representing a valid version range.
+ * Constructed with the string to parse, {@link VersionRangeParser#parse()} must be invoked to parse the version range.
+ * This method returns the parsed version range.
+ *
+ * <p><br><br>
+ * Version ranges must match the following specification:
+ * <h1>Version Ranges</h1>
+ * Ranges must fit into one of the two categories
+ * <ul>
+ *     <li>Glob ranges</li>
+ *     <li>Version ranges</li>
+ * </ul>
+ *
+ * <h2>Glob Ranges</h2>
+ * Glob ranges are represented as follows:
+ * <ol>
+ *     <li>{@code +}:<br>This will match <i>any</i> version.</li>
+ *     <li>
+ *         {@code major.+}<br>This matches any version which begins with {@code major.},
+ *         meaning: any version between {@code major.0.0} inclusively and {@code {major+1}.0.0} exclusively.
+ *         <br>
+ *         Example: The glob range {@code 1.+} will match {@code 1.0.0}, {@code 1.2.3}, and {@code 1.99.99} but not {@code 2.0.0}</li>
+ *     <li>
+ *         {@code major.minor.+}<br>This matches any version which begins with {@code major.minor},
+ *         meaning: any version between {@code major.minor.0} inclusively and {@code major.{minor+1}.0} exclusively.
+ *         <br>
+ *         Example: The glob range {@code 1.2.+} will match {@code 1.2.0}, {@code 1.2.3}, and {@code 1.2.99} but not {@code 1.3.0}</li>
+ *     <li>
+ *         {@code major.minor.patch}<br>This matches <i>only</i>> version {@code major.minor.patch},
+ *         <br>
+ *         Example: The glob range {@code 1.2.+} will match {@code 1.2.0}, {@code 1.2.3}, and {@code 1.2.99} but not {@code 1.3.0}
+ *     </li>
+ * </ol>
+ *
+ * <h2>Version Ranges</h2>
+ * Version ranges are represented by 2 versions surrounded by either brackets ("{@code []}") or braces ("{@code ()}").
+ * <p>
+ * They must fit the following format:
+ *
+ * <pre><code>
+ *      ("[" or "(")VersionOne,VersionTwo("]" or ")")
+ * </code></pre>
+ * Where {@code VersionOne} and {@code VersionTwo} are valid {@link Version}s.
+ * <p>
+ * Note: Both {@code VersionOne} and {@code VersionTwo} are <i>optional</i>.
+ * <p>
+ * Here is a list of example versions and what they match
+ *
+ * <table summary="">
+ * <thead>
+ *   <tr>
+ *     <th>Version</th>
+ *     <th>Description<br></th>
+ *   </tr>
+ * </thead>
+ * <tbody>
+ *   <tr>
+ *     <td>[1.0.0,2.0.0]</td>
+ *     <td>all versions greater or equal to 1.0.0 and lower or equal to 2.0.0</td>
+ *   </tr>
+ *   <tr>
+ *     <td>(1.0.0,2.0.0)</td>
+ *     <td>all versions greater or equal to 1.0.0 and lower than 2.0.0</td>
+ *   </tr>
+ *   <tr>
+ *     <td>(1.0.0,2.0.0]</td>
+ *     <td>all versions greater than 1.0.0 and lower or equal to 2.0.0</td>
+ *   </tr>
+ *   <tr>
+ *     <td>(1.0,2.0)</td>
+ *     <td>all versions greater than 1.0.0 and lower than 2.0.0</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[1.0.0,)</td>
+ *     <td>all versions greater or equal to 1.0.0</td>
+ *   </tr>
+ *   <tr>
+ *     <td>(1.0.0,)</td>
+ *     <td>all versions greater than 1.0.0</td>
+ *   </tr>
+ *   <tr>
+ *     <td>(,2.0.0]</td>
+ *     <td>all versions lower or equal to 2.0.0</td>
+ *   </tr>
+ *   <tr>
+ *     <td>(,2.0)</td>
+ *     <td>all versions lower than 2.0.0</td>
+ *   </tr>
+ * </tbody>
+ * </table>
+ *
+ * @author solonovamax
+ * @see VersionParser
+ */
 public class VersionRangeParser {
     private static final char OPEN_PAREN = '(';
     
@@ -59,11 +156,26 @@ public class VersionRangeParser {
     
     private final String versionRangeString;
     
+    /**
+     * Constructs a new version range parser with the provided string to parse.
+     *
+     * @param versionRangeString The version range string to parse
+     */
     public VersionRangeParser(String versionRangeString) {
         this.input = new LookaheadReader(new StringReader(versionRangeString));
         this.versionRangeString = versionRangeString;
     }
     
+    /**
+     * Parses the provided version range string to a {@link VersionRange}.
+     *
+     * @return The {@link Version} parsed from the string this object was instantated with.
+     *
+     * @throws ParseException If an exception occurred during the parsing of the version. If taking user input, the message from this
+     *                        exception is highly useful and should be returned to the user.
+     */
+    @NotNull
+    @Contract(value = "-> new", pure = true)
     public VersionRange parse() throws ParseException {
         if (input.current().is(OPEN_BRACKET, OPEN_PAREN))
             return parseVersionRange();
@@ -195,9 +307,9 @@ public class VersionRangeParser {
         return sb.toString();
     }
     
-    private Char consumeCharacter(char expected) throws ParseException {
+    private void consumeCharacter(char expected) throws ParseException {
         if (input.current().is(expected))
-            return input.consume();
+            input.consume();
         else
             throw new ParseException(String.format("Illegal character. Character '%s' expected.", expected),
                                      versionRangeString, input.current());

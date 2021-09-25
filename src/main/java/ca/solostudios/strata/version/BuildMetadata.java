@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file BuildMetadata.java is part of Strata
- * Last modified on 24-09-2021 07:20 p.m.
+ * Last modified on 24-09-2021 10:32 p.m.
  *
  * MIT License
  *
@@ -33,12 +33,25 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 
+/**
+ * A class representing the build metadata of a {@link Version}
+ *
+ * @author solonovamax
+ */
 public final class BuildMetadata implements Formattable {
+    /**
+     * An empty build metadata instance used it no metadata is provided.
+     */
     public static final BuildMetadata NULL = new BuildMetadata("");
     
     @NotNull
     private final String buildMetadata;
     
+    /**
+     * Constructs a new build metadata
+     *
+     * @param buildMetadata The build metadata string to store.
+     */
     @Contract(pure = true)
     public BuildMetadata(@NotNull String buildMetadata) {
         this.buildMetadata = buildMetadata;
@@ -49,6 +62,11 @@ public final class BuildMetadata implements Formattable {
         return String.format("BuildMetadata{buildMetadata='%s'}", buildMetadata);
     }
     
+    /**
+     * The build metadata as a string.
+     *
+     * @return The build metadata
+     */
     @NotNull
     public String getBuildMetadata() {
         return buildMetadata;

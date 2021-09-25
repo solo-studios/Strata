@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Formattable.java is part of Strata
- * Last modified on 24-09-2021 07:52 p.m.
+ * Last modified on 24-09-2021 10:36 p.m.
  *
  * MIT License
  *
@@ -29,11 +29,23 @@
 package ca.solostudios.strata.version;
 
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 
+/**
+ * This interfaces specifies that a class can be formatted to a human readable string by invoking {@link #getFormatted()}
+ *
+ * @author solonovamax
+ */
 @FunctionalInterface
 public interface Formattable {
+    /**
+     * This object represented as a short and human readable string.
+     *
+     * @return This object as a readable string.
+     */
     @NotNull
+    @Contract(pure = true)
     String getFormatted();
 }

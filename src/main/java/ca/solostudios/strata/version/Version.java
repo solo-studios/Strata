@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Version.java is part of Strata
- * Last modified on 24-09-2021 02:21 p.m.
+ * Last modified on 24-09-2021 10:36 p.m.
  *
  * MIT License
  *
@@ -38,11 +38,11 @@ import java.math.BigInteger;
 
 
 /**
- * Class representing a version in semver.
- * <p>
- * Instantiate using {@link Versions#getVersion}
+ * Class representing a version.
  *
  * @author solonovamax
+ * @see Versions#getVersion
+ * @see Versions#parseVersion
  */
 public final class Version implements Comparable<Version>, Formattable {
     @NotNull
@@ -54,6 +54,13 @@ public final class Version implements Comparable<Version>, Formattable {
     @NotNull
     private final BuildMetadata buildMetadata;
     
+    /**
+     * Constructs a new version with the provided core, pre-release, and build data, values.
+     *
+     * @param coreVersion   The core version.
+     * @param preRelease    The pre-release version.
+     * @param buildMetadata The build data.
+     */
     @Contract(pure = true)
     public Version(@NotNull CoreVersion coreVersion, @NotNull PreRelease preRelease, @NotNull BuildMetadata buildMetadata) {
         this.coreVersion = coreVersion;
@@ -73,30 +80,55 @@ public final class Version implements Comparable<Version>, Formattable {
         return String.format("Version{normalVersion=%s, preRelease=%s, buildMetadata=%s}", coreVersion, preRelease, buildMetadata);
     }
     
+    /**
+     * The major version.
+     *
+     * @return The major version.
+     */
     @NotNull
     @Contract(pure = true)
     public BigInteger getMajor() {
         return coreVersion.getMajor();
     }
     
+    /**
+     * The minor version.
+     *
+     * @return The minor version.
+     */
     @NotNull
     @Contract(pure = true)
     public BigInteger getMinor() {
         return coreVersion.getMinor();
     }
     
+    /**
+     * The patch version.
+     *
+     * @return The patch version.
+     */
     @NotNull
     @Contract(pure = true)
     public BigInteger getPatch() {
         return coreVersion.getPatch();
     }
     
+    /**
+     * The pre-release version.
+     *
+     * @return The pre-release version.
+     */
     @NotNull
     @Contract(pure = true)
     public PreRelease getPreRelease() {
         return preRelease;
     }
     
+    /**
+     * The build metadata.
+     *
+     * @return The build metadata.
+     */
     @NotNull
     @Contract(pure = true)
     public BuildMetadata getBuildMetadata() {
@@ -105,10 +137,8 @@ public final class Version implements Comparable<Version>, Formattable {
     
     @NotNull
     @Override
-    @Contract(pure = true)
-    @SuppressWarnings("StringConcatenation")
     public String getFormatted() {
-        return coreVersion.getFormatted() + preRelease.getFormatted() + buildMetadata.getFormatted();
+        return String.format("%s%s%s", coreVersion.getFormatted(), preRelease.getFormatted(), buildMetadata.getFormatted());
     }
     
     @Override

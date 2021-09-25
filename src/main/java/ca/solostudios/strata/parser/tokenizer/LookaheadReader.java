@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file LookaheadReader.java is part of Strata
- * Last modified on 24-09-2021 02:21 p.m.
+ * Last modified on 24-09-2021 08:15 p.m.
  *
  * MIT License
  *
@@ -30,6 +30,7 @@ package ca.solostudios.strata.parser.tokenizer;
 
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -80,6 +81,7 @@ public class LookaheadReader extends Lookahead<Char> {
         }
     }
     
+    @Nullable
     @Override
     protected Char fetch() throws ParseException {
         try {
@@ -93,6 +95,7 @@ public class LookaheadReader extends Lookahead<Char> {
         }
     }
     
+    @NotNull
     @Override
     protected Char endOfInput() {
         return new Char('\0', pos);

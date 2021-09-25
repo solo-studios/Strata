@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file PreReleaseIdentifier.java is part of Strata
- * Last modified on 24-09-2021 08:02 p.m.
+ * Last modified on 24-09-2021 10:34 p.m.
  *
  * MIT License
  *
@@ -31,14 +31,25 @@ package ca.solostudios.strata.version;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigInteger;
+import java.util.Objects;
 
+
+/**
+ * This class represents a pre-release identifier.
+ * There are only two implementations: {@link NumericalPreReleaseIdentifier} and {@link AlphaNumericalPreReleaseIdentifier}.
+ * <p>
+ * Note: this class has a natural ordering that is inconsistent with equals.
+ *
+ * @author solonovamax
+ */
 public abstract class PreReleaseIdentifier implements Comparable<PreReleaseIdentifier>, Formattable {
     
     @Override
     public int compareTo(@NotNull PreReleaseIdentifier o) {
         if (isNumeric())
             if (o.isNumeric())
-                return Integer.compare(asInt(), o.asInt());
+                return asInteger().compareTo(o.asInteger());
             else
                 return -1;
         else if (o.isNumeric())
@@ -47,10 +58,22 @@ public abstract class PreReleaseIdentifier implements Comparable<PreReleaseIdent
             return asString().compareTo(o.asString());
     }
     
-    protected int asInt() throws UnsupportedOperationException {
+    /**
+     * This identifier as an integer.
+     *
+     * @return This identifier as an integer.
+     *
+     * @throws UnsupportedOperationException If this identifier cannot be formatted as an integer.
+     */
+    protected BigInteger asInteger() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Numerical values are not supported by this implementation");
     }
     
+    /**
+     * This identifier formatted as a string.
+     *
+     * @return This identifier as a string.
+     */
     @NotNull
     protected abstract String asString();
     
@@ -60,28 +83,41 @@ public abstract class PreReleaseIdentifier implements Comparable<PreReleaseIdent
         return asString();
     }
     
+    /**
+     * Whether or not this identifier can contain numerical values.
+     *
+     * @return {@code true} if this identifier can contain numerical values, {@code false} otherwise.
+     */
     protected abstract boolean isNumeric();
     
+    /**
+     * A numerical identifier. This identifier can only contain a positive number.
+     */
     public static final class NumericalPreReleaseIdentifier extends PreReleaseIdentifier {
-        private final int value;
-    
-        public NumericalPreReleaseIdentifier(int value) {
+        private final BigInteger value;
+        
+        /**
+         * Constructs a new numerical identifier with the provided value.
+         *
+         * @param value The value of this identifier.
+         */
+        public NumericalPreReleaseIdentifier(BigInteger value) {
             this.value = value;
         }
-    
+        
         @Override
         public String toString() {
             return String.format("NumericalPreReleaseIdentifier{value=%d}", value);
         }
-    
+        
         @NotNull
         @Override
         protected String asString() {
-            return Integer.toString(value);
+            return value.toString();
         }
-    
+        
         @Override
-        protected int asInt() {
+        protected BigInteger asInteger() {
             return value;
         }
         
@@ -97,20 +133,28 @@ public abstract class PreReleaseIdentifier implements Comparable<PreReleaseIdent
             
             NumericalPreReleaseIdentifier that = (NumericalPreReleaseIdentifier) o;
             
-            return value == that.value;
+            return Objects.equals(value, that.value);
         }
         
         @Override
         public int hashCode() {
-            return value;
+            return value.hashCode();
         }
     }
     
     
+    /**
+     * An alphanumerical identifier. This identifier can only contain alpha-numeric values.
+     */
     public static final class AlphaNumericalPreReleaseIdentifier extends PreReleaseIdentifier {
         @NotNull
         private final String value;
         
+        /**
+         * Constructs a new alphanumerical identifier with the provided value.
+         *
+         * @param value The value of this identifier.
+         */
         public AlphaNumericalPreReleaseIdentifier(@NotNull String value) {
             this.value = value;
         }

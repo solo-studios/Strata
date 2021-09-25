@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Char.java is part of Strata
- * Last modified on 24-09-2021 02:21 p.m.
+ * Last modified on 24-09-2021 08:15 p.m.
  *
  * MIT License
  *
@@ -29,6 +29,9 @@
 package ca.solostudios.strata.parser.tokenizer;
 
 
+import org.jetbrains.annotations.NotNull;
+
+
 /**
  * Represents a single character read from a {@link LookaheadReader}.
  * <p>
@@ -42,6 +45,12 @@ public class Char implements Position {
     
     private final int pos;
     
+    /**
+     * Constructs a new Char with the provided value and position
+     *
+     * @param value The value of this character.
+     * @param pos   The position of this character.
+     */
     public Char(char value, int pos) {
         this.value = value;
         this.pos = pos;
@@ -56,6 +65,13 @@ public class Char implements Position {
         }
     }
     
+    /**
+     * Checks if the internal value is equal to the given character
+     *
+     * @param test the character to check against
+     *
+     * @return <tt>true</tt> if the value is equal to the give characters, <tt>false</tt> otherwise
+     */
     public boolean is(char test) {
         return test == value && test != '\0';
     }
@@ -130,8 +146,9 @@ public class Char implements Position {
     /**
      * Returns the internal value as string.
      *
-     * @return the internal character as string or "" if this is the end of input indicator
+     * @return the internal character as string or {@code ""} if this is the end of input indicator
      */
+    @NotNull
     public String getStringValue() {
         if (isEndOfInput()) {
             return "";

@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file PreRelease.java is part of Strata
- * Last modified on 24-09-2021 08:02 p.m.
+ * Last modified on 24-09-2021 10:34 p.m.
  *
  * MIT License
  *
@@ -37,13 +37,23 @@ import java.util.Iterator;
 import java.util.List;
 
 
+/**
+ * A class representing the pre-release data for a {@link Version}.
+ *
+ * @author solonovamax
+ * @see PreReleaseIdentifier
+ */
 public final class PreRelease implements Comparable<PreRelease>, Formattable {
     public static final PreRelease NULL = new PreRelease(Collections.emptyList());
     
     @NotNull
     private final List<PreReleaseIdentifier> identifiers;
     
-    @Contract(pure = true)
+    /**
+     * Constructs a new pre-release with the provided identifiers.
+     *
+     * @param identifiers The identifiers for this pre-release.
+     */
     public PreRelease(@NotNull List<PreReleaseIdentifier> identifiers) {
         this.identifiers = identifiers;
     }
@@ -58,7 +68,7 @@ public final class PreRelease implements Comparable<PreRelease>, Formattable {
         } else if (o.identifiers.isEmpty()) {
             return -1;
         }
-    
+        
         int i = 0;
         int comparison;
         do {
@@ -69,7 +79,7 @@ public final class PreRelease implements Comparable<PreRelease>, Formattable {
                     return -1;
             else if (o.identifiers.size() <= i)
                 return 1;
-    
+            
             comparison = identifiers.get(i).compareTo(o.identifiers.get(i));
             i++;
         } while (comparison == 0);
@@ -81,6 +91,11 @@ public final class PreRelease implements Comparable<PreRelease>, Formattable {
         return String.format("PreRelease{identifiers=%s}", identifiers);
     }
     
+    /**
+     * The internal identifiers
+     *
+     * @return The internal identifies of this pre-release
+     */
     public List<PreReleaseIdentifier> getIdentifiers() {
         return Collections.unmodifiableList(identifiers);
     }
@@ -113,7 +128,7 @@ public final class PreRelease implements Comparable<PreRelease>, Formattable {
         if (o == null || getClass() != o.getClass()) return false;
         
         PreRelease that = (PreRelease) o;
-    
+        
         return identifiers.equals(that.identifiers);
     }
     

@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionRange.java is part of Strata
- * Last modified on 24-09-2021 02:21 p.m.
+ * Last modified on 24-09-2021 10:47 p.m.
  *
  * MIT License
  *
@@ -34,6 +34,11 @@ import ca.solostudios.strata.parser.tokenizer.ParseException;
 import org.jetbrains.annotations.Nullable;
 
 
+/**
+ * A class representing a range of versions.
+ *
+ * @author solonovamax
+ */
 public final class VersionRange {
     @Nullable
     private final Version startVersion;
@@ -45,6 +50,14 @@ public final class VersionRange {
     
     private final boolean endInclusive;
     
+    /**
+     * Constructs a new version range.
+     *
+     * @param startVersion   The starting version. Use {@code null} if this has no lower bound.
+     * @param startInclusive {@code true} if the starting version is inclusive, {@code false} if the starting version is exclusive.
+     * @param endVersion     The ending version. Use {@code null} if this has no upper bound.
+     * @param endInclusive   {@code true} if the ending version is inclusive, {@code false} if the ending version is exclusive.
+     */
     public VersionRange(@Nullable Version startVersion, boolean startInclusive,
                         @Nullable Version endVersion, boolean endInclusive) {
         this.startVersion = startVersion;
@@ -72,28 +85,78 @@ public final class VersionRange {
         return sb.toString();
     }
     
+    /**
+     * The lower bound for the version range.
+     * <p>
+     * {@code null} is returned if this has no lower bound.
+     *
+     * @return The start version.
+     *
+     * @see #isStartInclusive()
+     */
     @Nullable
     public Version getStartVersion() {
         return startVersion;
     }
     
+    /**
+     * Whether or not the lower version is inclusive.
+     *
+     * @return {@code true} if the start is inclusive, {@code false} if the start is exclusive.
+     *
+     * @see #getStartVersion()
+     */
     public boolean isStartInclusive() {
         return startInclusive;
     }
     
+    /**
+     * The upper bound for the version range.
+     * <p>
+     * {@code null} is used if this has no upper bound.
+     *
+     * @return The end version.
+     *
+     * @see #isEndInclusive()
+     */
     @Nullable
     public Version getEndVersion() {
         return endVersion;
     }
     
+    /**
+     * Wehther or not the upper version is inclusive.
+     *
+     * @return {@code true} if the end is inclusive, {@code false} if the end is exclusive.
+     *
+     * @see #getEndVersion()
+     */
     public boolean isEndInclusive() {
         return endInclusive;
     }
     
+    /**
+     * Whether or not this range is satisfied by the provided version.
+     *
+     * @param version The version to check against.
+     *
+     * @return {@code true} if this range is satisfied by the provided version, {@code false} otherwise.
+     *
+     * @throws ParseException If an exception occurred during the parsing of the version. If taking user input, the message from this
+     *                        exception is highly useful and should be returned to the user.@see Versions#parseVersion(String)
+     * @see Versions#parseVersion(String)
+     */
     public boolean isSatisfiedBy(String version) throws ParseException {
         return this.isSatisfiedBy(Versions.parseVersion(version));
     }
     
+    /**
+     * Whether or not this range is satisfied by the provided version.
+     *
+     * @param version The version to check against.
+     *
+     * @return {@code true} if this range is satisfied by the provided version, {@code false} otherwise.
+     */
     public boolean isSatisfiedBy(Version version) {
         if (startVersion != null) {
             if (startInclusive) {
