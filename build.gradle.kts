@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 24-09-2021 07:29 p.m.
+ * Last modified on 24-09-2021 07:53 p.m.
  *
  * MIT License
  *
@@ -45,8 +45,6 @@ repositories {
 }
 
 dependencies {
-    api("com.google.guava:guava:30.1.1-jre")
-    api("org.apache.commons:commons-text:1.9")
     api("org.jetbrains:annotations:22.0.0")
     
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.0")

@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionParserTest.java is part of Strata
- * Last modified on 24-09-2021 07:49 p.m.
+ * Last modified on 24-09-2021 08:02 p.m.
  *
  * MIT License
  *
@@ -119,7 +119,7 @@ class VersionParserTest {
     }
     
     @Test
-    void testInvalidVersions() {
+    void testInvalidVersions() throws ParseException {
         String[] invalidVersions = {
                 "+invalid",
                 "+justmeta",

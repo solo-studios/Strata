@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionParser.java is part of Strata
- * Last modified on 24-09-2021 03:47 p.m.
+ * Last modified on 24-09-2021 08:02 p.m.
  *
  * MIT License
  *
@@ -37,6 +37,7 @@ import ca.solostudios.strata.version.CoreVersion;
 import ca.solostudios.strata.version.PreRelease;
 import ca.solostudios.strata.version.PreReleaseIdentifier;
 import ca.solostudios.strata.version.Version;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.StringReader;
 import java.math.BigInteger;
@@ -60,16 +61,17 @@ public final class VersionParser {
         this.versionString = versionString;
     }
     
+    @NotNull
     public Version parse() throws ParseException {
         CoreVersion coreVersion = parseCoreVersion();
         PreRelease preRelease = PreRelease.NULL;
         BuildMetadata buildMetadata = BuildMetadata.NULL;
         
         Char next = input.consume();
-    
+        
         if (next.is(DASH)) {
             preRelease = parsePreRelease();
-        
+            
             next = input.consume();
         }
         

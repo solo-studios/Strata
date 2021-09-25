@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file ParseException.java is part of Strata
- * Last modified on 24-09-2021 02:21 p.m.
+ * Last modified on 24-09-2021 08:02 p.m.
  *
  * MIT License
  *
@@ -29,7 +29,6 @@
 package ca.solostudios.strata.parser.tokenizer;
 
 
-import org.apache.commons.text.TextStringBuilder;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -43,12 +42,8 @@ public final class ParseException extends Exception {
     private final Position position;
     
     public ParseException(@NotNull String message, @NotNull String parseString, @NotNull Position position) {
-        super(new TextStringBuilder(message).appendNewLine()
-                                            .append(parseString)
-                                            .appendNewLine()
-                                            .appendPadding(position.getPos(), ' ')
-                                            .append('^')
-                                            .toString(),
+        // mmmmm, doubly nested String#format, my *favourite*
+        super(String.format(String.format("%%s\n%%s\n%%%ss", position.getPos() == 0 ? "" : position.getPos()), message, parseString, '^'),
               null, false, false);
         this.position = position;
     }

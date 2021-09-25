@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionComparisonTest.java is part of Strata
- * Last modified on 24-09-2021 07:49 p.m.
+ * Last modified on 24-09-2021 08:02 p.m.
  *
  * MIT License
  *
@@ -43,7 +43,6 @@ import static ca.solostudios.strata.Versions.parseVersion;
 public class VersionComparisonTest {
     @Test
     void testSimpleInside() throws ParseException {
-    
         Version ver1 = parseVersion("1.0.0");
         Version ver2 = parseVersion("2.0.0");
         Version ver3 = parseVersion("1.5.0");

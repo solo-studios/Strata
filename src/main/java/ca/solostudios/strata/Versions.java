@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Versions.java is part of Strata
- * Last modified on 24-09-2021 07:19 p.m.
+ * Last modified on 24-09-2021 08:02 p.m.
  *
  * MIT License
  *
