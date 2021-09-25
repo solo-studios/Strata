@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Lookahead.java is part of Strata
- * Last modified on 24-09-2021 11:38 p.m.
+ * Last modified on 24-09-2021 11:39 p.m.
  *
  * MIT License
  *
@@ -67,6 +67,8 @@ public abstract class Lookahead<T> {
      * This method does not change the internal state. Therefore it can be called several times and will always return the same result.
      *
      * @return The next item in the stream. This will be the current item, after a call to {@link #consume()}you
+     *
+     * @throws ParseException If there is an exception during parsing.
      */
     @NotNull
     public T next() throws ParseException {
@@ -79,6 +81,8 @@ public abstract class Lookahead<T> {
      * This method does not change the internal state. Therefore it can be called several times and will always return the same result.
      *
      * @return the item the stream is currently pointing at.
+     *
+     * @throws ParseException If there is an exception during parsing.
      */
     @NotNull
     public T current() throws ParseException {
@@ -96,6 +100,8 @@ public abstract class Lookahead<T> {
      * @param offset the number of items to skip
      *
      * @return the n-th item in the stream
+     *
+     * @throws ParseException If there is an exception during parsing.
      */
     @NotNull
     public T next(int offset) throws ParseException {
@@ -126,6 +132,8 @@ public abstract class Lookahead<T> {
      * was previously returned by {@link #next()}
      *
      * @return the item which is being removed from the stream
+     *
+     * @throws ParseException If there is an exception during parsing.
      */
     @NotNull
     public T consume() throws ParseException {
@@ -140,6 +148,8 @@ public abstract class Lookahead<T> {
      * Removes the given number of items from the stream.
      *
      * @param numberOfItems the number of items to remove
+     *
+     * @throws ParseException If there is an exception during parsing.
      */
     public void consume(int numberOfItems) throws ParseException {
         if (numberOfItems < 0) {
@@ -174,6 +184,8 @@ public abstract class Lookahead<T> {
      * Fetches the next item from the stream.
      *
      * @return the next item in the stream or {@code null} to indicate that the end was reached
+     *
+     * @throws ParseException If there is an exception during parsing.
      */
     @Nullable
     protected abstract T fetch() throws ParseException;

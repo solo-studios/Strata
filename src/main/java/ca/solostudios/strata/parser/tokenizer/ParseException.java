@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file ParseException.java is part of Strata
- * Last modified on 24-09-2021 08:15 p.m.
+ * Last modified on 24-09-2021 11:44 p.m.
  *
  * MIT License
  *
@@ -100,9 +100,9 @@ public final class ParseException extends Exception {
     }
     
     /**
-     * Provides the position where the error or warning occurred.
+     * The position where the error or warning occurred.
      *
-     * @return the position of this error or warning
+     * @return the position of this error or warning.
      */
     @NotNull
     public Position getPosition() {
