@@ -31,6 +31,7 @@ package ca.solostudios.strata.version;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -67,7 +68,18 @@ public final class VersionRange {
     }
     
     @Override
+    @Contract(pure = true)
     public String toString() {
+        return String.format("VersionRange{startVersion=%s, startInclusive=%b, endVersion=%s, endInclusive=%b}", startVersion,
+                             startInclusive, endVersion, endInclusive);
+    }
+    
+    /**
+     * Get this version range as a formatted, human-readable String.
+     *
+     * @return A human-readable String representing this version range.
+     */
+    public String getFormatted() {
         StringBuilder sb = new StringBuilder();
         if (startInclusive)
             sb.append('[');
@@ -75,12 +87,12 @@ public final class VersionRange {
             sb.append('(');
         
         if (startVersion != null)
-            sb.append(startVersion);
+            sb.append(startVersion.getFormatted());
         
         sb.append(",");
         
         if (endVersion != null)
-            sb.append(endVersion);
+            sb.append(endVersion.getFormatted());
         
         return sb.toString();
     }
