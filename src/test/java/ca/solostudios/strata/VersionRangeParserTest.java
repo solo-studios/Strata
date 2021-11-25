@@ -153,4 +153,10 @@ class VersionRangeParserTest {
         assertTrue(majorRange.isSatisfiedBy("9999.9999.9999"));
         assertTrue(majorRange.isSatisfiedBy("999999999999999999999999999.999999999999999999999999999.999999999999999999999999999"));
     }
+    
+    @Test
+    void testMetadata() throws ParseException {
+        VersionRange range = parseVersionRange("0.1.+");
+        assertTrue(range.isSatisfiedBy("0.1.0-BETA+034b01a0"));
+    }
 }

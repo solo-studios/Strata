@@ -100,7 +100,7 @@ public final class VersionRange {
     }
     
     /**
-     * Whether or not the lower version is inclusive.
+     * Whether the lower version is inclusive.
      *
      * @return {@code true} if the start is inclusive, {@code false} if the start is exclusive.
      *
@@ -136,7 +136,7 @@ public final class VersionRange {
     }
     
     /**
-     * Whether or not this range is satisfied by the provided version.
+     * Whether this range is satisfied by the provided version.
      *
      * @param version The version to check against.
      *
@@ -151,7 +151,7 @@ public final class VersionRange {
     }
     
     /**
-     * Whether or not this range is satisfied by the provided version.
+     * Whether this range is satisfied by the provided version.
      *
      * @param version The version to check against.
      *
@@ -160,18 +160,18 @@ public final class VersionRange {
     public boolean isSatisfiedBy(Version version) {
         if (startVersion != null) {
             if (startInclusive) {
-                if (0 < startVersion.compareTo(version))
+                if (0 < startVersion.compareToCore(version))
                     return false;
             } else {
-                if (0 <= startVersion.compareTo(version))
+                if (0 <= startVersion.compareToCore(version))
                     return false;
             }
         }
         if (endVersion != null) {
             if (endInclusive) {
-                return 0 <= endVersion.compareTo(version);
+                return 0 <= endVersion.compareToCore(version);
             } else {
-                return 0 < endVersion.compareTo(version);
+                return 0 < endVersion.compareToCore(version);
             }
         }
         

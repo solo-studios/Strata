@@ -70,8 +70,17 @@ public final class Version implements Comparable<Version>, Formattable {
     
     @Override
     public int compareTo(@NotNull Version o) {
-        int normalVersionComparison = coreVersion.compareTo(o.coreVersion);
+        int normalVersionComparison = compareToCore(o);
         return normalVersionComparison != 0 ? normalVersionComparison : preRelease.compareTo(o.preRelease);
+    }
+    
+    /**
+     * Compares only the core version information
+     * @param o Other version
+     * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object.
+     */
+    public int compareToCore(@NotNull Version o) {
+        return coreVersion.compareTo(o.coreVersion);
     }
     
     @Override
