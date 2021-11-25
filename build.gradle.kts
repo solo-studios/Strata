@@ -38,7 +38,7 @@ plugins {
 }
 
 group = "ca.solo-studios"
-version = Version("1", "0", "0")
+version = Version("1", "1", "0")
 
 repositories {
     mavenCentral()
