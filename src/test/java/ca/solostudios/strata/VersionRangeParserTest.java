@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionRangeParserTest.java is part of Strata
- * Last modified on 24-09-2021 07:19 p.m.
+ * Last modified on 28-11-2021 11:54 a.m.
  *
  * MIT License
  *
@@ -152,5 +152,11 @@ class VersionRangeParserTest {
         assertTrue(majorRange.isSatisfiedBy("1.2.3"));
         assertTrue(majorRange.isSatisfiedBy("9999.9999.9999"));
         assertTrue(majorRange.isSatisfiedBy("999999999999999999999999999.999999999999999999999999999.999999999999999999999999999"));
+    }
+    
+    @Test
+    void testMetadata() throws ParseException {
+        VersionRange range = parseVersionRange("0.1.+");
+        assertTrue(range.isSatisfiedBy("0.1.0-BETA"));
     }
 }

@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Version.java is part of Strata
- * Last modified on 24-09-2021 10:36 p.m.
+ * Last modified on 28-11-2021 11:54 a.m.
  *
  * MIT License
  *
@@ -68,18 +68,6 @@ public final class Version implements Comparable<Version>, Formattable {
         this.buildMetadata = buildMetadata;
     }
     
-    @Override
-    public int compareTo(@NotNull Version o) {
-        int normalVersionComparison = coreVersion.compareTo(o.coreVersion);
-        return normalVersionComparison != 0 ? normalVersionComparison : preRelease.compareTo(o.preRelease);
-    }
-    
-    @Override
-    @Contract(pure = true)
-    public String toString() {
-        return String.format("Version{normalVersion=%s, preRelease=%s, buildMetadata=%s}", coreVersion, preRelease, buildMetadata);
-    }
-    
     /**
      * The major version.
      *
@@ -114,6 +102,17 @@ public final class Version implements Comparable<Version>, Formattable {
     }
     
     /**
+     * The core version.
+     *
+     * @return The core version.
+     */
+    @NotNull
+    @Contract(pure = true)
+    public CoreVersion getCoreVersion() {
+        return coreVersion;
+    }
+    
+    /**
      * The pre-release version.
      *
      * @return The pre-release version.
@@ -135,10 +134,10 @@ public final class Version implements Comparable<Version>, Formattable {
         return buildMetadata;
     }
     
-    @NotNull
     @Override
-    public String getFormatted() {
-        return String.format("%s%s%s", coreVersion.getFormatted(), preRelease.getFormatted(), buildMetadata.getFormatted());
+    @Contract(pure = true)
+    public String toString() {
+        return String.format("Version{normalVersion=%s, preRelease=%s, buildMetadata=%s}", coreVersion, preRelease, buildMetadata);
     }
     
     @Override
@@ -165,5 +164,17 @@ public final class Version implements Comparable<Version>, Formattable {
         result = 31 * result + preRelease.hashCode();
         result = 31 * result + buildMetadata.hashCode();
         return result;
+    }
+    
+    @Override
+    public int compareTo(@NotNull Version o) {
+        int normalVersionComparison = coreVersion.compareTo(o.coreVersion);
+        return normalVersionComparison != 0 ? normalVersionComparison : preRelease.compareTo(o.preRelease);
+    }
+    
+    @NotNull
+    @Override
+    public String getFormatted() {
+        return String.format("%s%s%s", coreVersion.getFormatted(), preRelease.getFormatted(), buildMetadata.getFormatted());
     }
 }
