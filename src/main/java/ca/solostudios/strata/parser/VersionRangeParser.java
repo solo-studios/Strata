@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionRangeParser.java is part of Strata
- * Last modified on 24-09-2021 11:35 p.m.
+ * Last modified on 28-11-2021 12:07 p.m.
  *
  * MIT License
  *
@@ -71,7 +71,7 @@ import java.math.BigInteger;
  *         <br>
  *         Example: The glob range {@code 1.2.+} will match {@code 1.2.0}, {@code 1.2.3}, and {@code 1.2.99} but not {@code 1.3.0}</li>
  *     <li>
- *         {@code major.minor.patch}<br>This matches <i>only</i>> version {@code major.minor.patch},
+ *         {@code major.minor.patch}<br>This matches <i>only</i> version {@code major.minor.patch},
  *         <br>
  *         Example: The glob range {@code 1.2.+} will match {@code 1.2.0}, {@code 1.2.3}, and {@code 1.2.99} but not {@code 1.3.0}
  *     </li>
