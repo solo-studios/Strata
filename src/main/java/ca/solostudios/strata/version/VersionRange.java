@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionRange.java is part of Strata
- * Last modified on 24-09-2021 10:47 p.m.
+ * Last modified on 28-11-2021 11:54 a.m.
  *
  * MIT License
  *
@@ -32,6 +32,7 @@ package ca.solostudios.strata.version;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -40,7 +41,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author solonovamax
  */
-public final class VersionRange {
+public final class VersionRange implements Formattable {
     @Nullable
     private final Version startVersion;
     
@@ -65,36 +66,6 @@ public final class VersionRange {
         this.startInclusive = startInclusive;
         this.endVersion = endVersion;
         this.endInclusive = endInclusive;
-    }
-    
-    @Override
-    @Contract(pure = true)
-    public String toString() {
-        return String.format("VersionRange{startVersion=%s, startInclusive=%b, endVersion=%s, endInclusive=%b}", startVersion,
-                             startInclusive, endVersion, endInclusive);
-    }
-    
-    /**
-     * Get this version range as a formatted, human-readable String.
-     *
-     * @return A human-readable String representing this version range.
-     */
-    public String getFormatted() {
-        StringBuilder sb = new StringBuilder();
-        if (startInclusive)
-            sb.append('[');
-        else
-            sb.append('(');
-        
-        if (startVersion != null)
-            sb.append(startVersion.getFormatted());
-        
-        sb.append(",");
-        
-        if (endVersion != null)
-            sb.append(endVersion.getFormatted());
-        
-        return sb.toString();
     }
     
     /**
@@ -186,7 +157,34 @@ public final class VersionRange {
                 return 0 < endVersion.compareTo(version);
             }
         }
-        
+    
         return true;
+    }
+    
+    @Override
+    @Contract(pure = true)
+    public String toString() {
+        return String.format("VersionRange{startVersion=%s, startInclusive=%b, endVersion=%s, endInclusive=%b}", startVersion,
+                             startInclusive, endVersion, endInclusive);
+    }
+    
+    @NotNull
+    @Override
+    public String getFormatted() {
+        StringBuilder sb = new StringBuilder();
+        if (startInclusive)
+            sb.append('[');
+        else
+            sb.append('(');
+        
+        if (startVersion != null)
+            sb.append(startVersion.getFormatted());
+        
+        sb.append(",");
+        
+        if (endVersion != null)
+            sb.append(endVersion.getFormatted());
+        
+        return sb.toString();
     }
 }
