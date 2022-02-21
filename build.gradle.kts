@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2021 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 28-11-2021 12:04 p.m.
+ * Last modified on 21-02-2022 05:34 p.m.
  *
  * MIT License
  *
@@ -50,9 +50,9 @@ dependencies {
     // Could not get jabel to work properly with sealed classes. See: bsideup/jabel#105.
     // annotationProcessor("com.github.bsideup.jabel:jabel-javac-plugin:0.4.1")
     
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-params:5.8.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-params:5.8.2")
 }
 
 java {
