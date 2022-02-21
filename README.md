@@ -4,7 +4,7 @@
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/ca.solo-studios/strata.svg?style=for-the-badge&label=Maven%20Central)](https://search.maven.org/search?q=g:ca.solo-studios%20a:strata)
 [![Pure Kotlin](https://img.shields.io/badge/100%25-java-blue.svg?style=for-the-badge)](https://openjdk.java.net/)
-[![Discord Server](https://img.shields.io/discord/871114669761372221?color=7389D8&label=Discord&logo=discord&logoColor=8fa3ff&style=for-the-badge)](https://discord.solo-studios.ca)
+[![Discord Server](https://img.shields.io/discord/871114669761372221?color=7389D8&label=Discord&logo=discord&logoColor=8fa3ff&style=for-the-badge)](https://ci.solo-studios.ca/job/solo-studios/job/PolyBot/)
 
 A simple, dependency-less, library for parsing and comparing version according to the [SemVer spec](https://semver.org/)
 
