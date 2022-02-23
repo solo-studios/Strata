@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionRange.java is part of Strata
- * Last modified on 23-02-2022 12:23 p.m.
+ * Last modified on 23-02-2022 12:45 p.m.
  *
  * MIT License
  *
@@ -34,6 +34,8 @@ import ca.solostudios.strata.parser.tokenizer.ParseException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 
 /**
@@ -157,7 +159,7 @@ public final class VersionRange implements Formattable {
                 return 0 < endVersion.getCoreVersion().compareTo(version.getCoreVersion());
             }
         }
-    
+        
         return true;
     }
     
@@ -166,6 +168,30 @@ public final class VersionRange implements Formattable {
     public String toString() {
         return String.format("VersionRange{startVersion=%s, startInclusive=%b, endVersion=%s, endInclusive=%b}", startVersion,
                              startInclusive, endVersion, endInclusive);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        
+        VersionRange range = (VersionRange) o;
+        
+        return startInclusive == range.startInclusive &&
+               endInclusive == range.endInclusive &&
+               Objects.equals(startVersion, range.startVersion) &&
+               Objects.equals(endVersion, range.endVersion);
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = startVersion != null ? startVersion.hashCode() : 0;
+        result = 31 * result + (startInclusive ? 1 : 0);
+        result = 31 * result + (endVersion != null ? endVersion.hashCode() : 0);
+        result = 31 * result + (endInclusive ? 1 : 0);
+        return result;
     }
     
     @NotNull
