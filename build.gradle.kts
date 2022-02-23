@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 23-02-2022 12:46 p.m.
+ * Last modified on 23-02-2022 12:48 p.m.
  *
  * MIT License
  *
@@ -27,7 +27,6 @@
  */
 
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.configurationcache.extensions.capitalized
 
 plugins {
     java
@@ -104,7 +103,7 @@ subprojects {
     val projectName = if (project.name == "strata-core")
         "Strata"
     else
-        project.name.split("-").joinToString(separator = " ") { word -> word.capitalized() }
+        project.name.split("-").joinToString(separator = " ") { word -> word.capitalize() }
     val projectVersion = if (project.version is String) project.version as String else project.version.toString()
     val projectUrl = "https://github.com/solo-studios/Strata"
     
