@@ -1,6 +1,6 @@
 # Strata
 
-[![Build Status](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.solo-studios.ca%2Fjob%2Fsolo-studios%2Fjob%2FPolyBot%2F&style=for-the-badge)](https://ci.solo-studios.ca/job/solo-studios/job/PolyBot/)
+[![Build Status](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.solo-studios.ca%2Fjob%2Fsolo-studios%2Fjob%2FStrata%2F&style=for-the-badge)](https://ci.solo-studios.ca/job/solo-studios/job/Strata/)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/ca.solo-studios/strata.svg?style=for-the-badge&label=Maven%20Central)](https://search.maven.org/search?q=g:ca.solo-studios%20a:strata)
 [![100% Java](https://img.shields.io/badge/100%25-java-blue.svg?style=for-the-badge)](https://openjdk.java.net/)
