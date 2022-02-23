@@ -26,7 +26,7 @@ Builds can be found on Maven Central, and can be included with any build tool th
 <dependency>
   <groupId>ca.solo-studios</groupId>
   <artifactId>strata</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.2</version>
 </dependency>
 ```
 
@@ -36,32 +36,32 @@ The kotlin extensions can be included as follows:
 <dependency>
   <groupId>ca.solo-studios</groupId>
   <artifactId>strata-kotlin</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.2</version>
 </dependency>
 ```
 
 ### Gradle Groovy DSL
 
 ```groovy
-implementation 'ca.solo-studios:strata:1.2.1'
+implementation 'ca.solo-studios:strata:1.2.2'
 ```
 
 The kotlin extensions can be included as follows:
 
 ```groovy
-implementation 'ca.solo-studios:strata-kotlin:1.2.1'
+implementation 'ca.solo-studios:strata-kotlin:1.2.2'
 ```
 
 ### Gradle Kotlin DSL
 
 ```kotlin
-implementation("ca.solo-studios:strata:1.2.1")
+implementation("ca.solo-studios:strata:1.2.2")
 ```
 
 The kotlin extensions can be included as follows:
 
 ```kotlin
-implementation("ca.solo-studios:strata-kotlin:1.2.1")
+implementation("ca.solo-studios:strata-kotlin:1.2.2")
 ```
 
 ## Examples
