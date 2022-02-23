@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 21-02-2022 05:34 p.m.
+ * Last modified on 23-02-2022 12:25 p.m.
  *
  * MIT License
  *
@@ -27,60 +27,159 @@
  */
 
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.configurationcache.extensions.capitalized
 
 plugins {
     java
-    idea
     signing
-    `java-library`
+    publishing
     `maven-publish`
     id("org.ajoberstar.grgit") version "4.1.0"
 }
 
-group = "ca.solo-studios"
-version = Version("1", "1", "1")
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    api("org.jetbrains:annotations:22.0.0")
+subprojects {
+    apply(plugin = "java")
+    apply(plugin = "signing")
+    apply(plugin = "java-library")
+    apply(plugin = "maven-publish")
+    apply(plugin = "org.ajoberstar.grgit")
     
-    // Could not get jabel to work properly with sealed classes. See: bsideup/jabel#105.
-    // annotationProcessor("com.github.bsideup.jabel:jabel-javac-plugin:0.4.1")
+    group = "ca.solo-studios"
+    version = Version("1", "2", "0")
     
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-params:5.8.2")
-}
-
-java {
-    // sourceCompatibility = JavaVersion.VERSION_17
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    repositories {
+        mavenCentral()
+    }
     
-    // toolchain {
-    //     languageVersion.set(JavaLanguageVersion.of(17))
-    // }
-}
-
-tasks.withType<JavaCompile> {
-    options.release.set(8)
-}
-
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
+    dependencies {
+        "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.8.2")
+        "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+        "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-params:5.8.2")
+    }
     
-    ignoreFailures = false
-    failFast = false
-    maxParallelForks = (Runtime.getRuntime().availableProcessors() - 1).coerceAtLeast(1)
+    java {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
     
-    testLogging {
-        exceptionFormat = TestExceptionFormat.FULL
+    tasks.withType<JavaCompile> {
+        options.release.set(8)
+    }
+    
+    tasks.getByName<Test>("test") {
+        useJUnitPlatform()
+        
+        ignoreFailures = false
+        failFast = false
+        maxParallelForks = (Runtime.getRuntime().availableProcessors() - 1).coerceAtLeast(1)
+        
+        testLogging {
+            exceptionFormat = TestExceptionFormat.FULL
+        }
+    }
+    
+    val jar by tasks.named<Jar>("jar")
+    
+    val javadoc by tasks.getting(Javadoc::class)
+    
+    val javadocJar by tasks.registering(Jar::class) {
+        dependsOn(javadoc)
+        archiveClassifier.set("javadoc")
+        from(javadoc.destinationDir)
+    }
+    
+    val sourcesJar by tasks.registering(Jar::class) {
+        archiveClassifier.set("sources")
+        from(sourceSets.main.get().allSource)
+    }
+    
+    tasks.build {
+        dependsOn(tasks.withType<Jar>())
+    }
+    
+    val projectDescription = """
+        A library for parsing and comparing version strings
+    """.trimIndent()
+    val projectGroup = project.group as String
+    val projectName = if (project.name == "strata-core")
+        "Strata"
+    else
+        project.name.split("-").joinToString(separator = " ") { word -> word.capitalized() }
+    val projectVersion = if (project.version is String) project.version as String else project.version.toString()
+    val projectUrl = "https://github.com/solo-studios/Strata"
+    
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                artifact(jar)
+                artifact(sourcesJar)
+                artifact(javadocJar)
+                
+                version = projectVersion
+                groupId = projectGroup
+                artifactId = project.name
+                
+                pom {
+                    name.set(projectName)
+                    description.set(projectDescription)
+                    url.set(projectUrl)
+                    
+                    inceptionYear.set("2021")
+                    
+                    licenses {
+                        license {
+                            name.set("MIT License")
+                            url.set("https://mit-license.org/")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("solonovamax")
+                            name.set("solonovamax")
+                            email.set("solonovamax@12oclockpoint.com")
+                            url.set("https://github.com/solonovamax")
+                        }
+                        developer {
+                            id.set("dfsek")
+                            name.set("dfsek")
+                            email.set("dfsek@protonmail.com")
+                            url.set("https://github.com/dfsek")
+                        }
+                    }
+                    issueManagement {
+                        system.set("GitHub")
+                        url.set("$projectUrl/issues")
+                    }
+                    scm {
+                        connection.set("scm:git:$projectUrl.git")
+                        developerConnection.set("scm:git:${projectUrl.replace("https", "ssh")}.git")
+                        url.set(projectUrl)
+                    }
+                }
+            }
+        }
+        
+        repositories {
+            maven {
+                name = "sonatypeStaging"
+                url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials(PasswordCredentials::class)
+            }
+            maven {
+                name = "sonatypeSnapshot"
+                url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                credentials(PasswordCredentials::class)
+            }
+        }
+    }
+    
+    signing {
+        useGpgCmd()
+        publishing.publications.all {
+            sign(this)
+        }
     }
 }
-
 
 /**
  * Version class that does version stuff.
@@ -102,94 +201,3 @@ class Version(
 }
 
 fun getGitHash(): String = grgit.head().abbreviatedId
-
-println("getGitHash(): ${getGitHash()}")
-
-val jar by tasks.named<Jar>("jar")
-
-val javadoc by tasks.getting(Javadoc::class)
-
-val javadocJar by tasks.registering(Jar::class) {
-    dependsOn(javadoc)
-    archiveClassifier.set("javadoc")
-    from(javadoc.destinationDir)
-}
-
-val sourcesJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets.main.get().allSource)
-}
-
-tasks.build {
-    dependsOn(tasks.withType<Jar>())
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            artifact(jar)
-            artifact(sourcesJar)
-            artifact(javadocJar)
-    
-            version = version.toString()
-            groupId = "ca.solo-studios"
-            artifactId = "strata"
-    
-            pom {
-                name.set("Strata")
-                description.set("A library for parsing and comparing version strings")
-                url.set("https://github.com/solo-studios/Strata")
-        
-                inceptionYear.set("2021")
-        
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://mit-license.org/")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("solonovamax")
-                        name.set("solonovamax")
-                        email.set("solonovamax@12oclockpoint.com")
-                        url.set("https://github.com/solonovamax")
-                    }
-                    developer {
-                        id.set("dfsek")
-                        name.set("dfsek")
-                        email.set("dfsek@protonmail.com")
-                        url.set("https://github.com/dfsek")
-                    }
-                }
-                issueManagement {
-                    system.set("GitHub")
-                    url.set("https://github.com/solo-studios/Strata/issues")
-                }
-                scm {
-                    connection.set("scm:git:https://github.com/solo-studios/Strata.git")
-                    developerConnection.set("scm:git:ssh://github.com/solo-studios/Strata.git")
-                    url.set("https://github.com/solo-studios/Strata")
-                }
-            }
-        }
-    }
-    
-    repositories {
-        maven {
-            name = "sonatypeStaging"
-            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials(PasswordCredentials::class)
-        }
-        maven {
-            name = "sonatypeSnapshot"
-            url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-            credentials(PasswordCredentials::class)
-        }
-    }
-}
-
-signing {
-    useGpgCmd()
-    sign(publishing.publications["maven"])
-}

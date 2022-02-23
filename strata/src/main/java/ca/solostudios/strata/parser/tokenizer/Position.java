@@ -2,7 +2,7 @@
  * Strata - A library for parsing and comparing version strings
  * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file settings.gradle.kts is part of Strata
+ * The file Position.java is part of Strata
  * Last modified on 23-02-2022 12:23 p.m.
  *
  * MIT License
@@ -26,7 +26,24 @@
  * SOFTWARE.
  */
 
-rootProject.name = "Strata"
+package ca.solostudios.strata.parser.tokenizer;
 
-include(":strata")
-include(":strata-kotlin")
+
+/**
+ * Describes a position in a file or a stream based on lines and the character position within the line.
+ */
+public interface Position {
+    
+    /**
+     * Represents an unknown position for warnings and errors which cannot be associated with a defined position.
+     */
+    Position UNKNOWN = () -> 0;
+    
+    /**
+     * Returns the character position within the line of this position
+     *
+     * @return the one-based character position of this
+     */
+    int getPos();
+    
+}

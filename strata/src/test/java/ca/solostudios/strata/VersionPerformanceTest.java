@@ -2,7 +2,7 @@
  * Strata - A library for parsing and comparing version strings
  * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file settings.gradle.kts is part of Strata
+ * The file VersionPerformanceTest.java is part of Strata
  * Last modified on 23-02-2022 12:23 p.m.
  *
  * MIT License
@@ -26,7 +26,38 @@
  * SOFTWARE.
  */
 
-rootProject.name = "Strata"
+package ca.solostudios.strata;
 
-include(":strata")
-include(":strata-kotlin")
+
+import ca.solostudios.strata.parser.tokenizer.ParseException;
+import org.junit.jupiter.api.Test;
+
+import static ca.solostudios.strata.Versions.parseVersion;
+import static ca.solostudios.strata.Versions.parseVersionRange;
+
+
+public class VersionPerformanceTest {
+    @Test
+    @SuppressWarnings({ "JUnitTestMethodWithNoAssertions", "ResultOfMethodCallIgnored" })
+    void testVersionParseSpeed() throws ParseException {
+        for (int i = 0; i < 1_000_000; i++) {
+            parseVersion("1.2.3");
+        }
+    }
+    
+    @Test
+    @SuppressWarnings({ "JUnitTestMethodWithNoAssertions", "ResultOfMethodCallIgnored" })
+    void testVersionBoundedRangeParseSpeed() throws ParseException {
+        for (int i = 0; i < 1_000_000; i++) {
+            parseVersionRange("[1.2.3,4.5.6]");
+        }
+    }
+    
+    @Test
+    @SuppressWarnings({ "JUnitTestMethodWithNoAssertions", "ResultOfMethodCallIgnored" })
+    void testVersionGlobRangeParseSpeed() throws ParseException {
+        for (int i = 0; i < 1_000_000; i++) {
+            parseVersionRange("1.2.+");
+        }
+    }
+}

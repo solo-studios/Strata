@@ -16,6 +16,7 @@ A simple, dependency-less, library for parsing and comparing version according t
 - Very fast. Can parse 1 million versions in under 5 seconds. (2.1 seconds on my cpu, a Ryzen 5 3600.) At that level, speed is
   insignificant, unless you have a really weird usecase where you need to parse hundreds of thousands of versions a second.
 - Simple to use API.
+- Includes a set of Kotlin extensions to make development in kotlin easier and more idiomatic.
 
 ## Including
 
@@ -25,23 +26,48 @@ Builds can be found on Maven Central, and can be included with any build tool th
 <dependency>
   <groupId>ca.solo-studios</groupId>
   <artifactId>strata</artifactId>
-  <version>1.0.0</version>
+  <version>1.2.0</version>
+</dependency>
+```
+
+The kotlin extensions can be included as follows:
+
+```xml
+<dependency>
+  <groupId>ca.solo-studios</groupId>
+  <artifactId>strata-kotlin</artifactId>
+  <version>1.2.0</version>
 </dependency>
 ```
 
 ### Gradle Groovy DSL
 
 ```groovy
-implementation 'ca.solo-studios:strata:1.0.0'
+implementation 'ca.solo-studios:strata:1.2.0'
+```
+
+The kotlin extensions can be included as follows:
+
+```groovy
+implementation 'ca.solo-studios:strata-kotlin:1.2.0'
 ```
 
 ### Gradle Kotlin DSL
 
 ```kotlin
-implementation("ca.solo-studios:strata:1.0.0")
+implementation("ca.solo-studios:strata:1.2.0")
+```
+
+The kotlin extensions can be included as follows:
+
+```kotlin
+implementation("ca.solo-studios:strata-kotlin:1.2.0")
 ```
 
 ## Examples
+
+Note: version parsing may throw a `ParseException`, which you are expeted to handle. This is thrown if ever the provided version is
+incorrect.
 
 ### Getting a version
 
@@ -53,6 +79,12 @@ try {
 }
 ```
 
+or
+
+```kotlin
+val version = "1.2.3".toVersion()
+```
+
 ### Getting a version range
 
 ```java
@@ -61,6 +93,12 @@ try {
 } catch (ParseException e) {
     // handle invalid version range parse exception
 }
+```
+
+or
+
+```kotlin
+val range = "[1.2.3,4.5.6)".toVersionRange()
 ```
 
 ### Checking if a version is within a version range
@@ -75,4 +113,17 @@ if (range.isSatisfiedBy(version)) {
 } else {
     // version is outside range
 }
+```
+
+or
+
+```kotlin
+val version = [...]
+
+val range = [...]
+
+if (version in range)
+    // version is within range
+else
+    // version is outside range
 ```

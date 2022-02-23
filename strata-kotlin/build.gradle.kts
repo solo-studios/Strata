@@ -2,8 +2,8 @@
  * Strata - A library for parsing and comparing version strings
  * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file settings.gradle.kts is part of Strata
- * Last modified on 23-02-2022 12:23 p.m.
+ * The file build.gradle.kts is part of Strata
+ * Last modified on 23-02-2022 12:31 p.m.
  *
  * MIT License
  *
@@ -26,7 +26,20 @@
  * SOFTWARE.
  */
 
-rootProject.name = "Strata"
+plugins {
+    kotlin("jvm") version "1.6.10"
+}
 
-include(":strata")
-include(":strata-kotlin")
+repositories {
+    mavenCentral()
+}
+
+kotlin {
+    explicitApi()
+}
+
+dependencies {
+    api(project(":strata"))
+    
+    testImplementation(kotlin("test"))
+}
