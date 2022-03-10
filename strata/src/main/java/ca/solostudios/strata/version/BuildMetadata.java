@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file BuildMetadata.java is part of Strata
- * Last modified on 23-02-2022 12:23 p.m.
+ * Last modified on 10-03-2022 11:59 a.m.
  *
  * MIT License
  *
@@ -57,31 +57,25 @@ public final class BuildMetadata implements Formattable {
         this.buildMetadata = buildMetadata;
     }
     
-    @Override
-    public String toString() {
-        return String.format("BuildMetadata{buildMetadata='%s'}", buildMetadata);
-    }
-    
     /**
      * The build metadata as a string.
      *
      * @return The build metadata
      */
     @NotNull
+    @Contract(pure = true)
     public String getBuildMetadata() {
         return buildMetadata;
     }
     
-    @NotNull
     @Override
-    public String getFormatted() {
-        if (!buildMetadata.isEmpty())
-            return String.format("+%s", buildMetadata);
-        else
-            return "";
+    @Contract(pure = true)
+    public String toString() {
+        return String.format("BuildMetadata{buildMetadata='%s'}", buildMetadata);
     }
     
     @Override
+    @Contract(pure = true)
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -92,7 +86,17 @@ public final class BuildMetadata implements Formattable {
     }
     
     @Override
+    @Contract(pure = true)
     public int hashCode() {
         return buildMetadata.hashCode();
+    }
+    
+    @NotNull
+    @Override
+    public String getFormatted() {
+        if (!buildMetadata.isEmpty())
+            return String.format("+%s", buildMetadata);
+        else
+            return "";
     }
 }

@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file CoreVersion.java is part of Strata
- * Last modified on 23-02-2022 12:23 p.m.
+ * Last modified on 10-03-2022 12:00 p.m.
  *
  * MIT License
  *
@@ -63,18 +63,6 @@ public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
         this.patch = patch;
     }
     
-    @Override
-    public int compareTo(@NotNull CoreVersion o) {
-        int majorComparison = major.compareTo(o.major);
-        int minorComparison = minor.compareTo(o.minor);
-        return (majorComparison != 0) ? majorComparison : ((minorComparison != 0) ? minorComparison : patch.compareTo(o.patch));
-    }
-    
-    @Override
-    public String toString() {
-        return String.format("NormalVersion{major=%d, minor=%d, patch=%d}", major, minor, patch);
-    }
-    
     /**
      * The major version.
      *
@@ -108,10 +96,9 @@ public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
         return patch;
     }
     
-    @NotNull
     @Override
-    public String getFormatted() {
-        return String.format("%s.%s.%s", major, minor, patch);
+    public String toString() {
+        return String.format("NormalVersion{major=%d, minor=%d, patch=%d}", major, minor, patch);
     }
     
     @Override
@@ -137,5 +124,18 @@ public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
         result = 31 * result + minor.hashCode();
         result = 31 * result + patch.hashCode();
         return result;
+    }
+    
+    @Override
+    public int compareTo(@NotNull CoreVersion o) {
+        int majorComparison = major.compareTo(o.major);
+        int minorComparison = minor.compareTo(o.minor);
+        return (majorComparison != 0) ? majorComparison : ((minorComparison != 0) ? minorComparison : patch.compareTo(o.patch));
+    }
+    
+    @NotNull
+    @Override
+    public String getFormatted() {
+        return String.format("%s.%s.%s", major, minor, patch);
     }
 }

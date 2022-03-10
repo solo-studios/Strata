@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionOrderTest.java is part of Strata
- * Last modified on 23-02-2022 12:23 p.m.
+ * Last modified on 10-03-2022 11:57 a.m.
  *
  * MIT License
  *
@@ -26,7 +26,7 @@
  * SOFTWARE.
  */
 
-package ca.solostudios.strata;
+package ca.solostudios.strata.parser;
 
 
 import ca.solostudios.strata.parser.tokenizer.ParseException;
