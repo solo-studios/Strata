@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Char.java is part of Strata
- * Last modified on 23-02-2022 12:23 p.m.
+ * Last modified on 10-03-2022 11:38 a.m.
  *
  * MIT License
  *
@@ -56,15 +56,6 @@ public class Char implements Position {
         this.pos = pos;
     }
     
-    @Override
-    public String toString() {
-        if (isEndOfInput()) {
-            return "<EOI>";
-        } else {
-            return String.valueOf(value);
-        }
-    }
-    
     /**
      * Checks if the internal value is equal to the given character
      *
@@ -99,11 +90,6 @@ public class Char implements Position {
      */
     public char getValue() {
         return value;
-    }
-    
-    @Override
-    public int getPos() {
-        return pos;
     }
     
     /**
@@ -154,5 +140,37 @@ public class Char implements Position {
             return "";
         }
         return String.valueOf(value);
+    }
+    
+    @Override
+    public String toString() {
+        if (isEndOfInput()) {
+            return "<EOI>";
+        } else {
+            return String.valueOf(value);
+        }
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        
+        Char aChar = (Char) o;
+        
+        if (value != aChar.value) return false;
+        return pos == aChar.pos;
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = value;
+        result = 31 * result + pos;
+        return result;
+    }
+    
+    @Override
+    public int getPos() {
+        return pos;
     }
 }
