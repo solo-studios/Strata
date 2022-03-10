@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 23-02-2022 01:00 p.m.
+ * Last modified on 10-03-2022 11:07 a.m.
  *
  * MIT License
  *
@@ -31,7 +31,6 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 plugins {
     java
     signing
-    publishing
     `maven-publish`
     id("org.ajoberstar.grgit") version "4.1.0"
 }
