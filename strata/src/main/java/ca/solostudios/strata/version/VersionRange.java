@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file VersionRange.java is part of Strata
- * Last modified on 23-02-2022 12:45 p.m.
+ * Last modified on 19-06-2022 03:52 p.m.
  *
  * MIT License
  *
@@ -202,15 +202,20 @@ public final class VersionRange implements Formattable {
             sb.append('[');
         else
             sb.append('(');
-        
+    
         if (startVersion != null)
             sb.append(startVersion.getFormatted());
-        
+    
         sb.append(",");
-        
+    
         if (endVersion != null)
             sb.append(endVersion.getFormatted());
-        
+    
+        if (endInclusive)
+            sb.append(']');
+        else
+            sb.append(')');
+    
         return sb.toString();
     }
 }
