@@ -30,7 +30,7 @@ plugins {
     java
     `java-library`
     
-    id("me.champeau.jmh") version "0.6.6"
+    id("me.champeau.jmh") version "0.7.1"
 }
 
 repositories {
@@ -38,5 +38,5 @@ repositories {
 }
 
 dependencies {
-    api("org.jetbrains:annotations:22.0.0")
+    api("org.jetbrains:annotations:24.0.1")
 }
