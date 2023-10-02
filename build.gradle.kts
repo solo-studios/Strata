@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2023 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 19-06-2022 03:52 p.m.
+ * Last modified on 02-10-2023 01:12 a.m.
  *
  * MIT License
  *
@@ -32,6 +32,7 @@ plugins {
     java
     signing
     `maven-publish`
+    // TODO 2023-10-02: Update to grgit 5.2.0 eventually
     id("org.ajoberstar.grgit") version "4.1.0"
 }
 
@@ -193,7 +194,7 @@ class Version(
     override fun toString(): String {
         return if (!preRelease)
             "$major.$minor.$revision"
-        else //Only use git hash if it's a prerelease.
+        else // Only use git hash if it's a prerelease.
             "$major.$minor.$revision-BETA+${getGitHash()}"
     }
 }
