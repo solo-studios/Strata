@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file build.gradle.kts is part of Strata
- * Last modified on 24-02-2022 12:11 p.m.
+ * Last modified on 06-08-2024 12:57 a.m.
  *
  * MIT License
  *
@@ -26,17 +26,123 @@
  * SOFTWARE.
  */
 
+import ca.solostudios.nyx.util.soloStudios
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
 plugins {
     java
     `java-library`
-    
-    id("me.champeau.jmh") version "0.7.1"
+    `maven-publish`
+
+    alias(libs.plugins.nyx)
+    alias(libs.plugins.axion.release)
+
+    alias(libs.plugins.jmh)
+}
+
+nyx {
+    info {
+        name = "Strata"
+        group = "ca.solo-studios"
+        version = scmVersion.version
+        description = """
+            A library for parsing and comparing version strings
+        """.trimIndent()
+
+        organizationName = "Solo Studios"
+        organizationUrl = "https://solo-studios.ca/"
+
+        developer {
+            id.set("solonovamax")
+            name.set("solonovamax")
+            email.set("solonovamax@12oclockpoint.com")
+            url.set("https://github.com/solonovamax")
+        }
+        developer {
+            id.set("dfsek")
+            name.set("dfsek")
+            email.set("dfsek@protonmail.com")
+            url.set("https://github.com/dfsek")
+        }
+
+        repository.fromGithub("solo-studios", "Strata")
+
+        license.useMIT()
+    }
+
+
+    compile {
+        jvmTarget = 8
+
+        javadocJar = true
+        sourcesJar = true
+
+        allWarnings = true
+        // warningsAsErrors = true
+        distributeLicense = true
+        buildDependsOnJar = true
+        reproducibleBuilds = true
+
+        java {
+            // targeting java 8 has been deprecated in jdks >= 21
+            // compilerArgs.add("-Xlint:-options")
+        }
+    }
+
+    publishing {
+        withSignedPublishing()
+
+        repositories {
+            maven {
+                name = "SonatypeStaging"
+                val repositoryId: String? by project
+                url = when {
+                    repositoryId != null -> uri("https://s01.oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId/")
+                    else -> uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                }
+                credentials(PasswordCredentials::class)
+            }
+            maven {
+                name = "SoloStudiosReleases"
+                url = uri("https://maven.solo-studios.ca/releases/")
+                credentials(PasswordCredentials::class)
+                authentication { // publishing doesn't work without this for some reason
+                    create<BasicAuthentication>("basic")
+                }
+            }
+            maven {
+                name = "SoloStudiosSnapshots"
+                url = uri("https://maven.solo-studios.ca/snapshots/")
+                credentials(PasswordCredentials::class)
+                authentication { // publishing doesn't work without this for some reason
+                    create<BasicAuthentication>("basic")
+                }
+            }
+        }
+    }
 }
 
 repositories {
+    soloStudios()
     mavenCentral()
 }
 
 dependencies {
-    api("org.jetbrains:annotations:24.0.1")
+    api(libs.jetbrains.annotations)
+
+    testImplementation(libs.bundles.junit)
+}
+
+tasks {
+    test {
+        useJUnitPlatform()
+
+        ignoreFailures = false
+        failFast = false
+        maxParallelForks = (Runtime.getRuntime().availableProcessors() - 1).coerceAtLeast(1)
+
+        testLogging {
+            exceptionFormat = TestExceptionFormat.FULL
+        }
+    }
 }
