@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file settings.gradle.kts is part of Strata
- * Last modified on 05-08-2024 11:22 p.m.
+ * Last modified on 06-08-2024 01:02 a.m.
  *
  * MIT License
  *
@@ -33,8 +33,6 @@ pluginManagement {
         mavenCentral()
     }
 }
-
-rootProject.name = "strata"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
