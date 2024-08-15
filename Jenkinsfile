@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
  * The file Jenkinsfile is part of Strata
- * Last modified on 06-08-2024 01:01 a.m.
+ * Last modified on 15-08-2024 03:30 p.m.
  *
  * MIT License
  *
@@ -35,7 +35,6 @@ pipeline {
 
     triggers {
         githubPush()
-        cron('H */6 * * *')
     }
 
     stages {
