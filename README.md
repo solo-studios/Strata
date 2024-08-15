@@ -1,12 +1,12 @@
 # Strata
 
-[![Build Status](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.solo-studios.ca%2Fjob%2Fsolo-studios%2Fjob%2FStrata%2F&style=for-the-badge)](https://ci.solo-studios.ca/job/solo-studios/job/Strata/)
+[![Build Status](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.solo-studios.ca%2Fjob%2Fsolo-studios%2Fjob%2FStrata%2Fjob%2Fmaster%2F&style=for-the-badge)](https://ci.solo-studios.ca/job/solo-studios/job/Strata/job/master/)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/ca.solo-studios/strata.svg?style=for-the-badge&label=Maven%20Central)](https://search.maven.org/search?q=g:ca.solo-studios%20a:strata)
-[![100% Java](https://img.shields.io/badge/100%25-java-blue.svg?style=for-the-badge)](https://openjdk.java.net/)
+[![100% Java](https://img.shields.io/badge/100%25-java-F80000.svg?style=for-the-badge)](https://openjdk.java.net/)
 [![Discord Server](https://img.shields.io/discord/871114669761372221?color=7389D8&label=Discord&logo=discord&logoColor=8fa3ff&style=for-the-badge)](https://discord.solo-studios.ca)
 
-A simple, dependency-less, library for parsing and comparing version according to the [SemVer spec](https://semver.org/)
+A simple, dependency-less, library for parsing and comparing versions according to the [SemVer](https://semver.org/) spec.
 
 ## Features
 
@@ -26,7 +26,7 @@ Builds can be found on Maven Central, and can be included with any build tool th
 <dependency>
   <groupId>ca.solo-studios</groupId>
   <artifactId>strata</artifactId>
-  <version>1.3.0</version>
+  <version>[strata version]</version>
 </dependency>
 ```
 
@@ -36,37 +36,37 @@ The kotlin extensions can be included as follows:
 <dependency>
   <groupId>ca.solo-studios</groupId>
   <artifactId>strata-kotlin</artifactId>
-  <version>1.3.0</version>
+  <version>[strata version]</version>
 </dependency>
 ```
 
 ### Gradle Groovy DSL
 
 ```groovy
-implementation 'ca.solo-studios:strata:1.3.0'
+implementation 'ca.solo-studios:strata:[strata version]'
 ```
 
 The kotlin extensions can be included as follows:
 
 ```groovy
-implementation 'ca.solo-studios:strata-kotlin:1.3.0'
+implementation 'ca.solo-studios:strata-kotlin:[strata version]'
 ```
 
 ### Gradle Kotlin DSL
 
 ```kotlin
-implementation("ca.solo-studios:strata:1.3.0")
+implementation("ca.solo-studios:strata:[strata version]")
 ```
 
 The kotlin extensions can be included as follows:
 
 ```kotlin
-implementation("ca.solo-studios:strata-kotlin:1.3.0")
+implementation("ca.solo-studios:strata-kotlin:[strata version]")
 ```
 
 ## Examples
 
-Note: version parsing may throw a `ParseException`, which you are expeted to handle. This is thrown if ever the provided version is
+Note: version parsing may throw a `ParseException`, which you are expected to handle. This is thrown if ever the provided version is
 incorrect.
 
 ### Getting a version
