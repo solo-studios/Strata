@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Represents an error or a warning, which occurred when parsing an input.
  */
-public final class ParseException extends Exception {
+public final class ParseException extends RuntimeException {
     private static final long serialVersionUID = -2935358064424839548L;
     
     @NotNull
