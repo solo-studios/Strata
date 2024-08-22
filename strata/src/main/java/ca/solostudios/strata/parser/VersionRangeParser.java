@@ -37,6 +37,7 @@ import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.StringReader;
 import java.math.BigInteger;
@@ -47,90 +48,164 @@ import java.math.BigInteger;
  * Constructed with the string to parse, {@link VersionRangeParser#parse()} must be invoked to parse the version range.
  * This method returns the parsed version range.
  *
- * <p><br><br>
+ * <p><br>
  * Version ranges must match the following specification:
  * <h2>Version Ranges</h2>
  * Ranges must fit into one of the two categories
  * <ul>
- *     <li>Glob ranges</li>
  *     <li>Version ranges</li>
+ *     <li>Version comparison</li>
+ *     <li>Version carets</li>
+ *     <li>Version globs</li>
  * </ul>
  *
- * <h3>Glob Ranges</h3>
- * Glob ranges are represented as follows:
- * <ol>
- *     <li>{@code +}:<br>This will match <i>any</i> version.</li>
- *     <li>
- *         {@code major.+}<br>This matches any version which begins with {@code major.},
- *         meaning: any version between {@code major.0.0} inclusively and {@code {major+1}.0.0} exclusively.
- *         <br>
- *         Example: The glob range {@code 1.+} will match {@code 1.0.0}, {@code 1.2.3}, and {@code 1.99.99} but not {@code 2.0.0}</li>
- *     <li>
- *         {@code major.minor.+}<br>This matches any version which begins with {@code major.minor},
- *         meaning: any version between {@code major.minor.0} inclusively and {@code major.{minor+1}.0} exclusively.
- *         <br>
- *         Example: The glob range {@code 1.2.+} will match {@code 1.2.0}, {@code 1.2.3}, and {@code 1.2.99} but not {@code 1.3.0}</li>
- *     <li>
- *         {@code major.minor.patch}<br>This matches <i>only</i> version {@code major.minor.patch},
- *         <br>
- *         Example: The glob range {@code 1.2.+} will match {@code 1.2.0}, {@code 1.2.3}, and {@code 1.2.99} but not {@code 1.3.0}
- *     </li>
- * </ol>
- *
  * <h3>Version Ranges</h3>
- * Version ranges are represented by 2 versions surrounded by either brackets ("{@code []}") or braces ("{@code ()}").
+ * Version ranges are 2 versions surrounded by either brackets ({@code [} or {@code ]}) or braces ({@code (} or {@code )}).
  * <p>
  * They must fit the following format:
  *
  * <pre><code>
- *      ("[" or "(")VersionOne,VersionTwo("]" or ")")
+ *      {[,(}[lower version],[upper version]{],)}
  * </code></pre>
- * Where {@code VersionOne} and {@code VersionTwo} are valid {@link Version}s.
+ * Where {@code [lower version]} and {@code [upper version]} are valid {@link Version}s.
+ *
+ * <ul>
+ *     <li>
+ *         When a bracket is used ({@code [} or {@code ]}), then the respective version is inclusive.
+ *         <br>
+ *         If a brace is used ({@code (} or {@code )}), then the respective version is exclusive.
+ *     </li>
+ *     <li>
+ *         When a version is omitted, then the range is considered boundless on that end.
+ *         <br>
+ *         If the lower version is omitted, then it matches any version below the upper bound.
+ *         If the upper version is omitted, then it matches any version above the lower bound.
+ *         eg. If both are omitted, then all versions will match.
+ *     </li>
+ * </ul>
+ *
+ * <h3>Version comparisons</h3>
+ * Version comparisons are a comparison operator, followed by a version.
  * <p>
- * Note: Both {@code VersionOne} and {@code VersionTwo} are <i>optional</i>.
+ * They must fit the following format:
+ *
+ * <pre><code>
+ *      [operator][version]
+ * </code></pre>
+ * Where {@code [version]} is a valid {@link Version} and {@code [operator]} is a valid comparison operator.
  * <p>
- * Here is a list of example versions and what they match
+ * A list of comparison operators are:
+ * <ol>
+ *     <li>{@code >}:<br>Greater than. This matches any version &gt; the proceeding version.</li>
+ *     <li>{@code >=}:<br>Greater than or equal to. This matches any version &ge; the proceeding version.</li>
+ *     <li>{@code <}:<br>Less than. This matches any version &lt; the proceeding version, excluding itself.</li>
+ *     <li>{@code <=}:<br>Less than or equal to. This matches any version &le; the proceeding version.</li>
+ * </ol>
+ *
+ * <h3>Version Carets</h3>
+ * Version carets are a caret followed by a version.
+ * <p>
+ * They must fit the following format:
+ *
+ * <pre><code>
+ *      ^[version]
+ * </code></pre>
+ * Where {@code [version]} is a valid {@link Version}.
+ * <p>
+ * They match all versions that are greater than itself but less than one plus the first non-zero number.
+ * <p>
+ * Example:
+ * The caret range {@code ^1.2.3} will match {@code 1.2.3}, {@code 1.2.4}, and {@code 1.3.0} but not {@code 2.0.0} or {@code 1.2.2}.
+ * <br>
+ * The caret range {@code ^0.1.2} will match {@code 0.1.3}, but not {@code 0.2.0} or {@code 0.1.1}.
+ *
+ * <h3>Version Globs</h3>
+ * Glob ranges are a partial version as well as a glob.
+ * <p>
+ * They must fit the following format:
+ * <ol>
+ *     <li>{@code +} or {@code *}:<br>This will match <i>any</i> version.</li>
+ *     <li>
+ *         {@code [major].+}<br>This matches any version which begins with {@code major.},
+ *         meaning: any version between {@code major.0.0} inclusively and {@code [major+1].0.0} exclusively.
+ *         <br>
+ *         Example: The glob range {@code 1.+} will match {@code 1.0.0}, {@code 1.2.3}, and {@code 1.99.99} but not {@code 2.0.0}</li>
+ *     <li>
+ *         {@code [major].[minor].+}<br>This matches any version which begins with {@code major.minor},
+ *         meaning: any version between {@code major.minor.0} inclusively and {@code major.[minor+1].0} exclusively.
+ *         <br>
+ *         Example: The glob range {@code 1.2.+} will match {@code 1.2.0}, {@code 1.2.3}, and {@code 1.2.99} but not {@code 1.3.0}</li>
+ *     <li>
+ *         {@code [major].[minor].[patch]}<br>This matches <i>only</i> version {@code major.minor.patch},
+ *         <br>
+ *         Example: The glob range {@code 1.2.+} will match {@code 1.2.0}, {@code 1.2.3}, and {@code 1.2.99} but not {@code 1.3.0}.
+ *         <br>
+ *         This means that all versions are valid version ranges.
+ *     </li>
+ * </ol>
+ *
+ * <p>
+ * Here is a list of example version ranges and what they match
  *
  * <table>
  *     <caption>Table of version examples</caption>
  * <thead>
  *   <tr>
- *     <th>Version</th>
- *     <th>Description<br></th>
+ *     <th>Version Range</th>
+ *     <th>Type</th>
+ *     <th>Description</th>
  *   </tr>
  * </thead>
  * <tbody>
  *   <tr>
- *     <td>[1.0.0,2.0.0]</td>
- *     <td>all versions greater or equal to 1.0.0 and lower or equal to 2.0.0</td>
+ *     <td>{@code [1.0.0,2.0.0]}</td>
+ *     <td>Range</td>
+ *     <td>all versions &ge; to {@code 1.0.0} and &le; {@code 2.0.0}</td>
  *   </tr>
  *   <tr>
- *     <td>(1.0.0,2.0.0)</td>
- *     <td>all versions greater or equal to 1.0.0 and lower than 2.0.0</td>
+ *     <td>{@code (1.0.0,2.0.0)}</td>
+ *     <td>Range</td>
+ *     <td>all versions &ge; to {@code 1.0.0} and &lt; {@code 2.0.0}</td>
  *   </tr>
  *   <tr>
- *     <td>(1.0.0,2.0.0]</td>
- *     <td>all versions greater than 1.0.0 and lower or equal to 2.0.0</td>
+ *     <td>{@code (1.0.0,2.0.0]}</td>
+ *     <td>Range</td>
+ *     <td>all versions &gt; {@code 1.0.0} and &le; {@code 2.0.0}</td>
  *   </tr>
  *   <tr>
- *     <td>(1.0,2.0)</td>
- *     <td>all versions greater than 1.0.0 and lower than 2.0.0</td>
+ *     <td>{@code [1.0.0,)}</td>
+ *     <td>Range</td>
+ *     <td>all versions &ge; {@code 1.0.0}</td>
  *   </tr>
  *   <tr>
- *     <td>[1.0.0,)</td>
- *     <td>all versions greater or equal to 1.0.0</td>
+ *     <td>{@code >=1.0.0}</td>
+ *     <td>Comparison</td>
+ *     <td>All versions &gt; {@code 1.0.0}</td>
  *   </tr>
  *   <tr>
- *     <td>(1.0.0,)</td>
- *     <td>all versions greater than 1.0.0</td>
+ *     <td>{@code <1.0.0}</td>
+ *     <td>Comparison</td>
+ *     <td>All versions &lt; {@code 1.0.0}</td>
  *   </tr>
  *   <tr>
- *     <td>(,2.0.0]</td>
- *     <td>all versions lower or equal to 2.0.0</td>
+ *     <td>{@code ^1.2.3}</td>
+ *     <td>Caret</td>
+ *     <td>All versions &ge; {@code 1.2.3} and &lt; {@code 2.0.0}</td>
  *   </tr>
  *   <tr>
- *     <td>(,2.0)</td>
- *     <td>all versions lower than 2.0.0</td>
+ *     <td>{@code ^0.1.2}</td>
+ *     <td>Caret</td>
+ *     <td>All versions &ge; {@code 0.1.2} and &lt; {@code 0.2.0}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code *}</td>
+ *     <td>Glob</td>
+ *     <td>All versions</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code 1.2.+}</td>
+ *     <td>Glob</td>
+ *     <td>All versions &ge; {@code 1.2.0}</td>
  *   </tr>
  * </tbody>
  * </table>
@@ -140,23 +215,22 @@ import java.math.BigInteger;
  */
 public class VersionRangeParser {
     private static final char OPEN_PAREN = '(';
-    
     private static final char CLOSE_PAREN = ')';
-    
     private static final char OPEN_BRACKET = '[';
-    
     private static final char CLOSE_BRACKET = ']';
-    
     private static final char COMMA = ',';
-    
     private static final char PLUS = '+';
-    
     private static final char DOT = '.';
-    
+    private static final char STAR = '*';
+    private static final char CARET = '^';
+    private static final char GREATER_THAN = '>';
+    private static final char LESS_THAN = '<';
+    private static final char EQUALS = '=';
+
     private final LookaheadReader input;
-    
+
     private final String versionRangeString;
-    
+
     /**
      * Constructs a new version range parser with the provided string to parse.
      *
@@ -166,7 +240,7 @@ public class VersionRangeParser {
         this.input = new LookaheadReader(new StringReader(versionRangeString));
         this.versionRangeString = versionRangeString;
     }
-    
+
     /**
      * Parses the provided version range string to a {@link VersionRange}.
      *
@@ -178,69 +252,36 @@ public class VersionRangeParser {
     @NotNull
     @Contract(value = "-> new", pure = true)
     public VersionRange parse() throws ParseException {
-        if (input.current().is(OPEN_BRACKET, OPEN_PAREN))
+        if (this.input.current().is(OPEN_BRACKET, OPEN_PAREN))
             return parseVersionRange();
+        else if (this.input.current().is(GREATER_THAN, LESS_THAN))
+            return parseVersionComparison();
+        else if (this.input.current().is(CARET))
+            return parseVersionCaret();
         else
             return parseVersionGlob();
     }
-    
+
+    @NotNull
     private VersionRange parseVersionRange() throws ParseException {
-        boolean startInclusive = input.consume().is(OPEN_BRACKET);
+        boolean startInclusive = this.input.consume().is(OPEN_BRACKET);
         boolean endInclusive;
-        
+
         Version startVersion = null;
         Version endVersion = null;
-        
-        if (input.current().is(COMMA)) {
-            input.consume();
-        } else {
-            StringBuilder sb = new StringBuilder();
-            
-            do {
-                Char consumed = input.consume();
-                
-                if (input.current().isEndOfInput())
-                    throw new ParseException("Found end of input while looking for comma in version range string.", versionRangeString,
-                                             input.current());
-                
-                sb.append(consumed.getValue());
-            } while (!input.current().is(COMMA));
-            
-            try {
-                startVersion = new VersionParser(sb.toString()).parse();
-            } catch (ParseException e) {
-                throw new ParseException(e, versionRangeString, e.getPosition());
-            }
-            
-            Char next = input.consume();
-            
-            if (!next.is(COMMA))
-                throw new ParseException("Was expecting comma after version", versionRangeString, next);
+
+        if (!this.input.current().is(COMMA)) {
+            startVersion = consumeVersionUntil(COMMA);
         }
-        
-        if (input.current().is(CLOSE_BRACKET, CLOSE_PAREN)) {
-            endInclusive = input.consume().is(CLOSE_BRACKET);
+        consumeCharacter(COMMA);
+
+        if (this.input.current().is(CLOSE_BRACKET, CLOSE_PAREN)) {
+            endInclusive = this.input.consume().is(CLOSE_BRACKET);
         } else {
-            StringBuilder sb = new StringBuilder();
-            
-            do {
-                Char consumed = input.consume();
-                
-                if (input.current().isEndOfInput())
-                    throw new ParseException("Found end of input while looking for comma in version range string.", versionRangeString,
-                                             input.current());
-                
-                sb.append(consumed.getValue());
-            } while (!input.current().is(CLOSE_BRACKET, CLOSE_PAREN));
-            
-            try {
-                endVersion = new VersionParser(sb.toString()).parse();
-            } catch (ParseException e) {
-                throw new ParseException(e, versionRangeString, e.getPosition());
-            }
-            
-            Char next = input.consume();
-            
+            endVersion = consumeVersionUntil(CLOSE_BRACKET, CLOSE_PAREN);
+
+            Char next = this.input.consume();
+
             switch (next.getValue()) {
                 case CLOSE_BRACKET:
                     endInclusive = true;
@@ -251,68 +292,156 @@ public class VersionRangeParser {
                 default:
                     throw new ParseException(
                             String.format("Was looking for '%s' or '%s' but couldn't find one", CLOSE_BRACKET, CLOSE_PAREN),
-                            versionRangeString,
-                            next);
+                            this.versionRangeString,
+                            next
+                    );
             }
         }
-        
-        return new VersionRange(startVersion, startInclusive, endVersion, endInclusive);
+
+        consumeEndOfInput();
+        return Versions.getVersionRange(startVersion, startInclusive, endVersion, endInclusive);
     }
-    
+
+    @NotNull
+    private VersionRange parseVersionComparison() throws ParseException {
+        boolean greaterThan = this.input.consume().is(GREATER_THAN);
+        boolean inclusive = this.input.current().is(EQUALS);
+        if (inclusive)
+            consumeCharacter(EQUALS);
+
+        Version version = consumeVersionUntil();
+        consumeEndOfInput();
+
+        if (greaterThan) {
+            return Versions.getVersionRange(version, inclusive, null, true);
+        } else {
+            return Versions.getVersionRange(null, true, version, inclusive);
+        }
+    }
+
+    @NotNull
+    private VersionRange parseVersionCaret() throws ParseException {
+        consumeCharacter(CARET);
+
+        Version lowVersion;
+
+        lowVersion = consumeVersionUntil();
+
+        Version highVersion = highVersionForCaret(lowVersion);
+
+        consumeEndOfInput();
+        return Versions.getVersionRange(lowVersion, true, highVersion, false);
+    }
+
+    @NotNull
+    private Version highVersionForCaret(Version lowVersion) {
+        if (!lowVersion.getMajor().equals(BigInteger.ZERO))
+            return Versions.getVersion(lowVersion.getMajor().add(BigInteger.ONE), BigInteger.ZERO, BigInteger.ZERO);
+        else if (!lowVersion.getMinor().equals(BigInteger.ZERO))
+            return Versions.getVersion(BigInteger.ZERO, lowVersion.getMinor().add(BigInteger.ONE), BigInteger.ZERO);
+        else
+            return Versions.getVersion(BigInteger.ZERO, BigInteger.ZERO, lowVersion.getPatch().add(BigInteger.ONE));
+    }
+
+    @NotNull
     private VersionRange parseVersionGlob() throws ParseException {
+        @Nullable
         Version lowestVersion;
+        @Nullable
         Version highestVersion;
-        
-        if (input.current().is(PLUS)) {
+
+        if (this.input.current().is(PLUS) || this.input.current().is(STAR)) {
+            this.input.consume();
             highestVersion = null;
-            lowestVersion = Versions.getVersion(0, 0, 0);
+            lowestVersion = null;
         } else {
             BigInteger major = new BigInteger(consumeNumber());
-            
+
             consumeCharacter(DOT);
-            if (input.current().is(PLUS)) {
+            if (this.input.current().is(PLUS)) {
+                this.input.consume();
                 lowestVersion = Versions.getVersion(major, BigInteger.ZERO, BigInteger.ZERO);
                 highestVersion = Versions.getVersion(major.add(BigInteger.ONE), BigInteger.ZERO, BigInteger.ZERO);
             } else {
                 BigInteger minor = new BigInteger(consumeNumber());
-                
+
                 consumeCharacter(DOT);
-                if (input.current().is(PLUS)) {
+                if (this.input.current().is(PLUS)) {
+                    this.input.consume();
                     lowestVersion = Versions.getVersion(major, minor, BigInteger.ZERO);
                     highestVersion = Versions.getVersion(major, minor.add(BigInteger.ONE), BigInteger.ZERO);
                 } else {
                     BigInteger patch = new BigInteger(consumeNumber());
-                    
+
                     lowestVersion = Versions.getVersion(major, minor, patch);
                     highestVersion = Versions.getVersion(major, minor, patch.add(BigInteger.ONE));
                 }
             }
         }
-        
-        return new VersionRange(lowestVersion, true, highestVersion, false);
+
+        consumeEndOfInput();
+        return Versions.getVersionRange(lowestVersion, true, highestVersion, false);
     }
-    
-    @SuppressWarnings("DuplicatedCode")
+
+    @NotNull
+    private Version consumeVersionUntil(char... test) {
+        StringBuilder sb = new StringBuilder();
+
+        Char positionBefore = this.input.current();
+        do {
+            sb.append(consumeNotEndOfInput().getValue());
+        } while (test.length != 0 ? !this.input.current().is(test) : !this.input.current().isEndOfInput());
+
+        try {
+            return Versions.parseVersion(sb.toString());
+        } catch (ParseException e) {
+            throw new ParseException(e, this.versionRangeString, e.getPosition().increment(positionBefore.getPos()));
+        }
+    }
+
+    @NotNull
     private String consumeNumber() throws ParseException {
         StringBuilder sb = new StringBuilder();
-        if (!input.current().isDigit())
-            throw new ParseException("Numeric identifier expected.", versionRangeString, input.current());
-        
-        if (input.current().is('0') && input.next().isDigit())
-            throw new ParseException("Numeric identifier must not contain leading zeros.", versionRangeString, input.current());
-        
+        if (!this.input.current().isDigit())
+            throw new ParseException("Numeric identifier expected.", this.versionRangeString, this.input.current());
+
+        if (this.input.current().is('0') && this.input.next().isDigit())
+            throw new ParseException("Numeric identifier must not contain leading zeros.", this.versionRangeString, this.input.current());
+
         do {
-            sb.append(input.consume().getValue());
-        } while (input.current().isDigit());
-        
+            sb.append(consumeNotEndOfInput().getValue());
+        } while (this.input.current().isDigit());
+
         return sb.toString();
     }
-    
+
     private void consumeCharacter(char expected) throws ParseException {
-        if (input.current().is(expected))
-            input.consume();
+        if (this.input.current().is(expected))
+            this.input.consume();
         else
-            throw new ParseException(String.format("Illegal character. Character '%s' expected.", expected),
-                                     versionRangeString, input.current());
+            throw new ParseException(
+                    String.format("Illegal character. Character '%s' expected.", expected),
+                    this.versionRangeString,
+                    this.input.current()
+            );
+    }
+
+    @NotNull
+    private Char consumeNotEndOfInput() {
+        if (this.input.current().isEndOfInput())
+            throw new ParseException(
+                    "Found end of input while parsing version range string.",
+                    this.versionRangeString,
+                    this.input.current()
+            );
+        else
+            return this.input.consume();
+    }
+
+    private void consumeEndOfInput() {
+        if (this.input.current().isEndOfInput())
+            this.input.consume();
+        else
+            throw new ParseException("Illegal character. End of input expected.", this.versionRangeString, this.input.current());
     }
 }

@@ -39,25 +39,25 @@ import static ca.solostudios.strata.Versions.parseVersionRange;
 
 
 public class VersionFormatTest {
-    
+
     @Test
     void testVersionRangeFormat() throws ParseException {
         VersionRange range1 = parseVersionRange("1.2.+");
         VersionRange range2 = parseVersionRange("+");
         VersionRange range3 = parseVersionRange("[,]");
         VersionRange range4 = parseVersionRange("(,)");
-        
+
         assertEquals("[1.2.0,1.3.0)", range1.getFormatted());
-        assertEquals("[0.0.0,)", range2.getFormatted());
+        assertEquals("[,)", range2.getFormatted());
         assertEquals("[,]", range3.getFormatted());
         assertEquals("(,)", range4.getFormatted());
     }
-    
+
     @Test
     void testVersionFormat() throws ParseException {
         Version version1 = parseVersion("1.2.3");
         Version version2 = parseVersion("1.2.3-stuff+abcd");
-        
+
         assertEquals("1.2.3", version1.getFormatted());
         assertEquals("1.2.3-stuff+abcd", version2.getFormatted());
     }

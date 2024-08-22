@@ -33,17 +33,32 @@ package ca.solostudios.strata.parser.tokenizer;
  * Describes a position in a file or a stream based on lines and the character position within the line.
  */
 public interface Position {
-    
+
     /**
      * Represents an unknown position for warnings and errors which cannot be associated with a defined position.
      */
-    Position UNKNOWN = () -> 0;
-    
+    Position UNKNOWN = new Position() {
+        @Override
+        public int getPos() {
+            return 0;
+        }
+
+        @Override
+        public Position increment(int by) {
+            return UNKNOWN;
+        }
+    };
+
     /**
      * Returns the character position within the line of this position
      *
      * @return the one-based character position of this
      */
     int getPos();
-    
+
+    default Position increment() {
+        return increment(1);
+    }
+
+    Position increment(int by);
 }

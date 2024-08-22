@@ -42,9 +42,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Char implements Position {
     private final char value;
-    
+
     private final int pos;
-    
+
     /**
      * Constructs a new Char with the provided value and position
      *
@@ -55,7 +55,7 @@ public class Char implements Position {
         this.value = value;
         this.pos = pos;
     }
-    
+
     /**
      * Checks if the internal value is equal to the given character
      *
@@ -66,7 +66,7 @@ public class Char implements Position {
     public boolean is(char test) {
         return test == value && test != '\0';
     }
-    
+
     /**
      * Checks if the internal value is one of the given characters
      *
@@ -82,7 +82,7 @@ public class Char implements Position {
         }
         return false;
     }
-    
+
     /**
      * Returns the value of this char.
      *
@@ -91,7 +91,7 @@ public class Char implements Position {
     public char getValue() {
         return value;
     }
-    
+
     /**
      * Determines if the value is an alphanumeric identifier (0..9, a..z, A..Z, -)
      *
@@ -100,7 +100,7 @@ public class Char implements Position {
     public boolean isAlphaNumeric() {
         return isLetter() || isDigit() || is('-');
     }
-    
+
     /**
      * Determines if the value is a digit (0..9)
      *
@@ -109,7 +109,7 @@ public class Char implements Position {
     public boolean isDigit() {
         return value >= '0' && value <= '9';
     }
-    
+
     /**
      * Determines if the value is a letter (a..z, A..Z)
      *
@@ -118,7 +118,7 @@ public class Char implements Position {
     public boolean isLetter() {
         return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z');
     }
-    
+
     /**
      * Determines if this instance represents the end of input indicator
      *
@@ -128,7 +128,7 @@ public class Char implements Position {
     public boolean isEndOfInput() {
         return value == '\0';
     }
-    
+
     /**
      * Returns the internal value as string.
      *
@@ -141,7 +141,7 @@ public class Char implements Position {
         }
         return String.valueOf(value);
     }
-    
+
     @Override
     public String toString() {
         if (isEndOfInput()) {
@@ -150,27 +150,32 @@ public class Char implements Position {
             return String.valueOf(value);
         }
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        
+
         Char aChar = (Char) o;
-        
+
         if (value != aChar.value) return false;
         return pos == aChar.pos;
     }
-    
+
     @Override
     public int hashCode() {
         int result = value;
         result = 31 * result + pos;
         return result;
     }
-    
+
     @Override
     public int getPos() {
         return pos;
+    }
+
+    @Override
+    public Position increment(int by) {
+        return new Char('\0', pos + by);
     }
 }
