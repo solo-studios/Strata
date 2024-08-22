@@ -33,9 +33,8 @@ import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import static ca.solostudios.strata.Versions.parseVersion;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class VersionParserTest {
@@ -50,14 +49,45 @@ class VersionParserTest {
                 "2.0.0",
                 "99999999999999999999999.999999999999999999.99999999999999999"
         };
-    
-        for (String version : validVersions)
+
+        for (String version : validVersions) {
             assertDoesNotThrow(() -> {
                 Version ver = parseVersion(version);
-                assertEquals(version, ver.getFormatted());
+                assertEquals(version, ver.getFormatted(), String.format("Version '%s' should be equal to the formatted parsed version '%s' once parsed.", version, ver.getFormatted()));
             }, String.format("Failed during parsing of version '%s'.", version));
+        }
+
+        String[] invalidVersions = {
+                "01.1.1",
+                "1",
+                "1.01.1",
+                "1.1.01",
+                "1.2",
+                "1.2",
+                "1.2. 3",
+                "1.2.3.DEV",
+                "1.2.?",
+                "1._.3",
+                "[.2.3",
+                "alpha",
+                "alpha.",
+                "alpha..",
+                "alpha.1",
+                "alpha.beta",
+                "alpha.beta.1",
+                "alpha_beta",
+                "beta",
+                "v1.2.3"
+        };
+
+        for (String version : invalidVersions) {
+            assertThrows(ParseException.class, () -> {
+                parseVersion(version);
+            }, String.format("Succeeded parsing of version '%s' with invalid core version.", version));
+        }
+
     }
-    
+
     @Test
     void testPreReleaseParsing() {
         String[] validVersions = {
@@ -75,14 +105,47 @@ class VersionParserTest {
                 "10.2.3-DEV-SNAPSHOT",
                 "2.0.1-alpha.1227"
         };
-        
-        for (String version : validVersions)
+
+        for (String version : validVersions) {
             assertDoesNotThrow(() -> {
                 Version ver = parseVersion(version);
-                assertEquals(version, ver.getFormatted());
+                assertEquals(version, ver.getFormatted(), String.format("Version '%s' should be equal to the formatted parsed version '%s' once parsed.", version, ver.getFormatted()));
             }, String.format("Failed during parsing of version '%s'.", version));
+        }
+
+
+        String[] invalidVersions = {
+                "-alpha.",
+                "-invalid",
+                "-invalid.01",
+                "1.0.0-alpha.",
+                "1.0.0-alpha..",
+                "1.0.0-alpha.......1",
+                "1.0.0-alpha......1",
+                "1.0.0-alpha.....1",
+                "1.0.0-alpha....1",
+                "1.0.0-alpha...1",
+                "1.0.0-alpha..1",
+                "1.0.0-alpha_beta",
+                "1.2-RC-SNAPSHOT",
+                "1.2-SNAPSHOT",
+                "1.2.3-0123",
+                "1.2.3-0123.0123",
+                "1.2.3-@",
+                "1.2.3-be$ta",
+                "1.2.3-rc!",
+                "1.2.3-rc.",
+                "1.2.3-rc..",
+                "1.2.3=alpha",
+                "1.2.3~beta",
+                "99999999999999999999999.999999999999999999.99999999999999999----RC-SNAPSHOT.12.09.1--------------------------------..12",
+        };
+
+        for (String version : invalidVersions) {
+            assertThrows(ParseException.class, () -> parseVersion(version), String.format("Succeeded parsing of version '%s' with invalid pre-release.", version));
+        }
     }
-    
+
     @Test
     void testBuildMetadataParsing() {
         String[] validVersions = {
@@ -91,14 +154,32 @@ class VersionParserTest {
                 "1.1.2+meta-valid",
                 "2.0.0+build.1848"
         };
-        
-        for (String version : validVersions)
+
+        for (String version : validVersions) {
             assertDoesNotThrow(() -> {
                 Version ver = parseVersion(version);
-                assertEquals(version, ver.getFormatted());
+                assertEquals(version, ver.getFormatted(), String.format("Version '%s' should be equal to the formatted parsed version '%s' once parsed.", version, ver.getFormatted()));
             }, String.format("Failed during parsing of version '%s'.", version));
+        }
+
+
+        String[] invalidVersions = {
+                "+invalid",
+                "+justmeta",
+                "-1.0.3-gamma+b7718",
+                "1.1.2+.123",
+                "1.1.2+1...123",
+                "1.2.3+@",
+                "1.2.3+b1+b2",
+                "9.8.7+meta+meta",
+                "alpha+beta",
+        };
+
+        for (String version : invalidVersions) {
+            assertThrows(ParseException.class, () -> parseVersion(version), String.format("Succeeded parsing of invalid version '%s'.", version));
+        }
     }
-    
+
     @Test
     void testPreReleaseAndBuildMetadataParsing() {
         String[] validVersions = {
@@ -110,82 +191,26 @@ class VersionParserTest {
                 "1.2.3----RC-SNAPSHOT.12.9.1--.12+788",
                 "2.0.0-rc.1+build.123"
         };
-    
-        for (String version : validVersions)
+
+        for (String version : validVersions) {
             assertDoesNotThrow(() -> {
                 Version ver = parseVersion(version);
-                assertEquals(version, ver.getFormatted());
+                assertEquals(version, ver.getFormatted(), String.format("Version '%s' should be equal to the formatted parsed version '%s' once parsed.", version, ver.getFormatted()));
             }, String.format("Failed during parsing of version '%s'.", version));
-    }
-    
-    @Test
-    void testInvalidVersions() throws ParseException {
+        }
+
+
         String[] invalidVersions = {
-                "+invalid",
-                "+justmeta",
-                "-1.0.3-gamma+b7718",
-                "-alpha.",
-                "-invalid",
                 "-invalid+invalid",
-                "-invalid.01",
-                "01.1.1",
-                "1",
-                "1.0.0-alpha.",
-                "1.0.0-alpha..",
-                "1.0.0-alpha.......1",
-                "1.0.0-alpha......1",
-                "1.0.0-alpha.....1",
-                "1.0.0-alpha....1",
-                "1.0.0-alpha...1",
-                "1.0.0-alpha..1",
-                "1.0.0-alpha_beta",
-                "1.01.1",
-                "1.1.01",
-                "1.1.2+.123",
-                "1.1.2+1...123",
-                "1.2",
-                "1.2",
-                "1.2-RC-SNAPSHOT",
-                "1.2-SNAPSHOT",
-                "1.2. 3",
-                "1.2.3+@",
-                "1.2.3+b1+b2",
                 "1.2.3-+",
-                "1.2.3-0123",
-                "1.2.3-0123.0123",
-                "1.2.3-@",
                 "1.2.3-a+b..",
                 "1.2.3-b.+b",
-                "1.2.3-be$ta",
-                "1.2.3-rc!",
-                "1.2.3-rc.",
-                "1.2.3-rc..",
-                "1.2.3.DEV",
                 "1.2.31.2.3----RC-SNAPSHOT.12.09.1--..12+788",
-                "1.2.3=alpha",
-                "1.2.3~beta",
-                "1.2.?",
-                "1._.3",
-                "9.8.7+meta+meta",
                 "9.8.7-whatever+meta+meta",
-                "99999999999999999999999.999999999999999999.99999999999999999----RC-SNAPSHOT.12.09.1--------------------------------..12",
-                "[.2.3",
-                "alpha",
-                "alpha+beta",
-                "alpha.",
-                "alpha..",
-                "alpha.1",
-                "alpha.beta",
-                "alpha.beta.1",
-                "alpha_beta",
-                "beta",
-                "v1.2.3"
         };
-        
-        for (String version : invalidVersions)
-            assertThrows(ParseException.class, () -> {
-                Version ver = parseVersion(version);
-                assertEquals(version, ver.getFormatted()); // should fail
-            }, String.format("Succeeded parsing of invalid version '%s'.", version));
+
+        for (String version : invalidVersions) {
+            assertThrows(ParseException.class, () -> parseVersion(version), String.format("Succeeded parsing of version '%s' with invalid pre-release and build metadata.", version));
+        }
     }
 }
