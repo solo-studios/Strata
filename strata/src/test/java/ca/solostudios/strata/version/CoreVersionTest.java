@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file CoreVersionTest.java is part of Strata
- * Last modified on 10-03-2022 12:04 p.m.
+ * The file CoreVersionTest.java is part of Strata.
+ * Last modified on 22-08-2024 07:13 p.m.
  *
  * MIT License
  *
@@ -37,32 +37,32 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class CoreVersionTest {
-    
+
     private static BigInteger bigInteger(long integer) {
         return BigInteger.valueOf(integer);
     }
-    
+
     @Test
     void testGetComponents() {
         CoreVersion coreVersion = new CoreVersion(bigInteger(1), bigInteger(2), bigInteger(3));
-        
+
         assertEquals(coreVersion.getMajor(), bigInteger(1));
         assertEquals(coreVersion.getMinor(), bigInteger(2));
         assertEquals(coreVersion.getPatch(), bigInteger(3));
     }
-    
+
     @Test
     void testCompareTo() {
         CoreVersion coreVersion = new CoreVersion(bigInteger(1), bigInteger(2), bigInteger(3));
         CoreVersion otherCoreVersion = new CoreVersion(bigInteger(2), bigInteger(3), bigInteger(4));
-        
+
         assertEquals(-1, coreVersion.compareTo(otherCoreVersion));
     }
-    
+
     @Test
     void testGetFormatted() {
         CoreVersion coreVersion = new CoreVersion(bigInteger(1), bigInteger(2), bigInteger(3));
-        
+
         assertEquals("1.2.3", coreVersion.getFormatted());
     }
 }

@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file VersionRange.java is part of Strata
- * Last modified on 19-06-2022 03:52 p.m.
+ * The file VersionRange.java is part of Strata.
+ * Last modified on 22-08-2024 07:13 p.m.
  *
  * MIT License
  *

@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file VersionOrderTest.java is part of Strata
- * Last modified on 10-03-2022 11:57 a.m.
+ * The file VersionOrderTest.java is part of Strata.
+ * Last modified on 22-08-2024 07:14 p.m.
  *
  * MIT License
  *
@@ -37,9 +37,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import static ca.solostudios.strata.Versions.parseVersion;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class VersionOrderTest {

@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file VersionComparisonTest.java is part of Strata
- * Last modified on 10-03-2022 11:57 a.m.
+ * The file VersionComparisonTest.java is part of Strata.
+ * Last modified on 22-08-2024 07:14 p.m.
  *
  * MIT License
  *
@@ -34,10 +34,9 @@ import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import static ca.solostudios.strata.Versions.getVersionRange;
 import static ca.solostudios.strata.Versions.parseVersion;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class VersionComparisonTest {
@@ -46,64 +45,64 @@ public class VersionComparisonTest {
         Version ver1 = parseVersion("1.0.0");
         Version ver2 = parseVersion("2.0.0");
         Version ver3 = parseVersion("1.5.0");
-    
+
         VersionRange range = getVersionRange(ver1, false, ver2, false);
-    
+
         assertTrue(range.isSatisfiedBy(ver3));
     }
-    
+
     @Test
     void testSimpleOutside() throws ParseException {
         Version ver1 = parseVersion("1.0.0");
         Version ver2 = parseVersion("2.0.0");
         Version ver3 = parseVersion("3.0.0");
-    
+
         VersionRange range = getVersionRange(ver1, false, ver2, false);
-    
+
         assertFalse(range.isSatisfiedBy(ver3));
     }
-    
+
     @Test
     void testInclusiveStart() throws ParseException {
         Version ver1 = parseVersion("1.0.0");
         Version ver2 = parseVersion("2.0.0");
         Version ver3 = parseVersion("1.0.0");
-    
+
         VersionRange range = getVersionRange(ver1, true, ver2, false);
-    
+
         assertTrue(range.isSatisfiedBy(ver3));
     }
-    
+
     @Test
     void testExclusiveStart() throws ParseException {
         Version ver1 = parseVersion("1.0.0");
         Version ver2 = parseVersion("2.0.0");
         Version ver3 = parseVersion("1.0.0");
-    
+
         VersionRange range = getVersionRange(ver1, false, ver2, false);
-    
+
         assertFalse(range.isSatisfiedBy(ver3));
     }
-    
+
     @Test
     void testInclusiveEnd() throws ParseException {
         Version ver1 = parseVersion("1.0.0");
         Version ver2 = parseVersion("2.0.0");
         Version ver3 = parseVersion("2.0.0");
-    
+
         VersionRange range = getVersionRange(ver1, false, ver2, true);
-    
+
         assertTrue(range.isSatisfiedBy(ver3));
     }
-    
+
     @Test
     void testExclusiveEnd() throws ParseException {
         Version ver1 = parseVersion("1.0.0");
         Version ver2 = parseVersion("2.0.0");
         Version ver3 = parseVersion("2.0.0");
-    
+
         VersionRange range = getVersionRange(ver1, false, ver2, false);
-    
+
         assertFalse(range.isSatisfiedBy(ver3));
     }
 }

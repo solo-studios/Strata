@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file Lookahead.java is part of Strata
- * Last modified on 23-02-2022 12:23 p.m.
+ * The file Lookahead.java is part of Strata.
+ * Last modified on 22-08-2024 07:13 p.m.
  *
  * MIT License
  *

@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file KotlinIdentityTests.kt is part of Strata
- * Last modified on 23-02-2022 12:34 p.m.
+ * The file KotlinIdentityTests.kt is part of Strata.
+ * Last modified on 22-08-2024 07:13 p.m.
  *
  * MIT License
  *
@@ -64,22 +64,22 @@ class KotlinIdentityTests {
     @Test
     fun testToVersionIdentity() {
         val versionStrings = listOf("3.0.0", "0.2.5", "0.3.0", "0.1.3", "0.0.3-abcd", "0.0.1-8aw3-21312", "0.0.0-abcde+0yu9awe3")
-        
+
         val correctVersions = versionStrings.map { Versions.parseVersion(it) }
-        
+
         val kotlinVersions = versionStrings.map { it.toVersion() }
-        
+
         assertContentEquals(correctVersions, kotlinVersions, "Kotlin .toVersion strings do not match")
     }
-    
+
     @Test
     fun testToVersionRangeIdentity() {
         val versionRangeStrings = listOf("(,)", "(1.2.3,)", "[1.2.3,]", "(,4.5.6)", "(,4.5.6]", "1.2.3", "1.2.+", "1.+", "+")
-        
+
         val correctVersionRanges = versionRangeStrings.map { Versions.parseVersionRange(it) }
-        
+
         val kotlinVersionRanges = versionRangeStrings.map { it.toVersionRange() }
-        
+
         assertContentEquals(correctVersionRanges, kotlinVersionRanges, "Kotlin .toVersionRange strings do not match")
     }
 }

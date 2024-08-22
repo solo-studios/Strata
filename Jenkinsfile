@@ -2,8 +2,8 @@
  * Strata - A library for parsing and comparing version strings
  * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file Jenkinsfile is part of Strata
- * Last modified on 15-08-2024 03:30 p.m.
+ * The file Jenkinsfile is part of Strata.
+ * Last modified on 22-08-2024 07:13 p.m.
  *
  * MIT License
  *

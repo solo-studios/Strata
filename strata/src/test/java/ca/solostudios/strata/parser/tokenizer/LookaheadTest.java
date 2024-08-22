@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file LookaheadTest.java is part of Strata
- * Last modified on 10-03-2022 11:48 a.m.
+ * The file LookaheadTest.java is part of Strata.
+ * Last modified on 22-08-2024 07:13 p.m.
  *
  * MIT License
  *
@@ -38,72 +38,72 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class LookaheadTest {
-    
+
     private static LookaheadReader stringToLookahead(String stringToRead) {
         return new LookaheadReader(new StringReader(stringToRead));
     }
-    
+
     @Test
     void testNext() throws ParseException {
         String testString = "testing 123";
-        
+
         LookaheadReader reader = stringToLookahead(testString);
-        
+
         char[] charsMinusFirst = Arrays.copyOfRange(testString.toCharArray(), 1, testString.length());
         for (char realChar : charsMinusFirst) {
             assertEquals(realChar, reader.next().getValue());
-            
+
             reader.consume();
         }
-        
+
         assertTrue(reader.next().isEndOfInput());
     }
-    
+
     @Test
     void testCurrent() throws ParseException {
         String testString = "testing 123";
-        
+
         LookaheadReader reader = stringToLookahead(testString);
-        
+
         for (char realChar : testString.toCharArray()) {
             assertEquals(realChar, reader.current().getValue());
-            
+
             reader.consume(); // consume character
         }
-        
+
         // reader.consume(); // consume last character
-        
+
         assertTrue(reader.current().isEndOfInput());
     }
-    
+
     @Test
     void testConsume() throws ParseException {
         String testString = "testing 123";
-        
+
         LookaheadReader reader = stringToLookahead(testString);
-        
+
         for (char realChar : testString.toCharArray()) {
             assertEquals(realChar, reader.consume().getValue());
         }
-        
+
         assertTrue(reader.consume().isEndOfInput());
     }
-    
+
     @Test
     void testFetch() throws ParseException {
         String testString = "testing 123";
-        
+
         LookaheadReader reader = stringToLookahead(testString);
-        
+
         for (char realChar : testString.toCharArray()) {
             Char fetched = reader.fetch();
             assertNotNull(fetched);
             assertEquals(realChar, fetched.getValue());
         }
-        
+
         assertNull(reader.fetch());
     }
-    
+
     @Test
     void testEndOfInput() throws ParseException {
         LookaheadReader reader = stringToLookahead("");

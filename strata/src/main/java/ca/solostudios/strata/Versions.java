@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file Versions.java is part of Strata
- * Last modified on 23-02-2022 12:23 p.m.
+ * The file Versions.java is part of Strata.
+ * Last modified on 22-08-2024 07:13 p.m.
  *
  * MIT License
  *
@@ -52,7 +52,7 @@ import java.math.BigInteger;
 public final class Versions {
     private Versions() {
     }
-    
+
     /**
      * Constructs a new version from the provided values.
      *
@@ -71,7 +71,7 @@ public final class Versions {
                            PreRelease.NULL,
                            BuildMetadata.NULL);
     }
-    
+
     /**
      * Constructs a new version from the provided values.
      *
@@ -86,7 +86,7 @@ public final class Versions {
     public static Version getVersion(@NotNull BigInteger major, @NotNull BigInteger minor, @NotNull BigInteger patch) {
         return new Version(new CoreVersion(major, minor, patch), PreRelease.NULL, BuildMetadata.NULL);
     }
-    
+
     /**
      * Constructs a new version from the provided values.
      *
@@ -103,7 +103,7 @@ public final class Versions {
                                      @NotNull PreRelease preRelease) {
         return new Version(new CoreVersion(major, minor, patch), preRelease, BuildMetadata.NULL);
     }
-    
+
     /**
      * Constructs a new version from the provided values.
      *
@@ -120,7 +120,7 @@ public final class Versions {
                                      @NotNull BuildMetadata buildMetadata) {
         return new Version(new CoreVersion(major, minor, patch), PreRelease.NULL, buildMetadata);
     }
-    
+
     /**
      * Constructs a new version from the provided values.
      *
@@ -138,7 +138,7 @@ public final class Versions {
                                      @NotNull PreRelease preRelease, @NotNull BuildMetadata buildMetadata) {
         return new Version(new CoreVersion(major, minor, patch), preRelease, buildMetadata);
     }
-    
+
     /**
      * Parses a version from the provided string, according to the semver spec as listed in {@link VersionParser}
      *
@@ -155,7 +155,7 @@ public final class Versions {
     public static Version parseVersion(@NotNull String versionString) throws ParseException {
         return new VersionParser(versionString).parse();
     }
-    
+
     /**
      * Parses a version from the provided {@code coreVersion}, {@code preReleaseVersion}, and {@code buildMetadataVersion}, according to the
      * semver spec as listed in {@link VersionParser}.
@@ -178,17 +178,17 @@ public final class Versions {
                                                   (preReleaseVersion == null ? 0 : preReleaseVersion.length()) +
                                                   (buildMetadataVersion == null ? 0 : buildMetadataVersion.length()));
         builder.append(coreVersion);
-        
+
         if (preReleaseVersion != null)
             builder.append('-')
                    .append(preReleaseVersion);
         if (buildMetadataVersion != null)
             builder.append('+')
                    .append(buildMetadataVersion);
-        
+
         return new VersionParser(builder.toString()).parse();
     }
-    
+
     /**
      * Parses a {@link VersionRange} from the provided string, according to the specification described in {@link VersionRangeParser}.
      *
@@ -205,7 +205,7 @@ public final class Versions {
     public static VersionRange parseVersionRange(@NotNull String versionString) throws ParseException {
         return new VersionRangeParser(versionString).parse();
     }
-    
+
     /**
      * Constructs a new version range from the provided values.
      *

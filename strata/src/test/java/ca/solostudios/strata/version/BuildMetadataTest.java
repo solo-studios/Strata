@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file BuildMetadataTest.java is part of Strata
- * Last modified on 10-03-2022 11:58 a.m.
+ * The file BuildMetadataTest.java is part of Strata.
+ * Last modified on 22-08-2024 07:13 p.m.
  *
  * MIT License
  *
@@ -35,24 +35,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class BuildMetadataTest {
-    
+
     @Test
     void testGetBuildMetadata() {
         String testString = "testing";
         BuildMetadata metadata = new BuildMetadata(testString);
-        
+
         assertEquals(testString, metadata.getBuildMetadata());
-        
+
         assertEquals("", BuildMetadata.NULL.getBuildMetadata());
     }
-    
+
     @Test
     void testGetFormatted() {
         String testString = "testing";
         BuildMetadata metadata = new BuildMetadata(testString);
-        
+
         assertEquals(String.format("+%s", testString), metadata.getFormatted());
-        
+
         assertEquals("", BuildMetadata.NULL.getFormatted());
     }
 }

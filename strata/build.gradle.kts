@@ -2,8 +2,8 @@
  * Strata - A library for parsing and comparing version strings
  * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file build.gradle.kts is part of Strata
- * Last modified on 06-08-2024 12:57 a.m.
+ * The file build.gradle.kts is part of Strata.
+ * Last modified on 22-08-2024 07:13 p.m.
  *
  * MIT License
  *

@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file VersionFormatTest.java is part of Strata
- * Last modified on 19-06-2022 03:51 p.m.
+ * The file VersionFormatTest.java is part of Strata.
+ * Last modified on 22-08-2024 07:14 p.m.
  *
  * MIT License
  *
@@ -32,10 +32,9 @@ package ca.solostudios.strata.version;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import static ca.solostudios.strata.Versions.parseVersion;
 import static ca.solostudios.strata.Versions.parseVersionRange;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class VersionFormatTest {

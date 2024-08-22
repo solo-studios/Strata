@@ -1,9 +1,9 @@
 /*
  * Strata - A library for parsing and comparing version strings
- * Copyright (c) 2021-2022 solonovamax <solonovamax@12oclockpoint.com>
+ * Copyright (c) 2021-2024 solonovamax <solonovamax@12oclockpoint.com>
  *
- * The file VersionPerformanceTest.java is part of Strata
- * Last modified on 24-02-2022 12:11 p.m.
+ * The file VersionPerformanceTest.java is part of Strata.
+ * Last modified on 22-08-2024 07:13 p.m.
  *
  * MIT License
  *
@@ -54,7 +54,7 @@ import static ca.solostudios.strata.Versions.parseVersionRange;
 @Fork(2)
 public class VersionPerformanceTest {
     private static final int ITERATIONS = 1000;
-    
+
     @Benchmark
     @OperationsPerInvocation(ITERATIONS)
     public void testVersionParseSpeed(Blackhole blackhole) throws ParseException {
@@ -63,7 +63,7 @@ public class VersionPerformanceTest {
             blackhole.consume(version);
         }
     }
-    
+
     @Benchmark
     @OperationsPerInvocation(ITERATIONS)
     public void testVersionBoundedRangeParseSpeed(Blackhole blackhole) throws ParseException {
@@ -72,7 +72,7 @@ public class VersionPerformanceTest {
             blackhole.consume(range);
         }
     }
-    
+
     @Benchmark
     @OperationsPerInvocation(ITERATIONS)
     public void testVersionGlobRangeParseSpeed(Blackhole blackhole) throws ParseException {
