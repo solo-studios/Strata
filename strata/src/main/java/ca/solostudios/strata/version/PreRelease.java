@@ -31,6 +31,7 @@ package ca.solostudios.strata.version;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -48,22 +49,24 @@ public final class PreRelease implements Comparable<PreRelease>, Formattable {
      * An empty pre-release instance used it no pre-release is provided.
      */
     public static final PreRelease NULL = new PreRelease(Collections.emptyList());
-    
+
     @NotNull
     private final List<PreReleaseIdentifier> identifiers;
-    
+
     /**
      * Constructs a new pre-release with the provided identifiers.
      *
      * @param identifiers The identifiers for this pre-release.
      */
+    @Contract(pure = true)
     public PreRelease(@NotNull List<PreReleaseIdentifier> identifiers) {
         this.identifiers = identifiers;
     }
-    
+
     @Override
+    @Contract(pure = true)
     public int compareTo(@NotNull PreRelease o) {
-        if (identifiers.isEmpty()) {
+        if (this.identifiers.isEmpty()) {
             if (o.identifiers.isEmpty())
                 return 0;
             else
@@ -71,72 +74,79 @@ public final class PreRelease implements Comparable<PreRelease>, Formattable {
         } else if (o.identifiers.isEmpty()) {
             return -1;
         }
-        
+
         int i = 0;
         int comparison;
         do {
-            if (identifiers.size() <= i)
+            if (this.identifiers.size() <= i)
                 if (o.identifiers.size() <= i)
                     return 0;
                 else
                     return -1;
             else if (o.identifiers.size() <= i)
                 return 1;
-            
-            comparison = identifiers.get(i).compareTo(o.identifiers.get(i));
+
+            comparison = this.identifiers.get(i).compareTo(o.identifiers.get(i));
             i++;
         } while (comparison == 0);
         return comparison;
     }
-    
-    @Override
-    public String toString() {
-        return String.format("PreRelease{identifiers=%s}", identifiers);
-    }
-    
+
     /**
      * The internal identifiers
      *
      * @return The internal identifies of this pre-release
      */
+    @NotNull
+    @UnmodifiableView
+    @Contract(pure = true)
     public List<PreReleaseIdentifier> getIdentifiers() {
-        return Collections.unmodifiableList(identifiers);
+        return Collections.unmodifiableList(this.identifiers);
     }
-    
+
     @NotNull
     @Override
+    @Contract(pure = true)
     public String getFormatted() {
-        if (identifiers.isEmpty()) {
+        if (this.identifiers.isEmpty()) {
             return "";
         } else {
-            Iterator<PreReleaseIdentifier> iterator = identifiers.listIterator();
+            Iterator<PreReleaseIdentifier> iterator = this.identifiers.listIterator();
             StringBuilder builder = new StringBuilder();
-            
+
             if (iterator.hasNext()) {
                 builder.append('-').append(iterator.next().getFormatted());
             }
-            
+
             while (iterator.hasNext()) {
                 builder.append('.').append(iterator.next().getFormatted());
             }
-            
+
             return builder.toString();
         }
     }
-    
+
+    @Override
+    @Contract(pure = true)
+    public int hashCode() {
+        return this.identifiers.hashCode();
+    }
+
     @Override
     @Contract(value = "null -> false", pure = true)
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        
+
         PreRelease that = (PreRelease) o;
-        
-        return identifiers.equals(that.identifiers);
+
+        return this.identifiers.equals(that.identifiers);
     }
-    
+
+    @NotNull
     @Override
-    public int hashCode() {
-        return identifiers.hashCode();
+    @Contract(pure = true)
+    public String toString() {
+        return String.format("PreRelease{identifiers=%s}", this.identifiers);
     }
 }

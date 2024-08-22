@@ -236,6 +236,7 @@ public class VersionRangeParser {
      *
      * @param versionRangeString The version range string to parse
      */
+    @Contract(pure = true)
     public VersionRangeParser(String versionRangeString) {
         this.input = new LookaheadReader(new StringReader(versionRangeString));
         this.versionRangeString = versionRangeString;
@@ -245,7 +246,6 @@ public class VersionRangeParser {
      * Parses the provided version range string to a {@link VersionRange}.
      *
      * @return The {@link Version} parsed from the string this object was instantated with.
-     *
      * @throws ParseException If an exception occurred during the parsing of the version. If taking user input, the message from this
      *                        exception is highly useful and should be returned to the user.
      */

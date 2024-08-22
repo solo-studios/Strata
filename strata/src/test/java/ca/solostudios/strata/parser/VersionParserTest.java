@@ -81,9 +81,7 @@ class VersionParserTest {
         };
 
         for (String version : invalidVersions) {
-            assertThrows(ParseException.class, () -> {
-                parseVersion(version);
-            }, String.format("Succeeded parsing of version '%s' with invalid core version.", version));
+            assertThrows(ParseException.class, () -> parseVersion(version), String.format("Succeeded parsing of version '%s' with invalid core version.", version));
         }
 
     }

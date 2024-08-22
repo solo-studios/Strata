@@ -127,32 +127,32 @@ import java.util.List;
  */
 public final class VersionParser {
     private static final char PLUS = '+';
-    
+
     private static final char DOT = '.';
-    
+
     private static final char DASH = '-';
-    
+
     @NotNull
     private final LookaheadReader input;
-    
+
     @NotNull
     private final String versionString;
-    
+
     /**
      * Constructs a new version parser with the provided string to parse.
      *
      * @param versionString The version string to parse.
      */
-    public VersionParser(@NotNull String versionString) {
+  @Contract(pure = true)
+  public VersionParser(@NotNull String versionString) {
         this.input = new LookaheadReader(new StringReader(versionString));
         this.versionString = versionString;
     }
-    
+
     /**
      * Parses the provided version string to a {@link Version}.
      *
      * @return The {@link Version} parsed from the string this object was instantiated with.
-     *
      * @throws ParseException If an exception occurred during the parsing of the version. If taking user input, the message from this
      *                        exception is highly useful and should be returned to the user.
      */
@@ -162,27 +162,28 @@ public final class VersionParser {
         CoreVersion coreVersion = parseCoreVersion();
         PreRelease preRelease = PreRelease.NULL;
         BuildMetadata buildMetadata = BuildMetadata.NULL;
-        
-        Char next = input.consume();
-        
+
+        Char next = this.input.consume();
+
         if (next.is(DASH)) {
             preRelease = parsePreRelease();
-            
-            next = input.consume();
+
+            next = this.input.consume();
         }
-        
+
         if (next.is(PLUS)) {
             buildMetadata = parseBuildMetadata();
-            
-            next = input.consume();
+
+            next = this.input.consume();
         }
-        
+
         if (next.isEndOfInput())
             return new Version(coreVersion, preRelease, buildMetadata);
         else
-            throw new ParseException("Expected end of version. Illegal character found.", versionString, next);
+            throw new ParseException("Expected end of version. Illegal character found.", this.versionString, next);
     }
-    
+
+    @NotNull
     private CoreVersion parseCoreVersion() throws ParseException {
         BigInteger major = new BigInteger(consumeNumber());
         consumeCharacter(DOT);
@@ -191,98 +192,98 @@ public final class VersionParser {
         BigInteger patch = new BigInteger(consumeNumber());
         return new CoreVersion(major, minor, patch);
     }
-    
+
+    @NotNull
     private PreRelease parsePreRelease() throws ParseException {
         List<PreReleaseIdentifier> identifiers = new ArrayList<>();
-        
+
         identifiers.add(parsePreReleaseIdentifier());
-        
-        while (input.current().is('.')) {
-            input.consume();
-            
+
+        while (this.input.current().is('.')) {
+            this.input.consume();
+
             identifiers.add(parsePreReleaseIdentifier());
         }
-        
+
         return new PreRelease(identifiers);
     }
-    
+
+    @NotNull
     private PreReleaseIdentifier parsePreReleaseIdentifier() throws ParseException {
         if (lookaheadAlphaNumeric())
             return new PreReleaseIdentifier.AlphaNumericalPreReleaseIdentifier(consumeAlphaNumeric());
         else
             return new PreReleaseIdentifier.NumericalPreReleaseIdentifier(new BigInteger(consumeNumber()));
     }
-    
-    private PreReleaseIdentifier.AlphaNumericalPreReleaseIdentifier parseAlphaNumericPreReleaseIdentifier() throws ParseException {
-        return new PreReleaseIdentifier.AlphaNumericalPreReleaseIdentifier(consumeAlphaNumeric());
-    }
-    
+
+    @NotNull
     private BuildMetadata parseBuildMetadata() throws ParseException {
         StringBuilder sb = new StringBuilder();
-        if (!(input.current().isAlphaNumeric()))
-            throw new ParseException("Alpha-Numeric identifier expected.", versionString, input.current());
-        
+        if (!(this.input.current().isAlphaNumeric()))
+            throw new ParseException("Alpha-Numeric identifier expected.", this.versionString, this.input.current());
+
         do {
-            Char consumed = input.consume();
+            Char consumed = this.input.consume();
             if (consumed.is(DOT)) {
-                if (input.current().is(DOT))
-                    throw new ParseException("Alpha-Numeric identifier expected, but found period.", versionString, input.current());
-                if (input.current().isEndOfInput())
-                    throw new ParseException("Alpha-Numeric identifier expected, but found end of input.", versionString, input.current());
+                if (this.input.current().is(DOT))
+                    throw new ParseException("Alpha-Numeric identifier expected, but found period.", this.versionString, this.input.current());
+                if (this.input.current().isEndOfInput())
+                    throw new ParseException("Alpha-Numeric identifier expected, but found end of input.", this.versionString, this.input.current());
             }
-            
+
             sb.append(consumed.getValue());
-        } while (input.current().isAlphaNumeric() || input.current().is(DOT));
-        
+        } while (this.input.current().isAlphaNumeric() || this.input.current().is(DOT));
+
         return new BuildMetadata(sb.toString());
     }
-    
-    @SuppressWarnings("DuplicatedCode")
+
+    @NotNull
     private String consumeNumber() throws ParseException {
         StringBuilder sb = new StringBuilder();
-        if (!input.current().isDigit())
-            throw new ParseException("Numeric identifier expected.", versionString, input.current());
-        
-        if (input.current().is('0') && input.next().isDigit())
-            throw new ParseException("Numeric identifier must not contain leading zeros.", versionString, input.current());
-        
+        if (!this.input.current().isDigit())
+            throw new ParseException("Numeric identifier expected.", this.versionString, this.input.current());
+
+        if (this.input.current().is('0') && this.input.next().isDigit())
+            throw new ParseException("Numeric identifier must not contain leading zeros.", this.versionString, this.input.current());
+
         do {
-            sb.append(input.consume().getValue());
-        } while (input.current().isDigit());
-        
+            sb.append(this.input.consume().getValue());
+        } while (this.input.current().isDigit());
+
         return sb.toString();
     }
-    
+
     private boolean lookaheadAlphaNumeric() throws ParseException {
         boolean foundNonDigit = false;
-        
+
         for (int i = 0; !foundNonDigit; i++) {
-            foundNonDigit = input.next(i).isLetter() || input.next(i).is(DASH);
-            
-            if (!input.next(i).isAlphaNumeric())
+            foundNonDigit = this.input.next(i).isLetter() || this.input.next(i).is(DASH);
+
+            if (!this.input.next(i).isAlphaNumeric())
                 return foundNonDigit;
         }
-        
+
         return true;
     }
-    
+
+    @NotNull
     private String consumeAlphaNumeric() throws ParseException {
         StringBuilder sb = new StringBuilder();
-        if (!(input.current().isAlphaNumeric()))
-            throw new ParseException("Alpha-Numeric identifier expected.", versionString, input.current());
-        
+        if (!(this.input.current().isAlphaNumeric()))
+            throw new ParseException("Alpha-Numeric identifier expected.", this.versionString, this.input.current());
+
         do {
-            sb.append(input.consume().getValue());
-        } while (input.current().isAlphaNumeric());
-        
+            sb.append(this.input.consume().getValue());
+        } while (this.input.current().isAlphaNumeric());
+
         return sb.toString();
     }
-    
+
     private void consumeCharacter(char expected) throws ParseException {
-        if (input.current().is(expected))
-            input.consume();
+        if (this.input.current().is(expected))
+            this.input.consume();
         else
             throw new ParseException(String.format("Illegal character. Character '%s' expected.", expected),
-                                     versionString, input.current());
+                    this.versionString, this.input.current());
     }
 }

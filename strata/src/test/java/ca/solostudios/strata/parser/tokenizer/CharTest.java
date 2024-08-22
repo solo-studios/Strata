@@ -41,10 +41,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CharTest {
     private List<Pair<Character, Char>> charList;
-    
+
     @Test
     void testCharIs() {
-        for (Pair<Character, Char> charPair : charList) {
+        for (Pair<Character, Char> charPair : this.charList) {
             char realChar = charPair.first;
             Char actualChar = charPair.second;
             if (realChar != '\0')
@@ -53,92 +53,92 @@ class CharTest {
                 assertFalse(actualChar.is(realChar));
         }
     }
-    
+
     @Test
     void testCharGetValue() {
-        for (Pair<Character, Char> charPair : charList) {
+        for (Pair<Character, Char> charPair : this.charList) {
             char realChar = charPair.first;
             Char actualChar = charPair.second;
-            
+
             assertEquals(realChar, actualChar.getValue());
         }
     }
-    
+
     @Test
     void testCharGetPos() {
-        for (int i = 0; i < charList.size(); i++) {
-            Char actualChar = charList.get(i).second;
-            
+        for (int i = 0; i < this.charList.size(); i++) {
+            Char actualChar = this.charList.get(i).second;
+
             assertEquals(i, actualChar.getPos());
         }
     }
-    
+
     @Test
     void testCharIsAlphaNumeric() {
-        for (Pair<Character, Char> charPair : charList) {
+        for (Pair<Character, Char> charPair : this.charList) {
             char realChar = charPair.first;
             Char actualChar = charPair.second;
-            
+
             assertEquals(Character.isLetterOrDigit(realChar) || realChar == '-', actualChar.isAlphaNumeric());
         }
     }
-    
+
     @Test
     void testCharIsDigit() {
-        for (Pair<Character, Char> charPair : charList) {
+        for (Pair<Character, Char> charPair : this.charList) {
             char realChar = charPair.first;
             Char actualChar = charPair.second;
-            
+
             assertEquals(Character.isDigit(realChar), actualChar.isDigit());
         }
     }
-    
+
     @Test
     void testCharIsLetter() {
-        for (Pair<Character, Char> charPair : charList) {
+        for (Pair<Character, Char> charPair : this.charList) {
             char realChar = charPair.first;
             Char actualChar = charPair.second;
-            
+
             assertEquals(Character.isLetter(realChar), actualChar.isLetter());
         }
     }
-    
+
     @Test
     void testCharIsEndOfInput() {
-        for (Pair<Character, Char> charPair : charList) {
+        for (Pair<Character, Char> charPair : this.charList) {
             char realChar = charPair.first;
             Char actualChar = charPair.second;
-            
+
             assertEquals(realChar == '\0', actualChar.isEndOfInput());
         }
     }
-    
+
     @Test
     void testCharGetStringValue() {
-        for (Pair<Character, Char> charPair : charList) {
+        for (Pair<Character, Char> charPair : this.charList) {
             char realChar = charPair.first;
             Char actualChar = charPair.second;
-            
+
             if (realChar != '\0')
                 assertEquals(Character.toString(realChar), actualChar.getStringValue());
             else // If the char is \0 (used to represent End of Input), then it should be equal to the empty string
                 assertEquals("", actualChar.getStringValue());
         }
     }
-    
+
     @Test
     void testCharToString() {
-        for (Pair<Character, Char> charPair : charList) {
+        for (Pair<Character, Char> charPair : this.charList) {
             char realChar = charPair.first;
             Char actualChar = charPair.second;
-            
+
             if (realChar != '\0')
                 assertEquals(Character.toString(realChar), actualChar.toString());
             else // If the char is \0 (used to represent End of Input), then it should be equal to the empty string
                 assertEquals("<EOI>", actualChar.toString());
         }
     }
-    
+
     @BeforeEach
     void setUp() {
         char[] chars = {
@@ -147,16 +147,16 @@ class CharTest {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                 '-', '_', '\0'
         };
-        
+
         List<Pair<Character, Char>> tempList = new ArrayList<>(chars.length);
-        
+
         for (int i = 0; i < chars.length; i++) {
             tempList.add(i, new Pair<>(chars[i], new Char(chars[i], i)));
         }
-        
-        charList = tempList;
+
+        this.charList = tempList;
     }
-    
+
     /**
      * Utility pair class
      *
@@ -164,34 +164,34 @@ class CharTest {
      * @param <B>
      */
     public static class Pair<A, B> {
-        
+
         public final A first;
-        
+
         public final B second;
-        
+
         public Pair(A fst, B snd) {
             this.first = fst;
             this.second = snd;
         }
-        
+
         @Override
         public String toString() {
-            return String.format("Pair{first=%s, second=%s}", first, second);
+            return String.format("Pair{first=%s, second=%s}", this.first, this.second);
         }
-        
+
         @Override
         public boolean equals(Object o) {
             return this == o ||
                    o != null &&
                    getClass() == o.getClass() &&
-                   Objects.equals(first, ((Pair<?, ?>) o).first) &&
-                   Objects.equals(second, ((Pair<?, ?>) o).second);
-            
+                   Objects.equals(this.first, ((Pair<?, ?>) o).first) &&
+                   Objects.equals(this.second, ((Pair<?, ?>) o).second);
+
         }
-        
+
         @Override
         public int hashCode() {
-            return 31 * (first != null ? first.hashCode() : 0) + (second != null ? second.hashCode() : 0);
+            return 31 * (this.first != null ? this.first.hashCode() : 0) + (this.second != null ? this.second.hashCode() : 0);
         }
     }
 }

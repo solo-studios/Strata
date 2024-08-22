@@ -43,13 +43,13 @@ import java.math.BigInteger;
 public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
     @NotNull
     private final BigInteger major;
-    
+
     @NotNull
     private final BigInteger minor;
-    
+
     @NotNull
     private final BigInteger patch;
-    
+
     /**
      * Constructs a new core version instance.
      *
@@ -57,12 +57,13 @@ public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
      * @param minor The minor version.
      * @param patch The patch version.
      */
+    @Contract(pure = true)
     public CoreVersion(@NotNull BigInteger major, @NotNull BigInteger minor, @NotNull BigInteger patch) {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
     }
-    
+
     /**
      * The major version.
      *
@@ -71,9 +72,9 @@ public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
     @NotNull
     @Contract(pure = true)
     public BigInteger getMajor() {
-        return major;
+        return this.major;
     }
-    
+
     /**
      * The minor version.
      *
@@ -82,9 +83,9 @@ public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
     @NotNull
     @Contract(pure = true)
     public BigInteger getMinor() {
-        return minor;
+        return this.minor;
     }
-    
+
     /**
      * The patch version
      *
@@ -93,14 +94,18 @@ public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
     @NotNull
     @Contract(pure = true)
     public BigInteger getPatch() {
-        return patch;
+        return this.patch;
     }
-    
+
     @Override
-    public String toString() {
-        return String.format("NormalVersion{major=%d, minor=%d, patch=%d}", major, minor, patch);
+    @Contract(pure = true)
+    public int hashCode() {
+        int result = this.major.hashCode();
+        result = 31 * result + this.minor.hashCode();
+        result = 31 * result + this.patch.hashCode();
+        return result;
     }
-    
+
     @Override
     @Contract(value = "null -> false", pure = true)
     public boolean equals(Object o) {
@@ -108,34 +113,35 @@ public final class CoreVersion implements Comparable<CoreVersion>, Formattable {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        
+
         CoreVersion coreVersion = (CoreVersion) o;
-        
-        if (major.compareTo(coreVersion.major) != 0)
+
+        if (this.major.compareTo(coreVersion.major) != 0)
             return false;
-        if (minor.compareTo(coreVersion.minor) != 0)
+        if (this.minor.compareTo(coreVersion.minor) != 0)
             return false;
-        return patch.compareTo(coreVersion.patch) == 0;
+        return this.patch.compareTo(coreVersion.patch) == 0;
     }
-    
-    @Override
-    public int hashCode() {
-        int result = major.hashCode();
-        result = 31 * result + minor.hashCode();
-        result = 31 * result + patch.hashCode();
-        return result;
-    }
-    
-    @Override
-    public int compareTo(@NotNull CoreVersion o) {
-        int majorComparison = major.compareTo(o.major);
-        int minorComparison = minor.compareTo(o.minor);
-        return (majorComparison != 0) ? majorComparison : ((minorComparison != 0) ? minorComparison : patch.compareTo(o.patch));
-    }
-    
+
     @NotNull
     @Override
+    @Contract(pure = true)
+    public String toString() {
+        return String.format("NormalVersion{major=%d, minor=%d, patch=%d}", this.major, this.minor, this.patch);
+    }
+
+    @Override
+    @Contract(pure = true)
+    public int compareTo(@NotNull CoreVersion o) {
+        int majorComparison = this.major.compareTo(o.major);
+        int minorComparison = this.minor.compareTo(o.minor);
+        return (majorComparison != 0) ? majorComparison : ((minorComparison != 0) ? minorComparison : this.patch.compareTo(o.patch));
+    }
+
+    @NotNull
+    @Override
+    @Contract(pure = true)
     public String getFormatted() {
-        return String.format("%s.%s.%s", major, minor, patch);
+        return String.format("%s.%s.%s", this.major, this.minor, this.patch);
     }
 }

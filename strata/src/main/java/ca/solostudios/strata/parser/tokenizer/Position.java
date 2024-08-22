@@ -29,10 +29,31 @@
 package ca.solostudios.strata.parser.tokenizer;
 
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Describes a position in a file or a stream based on lines and the character position within the line.
  */
 public interface Position {
+
+    /**
+     * Returns the character position within the line of this position
+     *
+     * @return the one-based character position of this
+     */
+    @Contract(pure = true)
+    int getPos();
+
+    @NotNull
+    @Contract(pure = true)
+    default Position increment() {
+        return increment(1);
+    }
+
+    @NotNull
+    @Contract(pure = true)
+    Position increment(int by);
 
     /**
      * Represents an unknown position for warnings and errors which cannot be associated with a defined position.
@@ -43,22 +64,12 @@ public interface Position {
             return 0;
         }
 
+        @NotNull
         @Override
+        @Contract(pure = true)
         public Position increment(int by) {
             return UNKNOWN;
         }
     };
-
-    /**
-     * Returns the character position within the line of this position
-     *
-     * @return the one-based character position of this
-     */
-    int getPos();
-
-    default Position increment() {
-        return increment(1);
-    }
-
-    Position increment(int by);
 }
+

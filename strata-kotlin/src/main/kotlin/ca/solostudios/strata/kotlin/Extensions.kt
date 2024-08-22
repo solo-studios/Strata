@@ -95,10 +95,10 @@ public fun Triple<Int, Int, Int>.toVersion(): Version = Versions.getVersion(firs
  */
 @JvmName("toVersionLong")
 public fun Triple<Long, Long, Long>.toVersion(): Version = Versions.getVersion(
-        BigInteger.valueOf(first),
-        BigInteger.valueOf(second),
-        BigInteger.valueOf(third),
-                                                                              )
+    BigInteger.valueOf(first),
+    BigInteger.valueOf(second),
+    BigInteger.valueOf(third),
+)
 
 /**
  * Constructs a new version from the provided values.

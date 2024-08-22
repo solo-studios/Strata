@@ -47,13 +47,13 @@ import java.math.BigInteger;
 public final class Version implements Comparable<Version>, Formattable {
     @NotNull
     private final CoreVersion coreVersion;
-    
+
     @NotNull
     private final PreRelease preRelease;
-    
+
     @NotNull
     private final BuildMetadata buildMetadata;
-    
+
     /**
      * Constructs a new version with the provided core, pre-release, and build data, values.
      *
@@ -67,7 +67,7 @@ public final class Version implements Comparable<Version>, Formattable {
         this.preRelease = preRelease;
         this.buildMetadata = buildMetadata;
     }
-    
+
     /**
      * The major version.
      *
@@ -76,9 +76,9 @@ public final class Version implements Comparable<Version>, Formattable {
     @NotNull
     @Contract(pure = true)
     public BigInteger getMajor() {
-        return coreVersion.getMajor();
+        return this.coreVersion.getMajor();
     }
-    
+
     /**
      * The minor version.
      *
@@ -87,9 +87,9 @@ public final class Version implements Comparable<Version>, Formattable {
     @NotNull
     @Contract(pure = true)
     public BigInteger getMinor() {
-        return coreVersion.getMinor();
+        return this.coreVersion.getMinor();
     }
-    
+
     /**
      * The patch version.
      *
@@ -98,9 +98,9 @@ public final class Version implements Comparable<Version>, Formattable {
     @NotNull
     @Contract(pure = true)
     public BigInteger getPatch() {
-        return coreVersion.getPatch();
+        return this.coreVersion.getPatch();
     }
-    
+
     /**
      * The core version.
      *
@@ -109,9 +109,9 @@ public final class Version implements Comparable<Version>, Formattable {
     @NotNull
     @Contract(pure = true)
     public CoreVersion getCoreVersion() {
-        return coreVersion;
+        return this.coreVersion;
     }
-    
+
     /**
      * The pre-release version.
      *
@@ -120,9 +120,9 @@ public final class Version implements Comparable<Version>, Formattable {
     @NotNull
     @Contract(pure = true)
     public PreRelease getPreRelease() {
-        return preRelease;
+        return this.preRelease;
     }
-    
+
     /**
      * The build metadata.
      *
@@ -131,15 +131,18 @@ public final class Version implements Comparable<Version>, Formattable {
     @NotNull
     @Contract(pure = true)
     public BuildMetadata getBuildMetadata() {
-        return buildMetadata;
+        return this.buildMetadata;
     }
-    
+
     @Override
     @Contract(pure = true)
-    public String toString() {
-        return String.format("Version{normalVersion=%s, preRelease=%s, buildMetadata=%s}", coreVersion, preRelease, buildMetadata);
+    public int hashCode() {
+        int result = this.coreVersion.hashCode();
+        result = 31 * result + this.preRelease.hashCode();
+        result = 31 * result + this.buildMetadata.hashCode();
+        return result;
     }
-    
+
     @Override
     @Contract(value = "null -> false", pure = true)
     public boolean equals(@Nullable Object o) {
@@ -147,32 +150,32 @@ public final class Version implements Comparable<Version>, Formattable {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        
+
         Version version = (Version) o;
-    
-    
-        return coreVersion.equals(version.coreVersion) && 
-               preRelease.equals(version.preRelease) && 
-               buildMetadata.equals(version.buildMetadata);
+
+
+        return this.coreVersion.equals(version.coreVersion) &&
+               this.preRelease.equals(version.preRelease) &&
+               this.buildMetadata.equals(version.buildMetadata);
     }
-    
+
+    @NotNull
     @Override
-    public int hashCode() {
-        int result = coreVersion.hashCode();
-        result = 31 * result + preRelease.hashCode();
-        result = 31 * result + buildMetadata.hashCode();
-        return result;
+    @Contract(pure = true)
+    public String toString() {
+        return String.format("Version{normalVersion=%s, preRelease=%s, buildMetadata=%s}", this.coreVersion, this.preRelease, this.buildMetadata);
     }
-    
+
     @Override
+    @Contract(pure = true)
     public int compareTo(@NotNull Version o) {
-        int normalVersionComparison = coreVersion.compareTo(o.coreVersion);
-        return normalVersionComparison != 0 ? normalVersionComparison : preRelease.compareTo(o.preRelease);
+        int coreVersionComparison = this.coreVersion.compareTo(o.coreVersion);
+        return coreVersionComparison != 0 ? coreVersionComparison : this.preRelease.compareTo(o.preRelease);
     }
-    
+
     @NotNull
     @Override
     public String getFormatted() {
-        return String.format("%s%s%s", coreVersion.getFormatted(), preRelease.getFormatted(), buildMetadata.getFormatted());
+        return String.format("%s%s%s", this.coreVersion.getFormatted(), this.preRelease.getFormatted(), this.buildMetadata.getFormatted());
     }
 }

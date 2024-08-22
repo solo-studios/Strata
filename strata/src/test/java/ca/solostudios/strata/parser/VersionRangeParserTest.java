@@ -308,7 +308,7 @@ class VersionRangeParserTest {
         assertTrue(range.isStartInclusive());
         assertFalse(range.isEndInclusive());
 
-        assertEquals(null, range.getStartVersion());
+        assertNull(range.getStartVersion());
         assertNull(range.getEndVersion());
     }
 

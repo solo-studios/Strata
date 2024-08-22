@@ -29,6 +29,7 @@
 package ca.solostudios.strata.parser.tokenizer;
 
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -51,6 +52,7 @@ public class Char implements Position {
      * @param value The value of this character.
      * @param pos   The position of this character.
      */
+    @Contract(pure = true)
     public Char(char value, int pos) {
         this.value = value;
         this.pos = pos;
@@ -60,23 +62,23 @@ public class Char implements Position {
      * Checks if the internal value is equal to the given character
      *
      * @param test the character to check against
-     *
      * @return {@code true} if the value is equal to the give characters, {@code false} otherwise
      */
+    @Contract(pure = true)
     public boolean is(char test) {
-        return test == value && test != '\0';
+        return test == this.value && test != '\0';
     }
 
     /**
      * Checks if the internal value is one of the given characters
      *
      * @param tests the characters to check against
-     *
      * @return {@code true} if the value equals to one of the give characters, {@code false} otherwise
      */
-    public boolean is(char... tests) {
+    @Contract(pure = true)
+    public boolean is(char @NotNull ... tests) {
         for (char test : tests) {
-            if (test == value && test != '\0') {
+            if (test == this.value && test != '\0') {
                 return true;
             }
         }
@@ -88,8 +90,9 @@ public class Char implements Position {
      *
      * @return the internal value read from the stream
      */
+    @Contract(pure = true)
     public char getValue() {
-        return value;
+        return this.value;
     }
 
     /**
@@ -97,6 +100,7 @@ public class Char implements Position {
      *
      * @return {@code true} if the internal value is a letter, {@code false} otherwise
      */
+    @Contract(pure = true)
     public boolean isAlphaNumeric() {
         return isLetter() || isDigit() || is('-');
     }
@@ -106,8 +110,9 @@ public class Char implements Position {
      *
      * @return {@code true} if the internal value is a digit, {@code false} otherwise
      */
+    @Contract(pure = true)
     public boolean isDigit() {
-        return value >= '0' && value <= '9';
+        return this.value >= '0' && this.value <= '9';
     }
 
     /**
@@ -115,18 +120,20 @@ public class Char implements Position {
      *
      * @return {@code true} if the internal value is a letter, {@code false} otherwise
      */
+    @Contract(pure = true)
     public boolean isLetter() {
-        return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z');
+        return (this.value >= 'a' && this.value <= 'z') || (this.value >= 'A' && this.value <= 'Z');
     }
 
     /**
      * Determines if this instance represents the end of input indicator
      *
      * @return {@code true} if this instance represents the end of the underlying input,
-     *         {@code false} otherwise
+     * {@code false} otherwise
      */
+    @Contract(pure = true)
     public boolean isEndOfInput() {
-        return value == '\0';
+        return this.value == '\0';
     }
 
     /**
@@ -135,47 +142,55 @@ public class Char implements Position {
      * @return the internal character as string or {@code ""} if this is the end of input indicator
      */
     @NotNull
+    @Contract(pure = true)
     public String getStringValue() {
         if (isEndOfInput()) {
             return "";
         }
-        return String.valueOf(value);
+        return String.valueOf(this.value);
     }
 
     @Override
-    public String toString() {
-        if (isEndOfInput()) {
-            return "<EOI>";
-        } else {
-            return String.valueOf(value);
-        }
+    @Contract(pure = true)
+    public int hashCode() {
+        int result = this.value;
+        result = 31 * result + this.pos;
+        return result;
     }
 
     @Override
+    @Contract(value = "null -> false", pure = true)
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Char aChar = (Char) o;
 
-        if (value != aChar.value) return false;
-        return pos == aChar.pos;
+        if (this.value != aChar.value) return false;
+        return this.pos == aChar.pos;
+    }
+
+    @NotNull
+    @Override
+    @Contract(pure = true)
+    public String toString() {
+        if (isEndOfInput()) {
+            return "<EOI>";
+        } else {
+            return String.valueOf(this.value);
+        }
     }
 
     @Override
-    public int hashCode() {
-        int result = value;
-        result = 31 * result + pos;
-        return result;
-    }
-
-    @Override
+    @Contract(pure = true)
     public int getPos() {
-        return pos;
+        return this.pos;
     }
 
+    @NotNull
     @Override
+    @Contract(pure = true)
     public Position increment(int by) {
-        return new Char('\0', pos + by);
+        return new Char('\0', this.pos + by);
     }
 }

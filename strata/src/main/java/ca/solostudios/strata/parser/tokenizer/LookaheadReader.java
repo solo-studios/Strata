@@ -29,6 +29,7 @@
 package ca.solostudios.strata.parser.tokenizer;
 
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,9 +47,9 @@ import java.io.Reader;
 public class LookaheadReader extends Lookahead<Char> {
     @NotNull
     private final Reader input;
-    
+
     private int pos = 0;
-    
+
     /**
      * Creates a new LookaheadReader for the given Reader.
      * <p>
@@ -57,47 +58,51 @@ public class LookaheadReader extends Lookahead<Char> {
      *
      * @param input the reader to draw the input from
      */
+    @Contract(pure = true)
     public LookaheadReader(@NotNull Reader input) {
         super();
         this.input = new BufferedReader(input);
     }
-    
+
+    @NotNull
     @Override
-    public String toString() {
-        if (itemBuffer.isEmpty()) {
-            return String.format("%1d: Buffer empty", pos);
-        }
-        if (itemBuffer.size() < 2) {
-            try {
-                return String.format("%1d: %s", pos, current());
-            } catch (ParseException e) {
-                return String.format("%1d: Exception while fetching current.", pos);
-            }
-        }
-        try {
-            return String.format("%1d: %s, %s", pos, current(), next());
-        } catch (ParseException e) {
-            return String.format("%1d: Exception while fetching current or next.", pos);
-        }
+    @Contract(pure = true)
+    protected Char endOfInput() {
+        return new Char('\0', this.pos);
     }
-    
+
     @Nullable
     @Override
     protected Char fetch() throws ParseException {
         try {
-            int character = input.read();
+            int character = this.input.read();
             if (character == -1) {
                 return null;
             }
-            return new Char((char) character, pos++);
+            return new Char((char) character, this.pos++);
         } catch (IOException e) {
-            throw new ParseException(e, new Char('\0', pos));
+            throw new ParseException(e, new Char('\0', this.pos));
         }
     }
-    
+
     @NotNull
     @Override
-    protected Char endOfInput() {
-        return new Char('\0', pos);
+    @Contract(pure = true)
+    public String toString() {
+        if (this.itemBuffer.isEmpty()) {
+            return String.format("%1d: Buffer empty", this.pos);
+        }
+        if (this.itemBuffer.size() < 2) {
+            try {
+                return String.format("%1d: %s", this.pos, current());
+            } catch (ParseException e) {
+                return String.format("%1d: Exception while fetching current.", this.pos);
+            }
+        }
+        try {
+            return String.format("%1d: %s, %s", this.pos, current(), next());
+        } catch (ParseException e) {
+            return String.format("%1d: Exception while fetching current or next.", this.pos);
+        }
     }
 }

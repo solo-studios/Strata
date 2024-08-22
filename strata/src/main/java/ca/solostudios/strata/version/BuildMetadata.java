@@ -43,10 +43,10 @@ public final class BuildMetadata implements Formattable {
      * An empty build metadata instance used it no metadata is provided.
      */
     public static final BuildMetadata NULL = new BuildMetadata("");
-    
+
     @NotNull
     private final String buildMetadata;
-    
+
     /**
      * Constructs a new build metadata
      *
@@ -56,7 +56,7 @@ public final class BuildMetadata implements Formattable {
     public BuildMetadata(@NotNull String buildMetadata) {
         this.buildMetadata = buildMetadata;
     }
-    
+
     /**
      * The build metadata as a string.
      *
@@ -65,37 +65,38 @@ public final class BuildMetadata implements Formattable {
     @NotNull
     @Contract(pure = true)
     public String getBuildMetadata() {
-        return buildMetadata;
+        return this.buildMetadata;
     }
-    
+
     @Override
     @Contract(pure = true)
-    public String toString() {
-        return String.format("BuildMetadata{buildMetadata='%s'}", buildMetadata);
+    public int hashCode() {
+        return this.buildMetadata.hashCode();
     }
-    
+
     @Override
     @Contract(pure = true)
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        
+
         BuildMetadata that = (BuildMetadata) o;
-        
-        return buildMetadata.equals(that.buildMetadata);
+
+        return this.buildMetadata.equals(that.buildMetadata);
     }
-    
+
     @Override
     @Contract(pure = true)
-    public int hashCode() {
-        return buildMetadata.hashCode();
+    public String toString() {
+        return String.format("BuildMetadata{buildMetadata='%s'}", this.buildMetadata);
     }
-    
+
     @NotNull
     @Override
+    @Contract(pure = true)
     public String getFormatted() {
-        if (!buildMetadata.isEmpty())
-            return String.format("+%s", buildMetadata);
+        if (!this.buildMetadata.isEmpty())
+            return String.format("+%s", this.buildMetadata);
         else
             return "";
     }

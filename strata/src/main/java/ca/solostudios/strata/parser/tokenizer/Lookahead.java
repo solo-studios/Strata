@@ -29,6 +29,7 @@
 package ca.solostudios.strata.parser.tokenizer;
 
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,47 +49,49 @@ public abstract class Lookahead<T> {
     /**
      * Internal buffer containing items which where already created due to lookaheads.
      */
-    protected List<T> itemBuffer = new ArrayList<>();
-    
+    @NotNull
+    protected final List<T> itemBuffer = new ArrayList<>();
+
     /**
      * Determines if the end of the underlying data source has been reached.
      */
     protected boolean endReached = false;
-    
+
     /**
      * Once the end of the underlying input was reached, an end of input indicator is created and constantly returned for all calls of
      * current and next.
      */
+    @Nullable
     protected T endOfInputIndicator = null;
-    
+
     /**
      * Returns the next item after the current one in the stream.
      * <p>
      * This method does not change the internal state. Therefore it can be called several times and will always return the same result.
      *
      * @return The next item in the stream. This will be the current item, after a call to {@link #consume()}you
-     *
      * @throws ParseException If there is an exception during parsing.
      */
     @NotNull
+    @Contract(pure = true)
     public T next() throws ParseException {
         return next(1);
     }
-    
+
     /**
      * Returns the item the stream is currently pointing at.
      * <p>
      * This method does not change the internal state. Therefore it can be called several times and will always return the same result.
      *
      * @return the item the stream is currently pointing at.
-     *
      * @throws ParseException If there is an exception during parsing.
      */
     @NotNull
+    @Contract(pure = true)
     public T current() throws ParseException {
         return next(0);
     }
-    
+
     /**
      * Returns the next n-th item in the stream.
      * <p>
@@ -98,41 +101,40 @@ public abstract class Lookahead<T> {
      * This method does not change the internal state. Therefore it can be called several times and will always return the same result.
      *
      * @param offset the number of items to skip
-     *
      * @return the n-th item in the stream
-     *
      * @throws ParseException If there is an exception during parsing.
      */
     @NotNull
+    @Contract(pure = true)
     public T next(int offset) throws ParseException {
         if (offset < 0) {
             throw new IllegalArgumentException("offset < 0");
         }
-        while (itemBuffer.size() <= offset && !endReached) {
+        boolean endReached = false;
+        while (this.itemBuffer.size() <= offset && !endReached) {
             T item = fetch();
             if (item != null) {
-                itemBuffer.add(item);
+                this.itemBuffer.add(item);
             } else {
                 endReached = true;
             }
         }
-        if (offset >= itemBuffer.size()) {
-            if (endOfInputIndicator == null) {
-                endOfInputIndicator = endOfInput();
+        if (offset >= this.itemBuffer.size()) {
+            if (this.endOfInputIndicator == null) {
+                this.endOfInputIndicator = endOfInput();
             }
-            return endOfInputIndicator;
+            return this.endOfInputIndicator;
         } else {
-            return itemBuffer.get(offset);
+            return this.itemBuffer.get(offset);
         }
     }
-    
+
     /**
      * Removes and returns the current item from the stream.
      * <p>After this method was called, all calls to {@link #current()} will then return the item, which
      * was previously returned by {@link #next()}
      *
      * @return the item which is being removed from the stream
-     *
      * @throws ParseException If there is an exception during parsing.
      */
     @NotNull
@@ -141,35 +143,35 @@ public abstract class Lookahead<T> {
         consume(1);
         return result;
     }
-    
+
     /**
      * Consumes (removes) {@code numberOfItems} at once.
      * <p>
      * Removes the given number of items from the stream.
      *
      * @param numberOfItems the number of items to remove
-     *
      * @throws ParseException If there is an exception during parsing.
      */
     public void consume(int numberOfItems) throws ParseException {
-        if (numberOfItems < 0) {
+        int items = numberOfItems;
+        if (items < 0) {
             throw new IllegalArgumentException("numberOfItems < 0");
         }
-        while (numberOfItems-- > 0) {
-            if (!itemBuffer.isEmpty()) {
-                itemBuffer.remove(0);
+        while (items-- > 0) {
+            if (!this.itemBuffer.isEmpty()) {
+                this.itemBuffer.remove(0);
             } else {
-                if (endReached) {
+                if (this.endReached) {
                     return;
                 }
                 T item = fetch();
                 if (item == null) {
-                    endReached = true;
+                    this.endReached = true;
                 }
             }
         }
     }
-    
+
     /**
      * Creates the end of input indicator item.
      * <p>
@@ -178,13 +180,13 @@ public abstract class Lookahead<T> {
      * @return a special item which marks the end of the input
      */
     @NotNull
+    @Contract(pure = true)
     protected abstract T endOfInput();
-    
+
     /**
      * Fetches the next item from the stream.
      *
      * @return the next item in the stream or {@code null} to indicate that the end was reached
-     *
      * @throws ParseException If there is an exception during parsing.
      */
     @Nullable

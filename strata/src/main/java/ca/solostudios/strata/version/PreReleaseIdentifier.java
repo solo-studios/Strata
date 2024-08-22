@@ -29,6 +29,7 @@
 package ca.solostudios.strata.version;
 
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
@@ -46,7 +47,7 @@ import java.util.Objects;
 public abstract /* sealed */ class PreReleaseIdentifier implements Comparable<PreReleaseIdentifier>, Formattable
         /* permits PreReleaseIdentifier.NumericalPreReleaseIdentifier,
                 PreReleaseIdentifier.AlphaNumericalPreReleaseIdentifier */ {
-    
+
     @Override
     public int compareTo(@NotNull PreReleaseIdentifier o) {
         if (isNumeric())
@@ -59,45 +60,49 @@ public abstract /* sealed */ class PreReleaseIdentifier implements Comparable<Pr
         else
             return asString().compareTo(o.asString());
     }
-    
+
     /**
      * This identifier as an integer.
      *
      * @return This identifier as an integer.
-     *
      * @throws UnsupportedOperationException If this identifier cannot be formatted as an integer.
      */
+    @NotNull
+    @Contract(pure = true)
     protected BigInteger asInteger() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Numerical values are not supported by this implementation");
     }
-    
+
     /**
      * This identifier formatted as a string.
      *
      * @return This identifier as a string.
      */
     @NotNull
+    @Contract(pure = true)
     protected abstract String asString();
-    
+
     @NotNull
     @Override
+    @Contract(pure = true)
     public String getFormatted() {
         return asString();
     }
-    
+
     /**
      * Whether or not this identifier can contain numerical values.
      *
      * @return {@code true} if this identifier can contain numerical values, {@code false} otherwise.
      */
+    @Contract(pure = true)
     protected abstract boolean isNumeric();
-    
+
     /**
      * A numerical identifier. This identifier can only contain a positive number.
      */
     public static final class NumericalPreReleaseIdentifier extends PreReleaseIdentifier {
         private final BigInteger value;
-        
+
         /**
          * Constructs a new numerical identifier with the provided value.
          *
@@ -106,52 +111,60 @@ public abstract /* sealed */ class PreReleaseIdentifier implements Comparable<Pr
         public NumericalPreReleaseIdentifier(BigInteger value) {
             this.value = value;
         }
-        
-        @Override
-        public String toString() {
-            return String.format("NumericalPreReleaseIdentifier{value=%d}", value);
-        }
-        
+
         @NotNull
         @Override
-        protected String asString() {
-            return value.toString();
-        }
-        
-        @Override
+        @Contract(pure = true)
         protected BigInteger asInteger() {
-            return value;
+            return this.value;
         }
-        
+
+        @NotNull
         @Override
+        @Contract(pure = true)
+        protected String asString() {
+            return this.value.toString();
+        }
+
+        @Override
+        @Contract(pure = true)
         protected boolean isNumeric() {
             return true;
         }
-        
+
         @Override
+        @Contract(pure = true)
+        public int hashCode() {
+            return this.value.hashCode();
+        }
+
+        @Override
+        @Contract(value = "null -> false", pure = true)
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            
+
             NumericalPreReleaseIdentifier that = (NumericalPreReleaseIdentifier) o;
-            
-            return Objects.equals(value, that.value);
+
+            return Objects.equals(this.value, that.value);
         }
-        
+
+        @NotNull
         @Override
-        public int hashCode() {
-            return value.hashCode();
+        @Contract(pure = true)
+        public String toString() {
+            return String.format("NumericalPreReleaseIdentifier{value=%d}", this.value);
         }
     }
-    
-    
+
+
     /**
      * An alphanumerical identifier. This identifier can only contain alpha-numeric values.
      */
     public static final class AlphaNumericalPreReleaseIdentifier extends PreReleaseIdentifier {
         @NotNull
         private final String value;
-        
+
         /**
          * Constructs a new alphanumerical identifier with the provided value.
          *
@@ -160,36 +173,42 @@ public abstract /* sealed */ class PreReleaseIdentifier implements Comparable<Pr
         public AlphaNumericalPreReleaseIdentifier(@NotNull String value) {
             this.value = value;
         }
-        
-        @Override
-        public String toString() {
-            return String.format("AlphaNumericalPreReleaseIdentifier{value='%s'}", value);
-        }
-        
+
         @NotNull
         @Override
+        @Contract(pure = true)
         protected String asString() {
-            return value;
+            return this.value;
         }
-        
+
         @Override
+        @Contract(pure = true)
         protected boolean isNumeric() {
             return false;
         }
-        
+
         @Override
+        @Contract(pure = true)
+        public int hashCode() {
+            return this.value.hashCode();
+        }
+
+        @Override
+        @Contract(value = "null -> false", pure = true)
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            
+
             AlphaNumericalPreReleaseIdentifier that = (AlphaNumericalPreReleaseIdentifier) o;
-            
-            return value.equals(that.value);
+
+            return this.value.equals(that.value);
         }
-        
+
+        @NotNull
         @Override
-        public int hashCode() {
-            return value.hashCode();
+        @Contract(pure = true)
+        public String toString() {
+            return String.format("AlphaNumericalPreReleaseIdentifier{value='%s'}", this.value);
         }
     }
 }
